@@ -26,6 +26,7 @@ const Canvas = ({
   axisColor = "#000",
   scatterPlot = [],
   curves = [],
+  labels = [],
 }) => {
   const canvasRef = useRef(null)
 
@@ -155,6 +156,7 @@ const Canvas = ({
     ctx.strokeStyle = "blue"
     ctx.lineWidth = 1.5
 
+    // Draw lines for each curve
     Object.values(curves).forEach((curve) => {
       ctx.beginPath()
       curve.forEach((point, index) => {
@@ -164,6 +166,18 @@ const Canvas = ({
         else ctx.lineTo(cx, cy)
       })
       ctx.stroke()
+    })
+
+    // Draw labels
+    ctx.fillStyle = "black"
+    Object.values(labels).forEach((label) => {
+      ctx.save()
+      const cx = toCanvasX(label.x)
+      const cy = toCanvasY(label.y)
+      ctx.translate(cx, cy)
+      ctx.rotate((label.angle * Math.PI) / 180)
+      ctx.fillText(label.text, 0, 0)
+      ctx.restore()
     })
   }, [
     width,

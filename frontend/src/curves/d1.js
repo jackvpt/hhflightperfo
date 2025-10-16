@@ -13,6 +13,53 @@ export const d1_details = {
   xLabel: "VTOSS (kts)",
   yLabel: "Distance (m)",
 }
+
+export const d1_labels=[
+  {
+    text: "0 kt",
+    x: 54,
+    y: 520,
+    angle:-40
+  },
+  {
+    text: "10 kts",
+    x: 57,
+    y: 370,
+    angle:-35
+  },
+  {
+    text: "20 kts",
+    x: 59,
+    y: 255,
+    angle:-30
+  },
+  {
+    text: "30 kts",
+    x: 62,
+    y: 185,
+    angle:-25
+  },
+  {
+    text: "40 kts",
+    x: 63,
+    y: 110,
+    angle:-25
+  },
+  {
+    text: "50 kts",
+    x: 64,
+    y: 62,
+    angle:-8
+  },
+  {
+    text: "FACTORED HEAD WIND",
+    x: 66,
+    y: 710,
+    angle:-45
+  },
+
+]
+
 const data = {
   0: [
     { x: 40, y: 319 },

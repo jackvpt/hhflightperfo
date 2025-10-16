@@ -3,12 +3,13 @@ import { FormControl, TextField } from "@mui/material"
 import { useState } from "react"
 import InputNumber from "../../components/SubComponents/InputNumber/InputNumber"
 import { calculateHeadWind } from "../../utils/calculations"
-import { d1_curves, d1_details, d1_predictDistance, d1_scatterPlot } from "../../curves/d1"
+import {
+  d1_curves,
+  d1_details,
+  d1_labels,
+  d1_scatterPlot,
+} from "../../curves/d1"
 import Canvas from "../../Canvas/Canvas"
-
-const Home2 = ()=>{
-  return <div>Home</div>
-}
 
 const Home = () => {
   // Local states
@@ -85,14 +86,14 @@ const Home = () => {
           />
         </FormControl>
 
-   
-         <div>
+        <div>
           <Canvas
             {...d1_details}
             scatterPlot={d1_scatterPlot()}
             curves={d1_curves()}
+            labels={d1_labels}
           />
-        </div> 
+        </div>
       </div>
     </div>
   )
