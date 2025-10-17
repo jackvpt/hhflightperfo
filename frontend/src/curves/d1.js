@@ -2,62 +2,65 @@ import { PolynomialRegression } from "ml-regression-polynomial"
 
 export const d1_details = {
   title: "D1 - REJECTED TAKEOFF DISTANCE",
-  x0: 40, // X axis minimum value
+  xmin: 40, // X axis minimum value
   xmax: 80, // X axis maximum value
-  y0: 0, // Y axis minimum value
+  x0: 40, // X axis reference 0
+  ymin: 0, // Y axis minimum value
   ymax: 1000, // Y axis maximum value
+  y0: 0, // Y axis reference 0
   gridSpacingX: 2, // X axis grid spacing (value)
   gridSpacingY: 25, // Y axis grid spacing (value)
+  gridSpacingThickX: 10, // X axis thick grid spacing (value)
+  gridSpacingThickY: 100, // Y axis thick grid spacing (value)
   labelSpacingX: 10, // X axis label spacing (value)
   labelSpacingY: 100, // Y axis label spacing (value)
   xLabel: "VTOSS (kts)",
   yLabel: "Distance (m)",
 }
 
-export const d1_labels=[
+export const d1_labels = [
   {
     text: "0 kt",
     x: 54,
     y: 520,
-    angle:-40
+    angle: -40,
   },
   {
     text: "10 kts",
     x: 57,
     y: 370,
-    angle:-35
+    angle: -35,
   },
   {
     text: "20 kts",
     x: 59,
     y: 255,
-    angle:-30
+    angle: -30,
   },
   {
     text: "30 kts",
     x: 62,
     y: 185,
-    angle:-25
+    angle: -25,
   },
   {
     text: "40 kts",
     x: 63,
     y: 110,
-    angle:-25
+    angle: -25,
   },
   {
     text: "50 kts",
     x: 64,
     y: 62,
-    angle:-8
+    angle: -8,
   },
   {
     text: "FACTORED HEAD WIND",
     x: 66,
     y: 710,
-    angle:-45
+    angle: -45,
   },
-
 ]
 
 const data = {

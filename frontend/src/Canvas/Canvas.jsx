@@ -1,19 +1,24 @@
 import { useEffect, useRef } from "react"
 
+// MUI imports
+import { darken, useTheme } from "@mui/material/styles"
+
 const Canvas = ({
   width = 500, // Canvas width (pixels)
   height = 700, // Canvas height (pixels)
   title = "",
-  x0 = 40, // X axis minimum value
-  xmax = 80, // X axis maximum value
-  y0 = 0, // Y axis minimum value
-  ymax = 1000, // Y axis maximum value
-  gridSpacingX = 2, // X axis grid spacing (value)
-  gridSpacingY = 20, // Y axis grid spacing (value)
-  gridSpacingThickX = 10, // X axis thick grid spacing (value)
-  gridSpacingThickY = 100, // Y axis thick grid spacing (value)
-  labelSpacingX = 10, // X axis label spacing (value)
-  labelSpacingY = 100, // Y axis label spacing (value)
+  xmin, // X axis minimum value
+  xmax, // X axis maximum value
+  x0, // X axis reference 0
+  ymin, // Y axis minimum value
+  ymax, // Y axis maximum value
+  y0, // Y axis reference 0
+  gridSpacingX, // X axis grid spacing (value)
+  gridSpacingY, // Y axis grid spacing (value)
+  gridSpacingThickX, // X axis thick grid spacing (value)
+  gridSpacingThickY, // Y axis thick grid spacing (value)
+  labelSpacingX, // X axis label spacing (value)
+  labelSpacingY, // Y axis label spacing (value)
   xLabel = "",
   yLabel = "",
   marginLeft = 60,
@@ -22,13 +27,17 @@ const Canvas = ({
   marginBottom = 40,
   fontName = "Calibri",
   fontSize = 10, // Base font size for labels (pixels)
-  gridColor = "#ccc",
-  axisColor = "#000",
   scatterPlot = [],
   curves = [],
   labels = [],
 }) => {
   const canvasRef = useRef(null)
+  const theme = useTheme()
+
+  // Adjust colors based on theme mode
+  const gridColor = darken(theme.palette.primary.light, 0.4)
+  const textColor = theme.palette.text.primary
+  const axisColor = theme.palette.text.primary
 
   const fontLabels = `${fontSize}px ${fontName}`
   const fontUnits = `${fontSize + 2}px ${fontName}`
@@ -37,11 +46,11 @@ const Canvas = ({
   const plotWidth = width - marginLeft - marginRight
   const plotHeight = height - marginTop - marginBottom
 
-  const xfactor = plotWidth / (xmax - x0)
-  const yfactor = plotHeight / (ymax - y0)
+  const xfactor = plotWidth / (xmax - xmin)
+  const yfactor = plotHeight / (ymax - ymin)
 
-  const toCanvasX = (x) => marginLeft + (x - x0) * xfactor
-  const toCanvasY = (y) => height - marginBottom - (y - y0) * yfactor
+  const toCanvasX = (x) => marginLeft + (x - xmin) * xfactor
+  const toCanvasY = (y) => height - marginBottom - (y - ymin) * yfactor
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -51,7 +60,7 @@ const Canvas = ({
     // Vertical grid lines
     ctx.strokeStyle = gridColor
     ctx.lineWidth = 1
-    for (let x = x0; x <= xmax; x += gridSpacingX) {
+    for (let x = xmin; x <= xmax; x += gridSpacingX) {
       const cx = toCanvasX(x)
       ctx.beginPath()
       ctx.moveTo(cx, marginTop)
@@ -60,7 +69,7 @@ const Canvas = ({
     }
 
     // Horizontal grid lines
-    for (let y = y0; y <= ymax; y += gridSpacingY) {
+    for (let y = ymin; y <= ymax; y += gridSpacingY) {
       const cy = toCanvasY(y)
       ctx.beginPath()
       ctx.moveTo(marginLeft, cy)
@@ -106,7 +115,7 @@ const Canvas = ({
 
     // X labels
     ctx.font = fontLabels
-    ctx.fillStyle = "#000"
+    ctx.fillStyle = textColor
     ctx.textAlign = "center"
     ctx.textBaseline = "top"
     for (let x = x0; x <= xmax; x += labelSpacingX) {
@@ -144,16 +153,7 @@ const Canvas = ({
     ctx.textBaseline = "top"
     ctx.fillText(title, marginLeft + plotWidth / 2, 10)
 
-    scatterPlot.forEach((point) => {
-      const cx = toCanvasX(point.x)
-      const cy = toCanvasY(point.y)
-      ctx.beginPath()
-      ctx.arc(cx, cy, 3, 0, Math.PI * 2)
-      ctx.fillStyle = "red"
-      ctx.fill()
-    })
-
-    ctx.strokeStyle = "blue"
+    ctx.strokeStyle = "#00ccff"
     ctx.lineWidth = 1.5
 
     // Draw lines for each curve
@@ -169,7 +169,7 @@ const Canvas = ({
     })
 
     // Draw labels
-    ctx.fillStyle = "black"
+    ctx.fillStyle = textColor
     Object.values(labels).forEach((label) => {
       ctx.save()
       const cx = toCanvasX(label.x)
@@ -179,12 +179,22 @@ const Canvas = ({
       ctx.fillText(label.text, 0, 0)
       ctx.restore()
     })
+
+    // Draw scatter plot points
+    scatterPlot.forEach((point) => {
+      const cx = toCanvasX(point.x)
+      const cy = toCanvasY(point.y)
+      ctx.beginPath()
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2)
+      ctx.fillStyle = "red"
+      ctx.fill()
+    })
   }, [
     width,
     height,
-    x0,
+    xmin,
     xmax,
-    y0,
+    ymin,
     ymax,
     gridSpacingX,
     gridSpacingY,

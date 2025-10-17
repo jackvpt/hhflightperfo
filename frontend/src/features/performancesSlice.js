@@ -1,22 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 export const initialState = {
-  d1:[],
-  vtoss:60,
-  mtowClearArea:0,
-
+  report: "",
+  d1: [],
+  vtoss: 60,
+  mtowClearArea: 0,
+  headWind: 0,
 }
 
 const performancesSlice = createSlice({
   name: "performances",
   initialState,
   reducers: {
-    setPerformances: (state, action) => {
-      return { ...state, ...action.payload }
+    updatePerformanceField: (state, action) => {
+      const { field, value } = action.payload
+      state[field] = value
     },
   },
 })
 
-export const { setPerformances } = performancesSlice.actions
+export const { updatePerformanceField } = performancesSlice.actions
 
 export default performancesSlice.reducer

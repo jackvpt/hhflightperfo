@@ -42,9 +42,9 @@ const queryClient = new QueryClient({
 })
 
 // Global theme for MUI components
-const lightTheme = createTheme({
+const theme = createTheme({
   palette: {
-    mode: "light",
+    mode: "dark",
   },
 })
 
@@ -65,7 +65,7 @@ createRoot(document.getElementById("root")).render(
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <ThemeProvider theme={lightTheme}>
+            <ThemeProvider theme={theme}>
               <CssBaseline />
               <App />
             </ThemeProvider>{" "}

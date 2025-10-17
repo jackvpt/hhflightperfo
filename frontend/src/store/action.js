@@ -1,10 +1,10 @@
 import { updateField as updateWeatherField } from "../features/weatherDataSlice.js"
 import { updateField as updateFlightField } from "../features/flightDataSlice.js"
-import { setPerformances } from "../features/performancesSlice.js"
-import { computeHeadWind } from "../utils/performancesCalculations.js"
+import { updatePerformanceField } from "../features/performancesSlice.js"
+import { computeD1, computeHeadWind } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
-export const updateAnyField = (name, rawValue) => (dispatch, getState) => {
+export const updateAnyField = (name, rawValue) => (dispatch) => {
   const value = isNaN(Number(rawValue)) ? rawValue : Number(rawValue)
 
   // Fields grouped by feature
@@ -24,17 +24,18 @@ export const updateAnyField = (name, rawValue) => (dispatch, getState) => {
   } else {
     console.warn(`Field ${name} unknown in updateAnyField action`)
   }
+}
 
-    // 2️⃣ Performances recalculation after state update
-  const { weatherData, flightData } = getState()
+export const recalculatePerformances = () => (dispatch, getState) => {
+  const state = getState()
+  const { windDirection, windSpeed } = state.weatherData
+  const { runwayHeading } = state.flightData
 
   // Headwind calculation
-  const headWind = computeHeadWind(
-    weatherData.windDirection,
-    weatherData.windSpeed,
-    flightData.runwayHeading
-  )
-
-  // Dispatch the recalculated headwind
-  dispatch(setPerformances({ headWind }))
+  const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
+  dispatch(updatePerformanceField({ field: "headWind", value: headWind }))
+  
+  // D1 calculation
+  const d1 = computeD1(headWind)
+  dispatch(updatePerformanceField({ field: "d1", value: d1 }))
 }

@@ -1,5 +1,5 @@
 import "./Home.scss"
-import { FormControl, TextField } from "@mui/material"
+import { FormControl } from "@mui/material"
 import InputNumber from "../../components/SubComponents/InputNumber/InputNumber"
 import {
   d1_curves,
@@ -9,19 +9,26 @@ import {
 } from "../../curves/d1"
 import Canvas from "../../Canvas/Canvas"
 import { useDispatch, useSelector } from "react-redux"
-import { updateAnyField } from "../../store/action"
+import { recalculatePerformances, updateAnyField } from "../../store/action"
+import DisplayValue from "../../components/SubComponents/DisplayValue/DisplayValue"
+import { mtow_ca_40_curves, mtow_ca_40_details, mtow_ca_40_scatterPlot } from "../../curves/mtow_ca_40"
 
 const Home = () => {
   // REDUX store
   const dispatch = useDispatch()
   const weatherData = useSelector((state) => state.weatherData)
   const flightData = useSelector((state) => state.flightData)
-  const performancesData = useSelector((state) => state.performances)
+  const performancesData = useSelector((state) => state.performancesData)
 
   // Handle form input changes
   const handleInputChange = (event) => {
     const { name, value } = event.target
     dispatch(updateAnyField(name, Number(value)))
+  }
+
+  // Handle calculations (triggered when the user finishes editing)
+  const handleBlur = () => {
+    dispatch(recalculatePerformances())
   }
 
   return (
@@ -34,7 +41,9 @@ const Home = () => {
             name="windDirection"
             label="Wind Direction"
             value={weatherData.windDirection}
+            format="heading"
             onChange={handleInputChange}
+            onBlur={handleBlur}
           />
         </FormControl>
 
@@ -45,6 +54,7 @@ const Home = () => {
             label="Wind Speed"
             value={weatherData.windSpeed}
             onChange={handleInputChange}
+            onBlur={handleBlur}
           />
         </FormControl>
 
@@ -54,34 +64,34 @@ const Home = () => {
             name="runwayHeading"
             label="Runway Heading"
             value={flightData.runwayHeading}
+            format="heading"
             onChange={handleInputChange}
+            onBlur={handleBlur}
           />
         </FormControl>
 
         {/* Head wind */}
         <FormControl variant="filled" size="small">
-          <TextField
+          <DisplayValue
             name="headWind"
             label="Head Wind"
-            value={flightData.headWind}
-            disabled
-            sx={{
-              "& .MuiInputBase-input": {
-                fontSize: "0.875rem",
-                height: 18,
-                padding: 1,
-              },
-            }}
+            value={performancesData.headWind}
           />
         </FormControl>
 
         <div>
+          <Canvas
+          {...mtow_ca_40_details}
+            scatterPlot={mtow_ca_40_scatterPlot()}
+            curves={mtow_ca_40_curves()}
+          />
           <Canvas
             {...d1_details}
             scatterPlot={d1_scatterPlot()}
             curves={d1_curves()}
             labels={d1_labels}
           />
+          
         </div>
       </div>
     </div>

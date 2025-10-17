@@ -1,6 +1,8 @@
-
-
-export const extrapolation = (x, x0, y0, x1, y1) => {
-  if (x1 === x0) throw new Error("x0 and x1 cannot be the same value")
-  return y0 + ((y1 - y0) * (x - x0)) / (x1 - x0)
+// Utility function for linear extrapolation
+export const extrapolation = (entry, entryLow, valueLow, entryHigh, valueHigh) => {
+  if (entryHigh === entryLow) throw new Error("x0 and x1 cannot be the same value")
+  return valueLow + ((valueHigh - valueLow) * (entry - entryLow)) / (entryHigh - entryLow)
 }
+
+// Utility function to convert degrees to radians
+export const degToRad = (deg) => (deg * Math.PI) / 180
