@@ -1,8 +1,6 @@
 import "./Home.scss"
 import { FormControl, TextField } from "@mui/material"
-import { useState } from "react"
 import InputNumber from "../../components/SubComponents/InputNumber/InputNumber"
-import { calculateHeadWind } from "../../utils/calculations"
 import {
   d1_curves,
   d1_details,
@@ -10,35 +8,20 @@ import {
   d1_scatterPlot,
 } from "../../curves/d1"
 import Canvas from "../../Canvas/Canvas"
+import { useDispatch, useSelector } from "react-redux"
+import { updateAnyField } from "../../store/action"
 
 const Home = () => {
-  // Local states
-  const initialFormData = {
-    windDirection: 360,
-    windSpeed: 15,
-    temperature: 20,
-    qnh: 1013,
-    runwayHeading: 360,
-    headWind: 10,
-  }
-  const [formData, setFormData] = useState(initialFormData)
+  // REDUX store
+  const dispatch = useDispatch()
+  const weatherData = useSelector((state) => state.weatherData)
+  const flightData = useSelector((state) => state.flightData)
+  const performancesData = useSelector((state) => state.performances)
 
   // Handle form input changes
   const handleInputChange = (event) => {
     const { name, value } = event.target
-
-    const newData = {
-      ...formData,
-      [name]: value,
-    }
-
-    newData.headWind = calculateHeadWind(
-      newData.windDirection,
-      newData.windSpeed,
-      newData.runwayHeading
-    )
-
-    setFormData(newData)
+    dispatch(updateAnyField(name, Number(value)))
   }
 
   return (
@@ -50,7 +33,7 @@ const Home = () => {
           <InputNumber
             name="windDirection"
             label="Wind Direction"
-            value={formData.windDirection}
+            value={weatherData.windDirection}
             onChange={handleInputChange}
           />
         </FormControl>
@@ -60,7 +43,7 @@ const Home = () => {
           <InputNumber
             name="windSpeed"
             label="Wind Speed"
-            value={formData.windSpeed}
+            value={weatherData.windSpeed}
             onChange={handleInputChange}
           />
         </FormControl>
@@ -70,7 +53,7 @@ const Home = () => {
           <InputNumber
             name="runwayHeading"
             label="Runway Heading"
-            value={formData.runwayHeading}
+            value={flightData.runwayHeading}
             onChange={handleInputChange}
           />
         </FormControl>
@@ -80,9 +63,15 @@ const Home = () => {
           <TextField
             name="headWind"
             label="Head Wind"
-            value={formData.headWind}
+            value={flightData.headWind}
             disabled
-            size="small"
+            sx={{
+              "& .MuiInputBase-input": {
+                fontSize: "0.875rem",
+                height: 18,
+                padding: 1,
+              },
+            }}
           />
         </FormControl>
 

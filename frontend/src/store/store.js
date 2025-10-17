@@ -5,6 +5,9 @@ import storage from "redux-persist/lib/storage"
 
 // 🗃️ Feature slices
 import parametersSlice, { initialState as parametersInitialState } from "../features/parametersSlice"
+import weatherDataSlice from "../features/weatherDataSlice" // import weatherData slice
+import flightDataSlice from "../features/flightDataSlice" // import flightData slice
+import performancesSlice from "../features/performancesSlice" // import performances slice
 
 /**
  * 🎯 Transform for the 'parameters' slice.
@@ -38,7 +41,10 @@ const parametersTransform = createTransform(
  */
 const rootReducer = combineReducers({
   parameters: parametersSlice, // partial persistence controlled via transform
-  // add other slices here if needed
+  weatherData: weatherDataSlice, 
+  flightData: flightDataSlice,
+  performancesData: performancesSlice,
+  // add weatherData slice
 })
 
 /**
@@ -49,7 +55,7 @@ const rootReducer = combineReducers({
 const rootPersistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "parameters"], // only these slices are persisted
+  whitelist: ["weatherData", "flightData", "performances", "parameters"], // only these slices are persisted
   transforms: [parametersTransform], // apply selective transform
 }
 
