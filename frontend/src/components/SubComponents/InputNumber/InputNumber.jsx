@@ -56,9 +56,11 @@ const InputNumber = ({ name, label, value, onChange,onBlur, format }) => {
         onFocus={(e) => e.target.select()}
         onChange={handleChange}
         onBlur={handleBlur}
+    
         sx={{
           "& .MuiInputBase-input": {
             fontSize: "0.875rem",
+            width: 100,
             height: 18,
             padding: 1,
             textAlign: "right",

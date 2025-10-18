@@ -21,6 +21,7 @@ const DisplayValue = ({ name, label, value, format }) => {
       sx={{
         "& .MuiInputBase-input": {
           fontSize: "0.875rem",
+          width: 100,
           height: 18,
           padding: 1,
           textAlign: "right",

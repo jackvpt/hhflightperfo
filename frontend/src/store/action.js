@@ -1,7 +1,10 @@
 import { updateField as updateWeatherField } from "../features/weatherDataSlice.js"
 import { updateField as updateFlightField } from "../features/flightDataSlice.js"
 import { updatePerformanceField } from "../features/performancesSlice.js"
-import { computeD1, computeHeadWind } from "../utils/performancesCalculations.js"
+import {
+  computeD1,
+  computeHeadWind,
+} from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
 export const updateAnyField = (name, rawValue) => (dispatch) => {
@@ -11,8 +14,9 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
   const weatherFields = new Set([
     "windDirection",
     "windSpeed",
-    "mainAirfieldQnh",
-    "mainAirfieldTemperature",
+    "qnh",
+    "takeoffTemperature",
+    "takeoffAltitude",
     "mainAirfieldHeadWind",
   ])
   const flightFields = new Set(["runwayHeading"])
@@ -34,7 +38,7 @@ export const recalculatePerformances = () => (dispatch, getState) => {
   // Headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
   dispatch(updatePerformanceField({ field: "headWind", value: headWind }))
-  
+
   // D1 calculation
   const d1 = computeD1(headWind)
   dispatch(updatePerformanceField({ field: "d1", value: d1 }))
