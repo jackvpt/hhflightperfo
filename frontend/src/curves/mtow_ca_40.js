@@ -244,6 +244,7 @@ const data = {
     },
   ],
     50: [
+      absoluteMinY:3376,
     {
       range: [1, 20000],
       values: [
