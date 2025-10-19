@@ -1,5 +1,5 @@
 import "./TakeoffParameters.scss"
-import { FormControl } from "@mui/material"
+import { Box, FormControl, Typography } from "@mui/material"
 import InputNumber from "../SubComponents/InputNumber/InputNumber"
 import DisplayValue from "../SubComponents/DisplayValue/DisplayValue"
 import { useDispatch, useSelector } from "react-redux"
@@ -28,8 +28,10 @@ const TakeoffParameters = () => {
 
   return (
     <section className="container-takeoffparameters">
-      {/* Wind Direction */}
-      <FormControl variant="filled" size="small">
+      <div className="container-takeoffparameters__header">
+        Takeoff Parameters
+      </div>
+      <div className="container-takeoffparameters__body">
         <InputNumber
           name="windDirection"
           label="Wind Direction"
@@ -38,10 +40,8 @@ const TakeoffParameters = () => {
           onChange={handleInputChange}
           onBlur={handleBlur}
         />
-      </FormControl>
 
-      {/* Wind Speed */}
-      <FormControl variant="filled" size="small">
+        {/* Wind Speed */}
         <InputNumber
           name="windSpeed"
           label="Wind Speed"
@@ -50,10 +50,9 @@ const TakeoffParameters = () => {
           onChange={handleInputChange}
           onBlur={handleBlur}
         />
-      </FormControl>
 
-      {/* Runway Heading */}
-      <FormControl variant="filled" size="small">
+        {/* Runway Heading */}
+
         <InputNumber
           name="runwayHeading"
           label="Runway Heading"
@@ -62,30 +61,24 @@ const TakeoffParameters = () => {
           onChange={handleInputChange}
           onBlur={handleBlur}
         />
-      </FormControl>
 
-      {/* Head wind */}
-      <FormControl variant="filled" size="small">
+        {/* Head wind */}
         <DisplayValue
           name="headWind"
           label="Head Wind"
           value={performancesData.headWind}
           format="heading"
         />
-      </FormControl>
 
-      {/* Factored Head wind */}
-      <FormControl variant="filled" size="small">
+        {/* Factored Head wind */}
         <DisplayValue
           name="factoredHeadWind"
           label="Factored Head Wind"
           value={performancesData.factoredHeadWind}
           format="speed"
         />
-      </FormControl>
 
-      {/* QNH */}
-      <FormControl variant="filled" size="small">
+        {/* QNH */}
         <InputNumber
           name="qnh"
           label="QNH"
@@ -94,10 +87,8 @@ const TakeoffParameters = () => {
           onChange={handleInputChange}
           onBlur={handleBlur}
         />
-      </FormControl>
 
-      {/* Takeoff altitude */}
-      <FormControl variant="filled" size="small">
+        {/* Takeoff altitude */}
         <InputNumber
           name="takeoffAltitude"
           label="Altitude"
@@ -106,20 +97,16 @@ const TakeoffParameters = () => {
           onChange={handleInputChange}
           onBlur={handleBlur}
         />
-      </FormControl>
 
-      {/* Pressure altitude (Zp) */}
-      <FormControl variant="filled" size="small">
+        {/* Pressure altitude (Zp) */}
         <DisplayValue
           name="takeoffZp"
           label="Zp"
           value={weatherData.takeoffZp}
           format="altitude"
         />
-      </FormControl>
 
-      {/* Temperature */}
-      <FormControl variant="filled" size="small">
+        {/* Temperature */}
         <InputNumber
           name="takeoffTemperature"
           label="Temperature"
@@ -128,7 +115,7 @@ const TakeoffParameters = () => {
           onChange={handleInputChange}
           onBlur={handleBlur}
         />
-      </FormControl>
+      </div>
     </section>
   )
 }

@@ -1,13 +1,7 @@
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  InputAdornment,
-  InputLabel,
-  TextField,
-} from "@mui/material"
-import { abbreviateUnit } from "../../../utils/string"
+import "./InputNumber.scss"
+
+import { Box, FormLabel, InputAdornment, TextField } from "@mui/material"
+import { abbreviateUnit, getInputWidth } from "../../../utils/string"
 
 const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
   // 🧭 Format the displayed value (e.g., headings padded to 3 digits)
@@ -53,83 +47,64 @@ const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
   }
 
   return (
-
-
-<Box
-  sx={{
-    display: "flex",
-    alignItems: "center",
-    gap: 1, 
-  }}
->
-  <FormLabel
-    htmlFor={name}
-    sx={{
-      fontSize: "0.8rem",
-      whiteSpace: "nowrap",
-      minWidth: 60, 
-      textAlign: "right",
-      color: "text.primary",
-    }}
-  >
-    {label}
-  </FormLabel>
-
-  <TextField
-    id={name}
-    name={name}
-    type="text"
-    inputMode="numeric"
-    pattern="[0-9]*"
-    value={formatValue(value)}
-    aria-describedby={name}
-    onFocus={(e) => e.target.select()}
-    onChange={handleChange}
-    onBlur={handleBlur}
-    slotProps={{
-      input: {
-        endAdornment: (
-          <InputAdornment
-            position="end"
-            sx={{
-              m: 0,
-              minHeight: "unset",
-              lineHeight: 1,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "0.7rem",
-                lineHeight: 1,
-                p: 0,
-                pt: 0.5,
-                m: 0,
-              }}
-            >
-              {abbreviateUnit(format)}
-            </Box>
-          </InputAdornment>
-        ),
-      },
-    }}
-    sx={{
-      "& .MuiInputBase-input": {
-        fontSize: "0.875rem",
-        width: 40,
-        height: 18,
-        padding: 1,
-        textAlign: "right",
-      },
-      "& .MuiInputAdornment-root": {
-        minHeight: "unset",
-        m: 0,
-        p: 0,
-      },
-    }}
-  />
-</Box>
-
+    <div className="container-inputNumber">
+      <div className="container-inputNumber__label">{label}</div>
+      <TextField
+          className="container-inputNumber__input"
+        id={name}
+        name={name}
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        value={formatValue(value)}
+        aria-describedby={name}
+        onFocus={(e) => e.target.select()}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        fullWidth
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment
+                position="end"
+                sx={{
+                  m: 0,
+                  minHeight: "unset",
+                  lineHeight: 1,
+                }}
+              >
+                <Box
+                  component="span"
+                  sx={{
+                    fontSize: "0.7rem",
+                    lineHeight: 1,
+                    p: 0,
+                    pt: 0.5,
+                    m: 0,
+                  }}
+                >
+                  {abbreviateUnit(format)}
+                </Box>
+              </InputAdornment>
+            ),
+          },
+        }}
+        sx={{
+          width: getInputWidth(format),
+          "& .MuiInputBase-input": {
+            fontSize: "0.875rem",
+            height: 12,
+            padding: 1,
+            textAlign: "right",
+          },
+          "& .MuiInputAdornment-root": {
+            minHeight: "unset",
+            m: 0,
+            p: 0,
+          },
+        }}
+      />
+    </div>
   )
 }
 

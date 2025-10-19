@@ -1,5 +1,5 @@
 import { Box, FormLabel, InputAdornment, TextField } from "@mui/material"
-import { abbreviateUnit } from "../../../utils/string"
+import { abbreviateUnit, getInputWidth } from "../../../utils/string"
 
 const DisplayValue = ({ name, label, value, format }) => {
   // 🧭 Format the displayed value (e.g., headings padded to 3 digits)
@@ -12,24 +12,8 @@ const DisplayValue = ({ name, label, value, format }) => {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: 1, // espace entre label et champ
-      }}
-    >
-      <FormLabel
-        htmlFor={name}
-        sx={{
-          fontSize: "0.8rem",
-          whiteSpace: "nowrap",
-          minWidth: 60,
-          textAlign: "right",
-        }}
-      >
-        {label}
-      </FormLabel>
+    <div className="container-inputNumber">
+      <div className="container-inputNumber__label display-value">{label}</div>
       <TextField
         id={name}
         name={name}
@@ -37,10 +21,10 @@ const DisplayValue = ({ name, label, value, format }) => {
         aria-describedby={name}
         disabled
         sx={{
+          width: getInputWidth(format),
           "& .MuiInputBase-input": {
             fontSize: "0.875rem",
-            width: 40,
-            height: 18,
+            height: 12,
             padding: 1,
             textAlign: "right",
           },
@@ -72,12 +56,9 @@ const DisplayValue = ({ name, label, value, format }) => {
               </InputAdornment>
             ),
           },
-          inputLabel: {
-            shrink: true,
-          },
         }}
       />
-    </Box>
+    </div>
   )
 }
 

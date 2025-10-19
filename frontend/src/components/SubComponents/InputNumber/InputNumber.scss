@@ -1,0 +1,21 @@
+.container-inputNumber{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap:1rem;
+    
+
+    &__label{
+        font-size:0.8rem;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .display-value{
+        color:grey;
+    }
+
+    
+
+}
