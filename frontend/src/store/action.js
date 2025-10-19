@@ -45,3 +45,4 @@ export const recalculatePerformances = () => (dispatch, getState) => {
   const d1 = computeD1(headWind)
   dispatch(updatePerformanceField({ field: "d1", value: d1 }))
 }
+recalculatePerformances()

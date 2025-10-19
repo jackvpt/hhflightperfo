@@ -1,10 +1,17 @@
+import { useState, useEffect } from "react"
 import "./InputNumber.scss"
-
-import { Box, FormLabel, InputAdornment, TextField } from "@mui/material"
+import { Box, InputAdornment, TextField } from "@mui/material"
 import { abbreviateUnit, getInputWidth } from "../../../utils/string"
 
 const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
-  // 🧭 Format the displayed value (e.g., headings padded to 3 digits)
+  const [inputValue, setInputValue] = useState("")
+
+  // 🧭 Keep local value in sync with the store value
+  useEffect(() => {
+    setInputValue(formatValue(value))
+  }, [value])
+
+  // 🧭 Format displayed value (e.g., pad heading values with zeros)
   const formatValue = (val) => {
     if (val === "" || val === null || val === undefined) return ""
     const num = Number(val)
@@ -13,36 +20,47 @@ const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
     return String(num)
   }
 
-  // 🧼 Handle user input: remove non-digits, convert to number
+  // 🧼 Handle user input: keep raw text locally and update store only when valid
   const handleChange = (e) => {
-    const rawValue = e.target.value
-    if (rawValue === "") {
-      onChange({ target: { name, value: "" } })
-      return
-    }
+    setInputValue(e.target.value)
 
-    // Keep only digits
-    const normalized = rawValue.replace(/\D+/g, "")
-    if (normalized === "") {
-      onChange({ target: { name, value: "" } })
-      return
-    }
-
-    const numericValue = Number(normalized)
-    onChange({ target: { name, value: numericValue } })
   }
 
-  // 🧭 Normalize the value on blur (e.g., heading modulo 360)
+  // 🧭 Clean / normalize value and update the store only on blur
   const handleBlur = () => {
-    // optional formatting logic
-    if (format === "heading" && value !== "" && value !== null) {
-      let heading = Number(value)
-      heading = heading % 360
-      if (heading < 0) heading += 360
-      onChange({ target: { name, value: heading } })
+    const raw = inputValue.trim()
+
+    // Incomplete or invalid value → reset
+    if (raw === "" || raw === "-" || raw === "." || raw === "-.") {
+      setInputValue("")
+      onChange({ target: { name, value: "" } })
+      if (onBlur) onBlur()
+      return
     }
 
-    // trigger parent onBlur if provided
+    // Clean the string (keep only digits, dot and minus)
+    const normalized = raw.replace(/[^\d.-]/g, "")
+    let numericValue = Number(normalized)
+
+    if (Number.isNaN(numericValue)) {
+      // If still invalid after cleaning
+      setInputValue("")
+      onChange({ target: { name, value: "" } })
+      if (onBlur) onBlur()
+      return
+    }
+
+    // Special case: heading → modulo 360 and positive
+    if (format === "heading") {
+      numericValue = numericValue % 360
+      if (numericValue < 0) numericValue += 360
+    }
+
+    // Update store
+    onChange({ target: { name, value: numericValue } })
+    // Update local display with formatted value
+    setInputValue(formatValue(numericValue))
+
     if (onBlur) onBlur()
   }
 
@@ -50,13 +68,13 @@ const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
     <div className="container-inputNumber">
       <div className="container-inputNumber__label">{label}</div>
       <TextField
-          className="container-inputNumber__input"
+        className="container-inputNumber__input"
         id={name}
         name={name}
         type="text"
         inputMode="numeric"
-        pattern="[0-9]*"
-        value={formatValue(value)}
+        pattern="-?[0-9]+"
+        value={inputValue}
         aria-describedby={name}
         onFocus={(e) => e.target.select()}
         onChange={handleChange}

@@ -15,23 +15,19 @@ const TakeoffParameters = () => {
   // Handle form input changes
   const handleInputChange = (event) => {
     const { name, value } = event.target
-    dispatch(updateAnyField(name, Number(value)))
+    dispatch(updateAnyField(name, value))
   }
 
-  // Handle calculations (triggered when the user finishes editing)
   const handleBlur = () => {
-    dispatch(recalculatePerformances())
+    return dispatch(recalculatePerformances())
   }
-
-  // Initial calculation on component load
-  // dispatch(recalculatePerformances())
 
   return (
-    <section className="container-takeoffparameters">
-      <div className="container-takeoffparameters__header">
+    <section className="container-tab takeoffParameters">
+      <div className="container-tab__header headerTakeoffParameters">
         Takeoff Parameters
       </div>
-      <div className="container-takeoffparameters__body">
+      <div className="container-tab__body bodyTakeoffParameters">
         <InputNumber
           name="windDirection"
           label="Wind Direction"
@@ -52,7 +48,6 @@ const TakeoffParameters = () => {
         />
 
         {/* Runway Heading */}
-
         <InputNumber
           name="runwayHeading"
           label="Runway Heading"
@@ -67,7 +62,7 @@ const TakeoffParameters = () => {
           name="headWind"
           label="Head Wind"
           value={performancesData.headWind}
-          format="heading"
+          format="speed"
         />
 
         {/* Factored Head wind */}
