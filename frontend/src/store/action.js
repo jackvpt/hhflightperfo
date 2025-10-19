@@ -3,6 +3,7 @@ import { updateField as updateFlightField } from "../features/flightDataSlice.js
 import { updatePerformanceField } from "../features/performancesSlice.js"
 import {
   computeD1,
+  computeFactoredHeadWind,
   computeHeadWind,
 } from "../utils/performancesCalculations.js"
 
@@ -38,7 +39,8 @@ export const recalculatePerformances = () => (dispatch, getState) => {
   // Headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
   dispatch(updatePerformanceField({ field: "headWind", value: headWind }))
-
+  const factoredHeadWind = computeFactoredHeadWind(headWind)
+  dispatch(updatePerformanceField({ field: "factoredHeadWind", value: factoredHeadWind }))
   // D1 calculation
   const d1 = computeD1(headWind)
   dispatch(updatePerformanceField({ field: "d1", value: d1 }))

@@ -6,6 +6,7 @@ export const initialState = {
   vtoss: 60,
   mtowClearArea: 0,
   headWind: 0,
+  factoredHeadWind: 0,
 }
 
 const performancesSlice = createSlice({

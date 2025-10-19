@@ -1,6 +1,15 @@
-import { FormControl, TextField } from "@mui/material"
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  InputAdornment,
+  InputLabel,
+  TextField,
+} from "@mui/material"
+import { abbreviateUnit } from "../../../utils/string"
 
-const InputNumber = ({ name, label, value, onChange,onBlur, format }) => {
+const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
   // 🧭 Format the displayed value (e.g., headings padded to 3 digits)
   const formatValue = (val) => {
     if (val === "" || val === null || val === undefined) return ""
@@ -44,29 +53,83 @@ const InputNumber = ({ name, label, value, onChange,onBlur, format }) => {
   }
 
   return (
-      <TextField
-        id={name}
-        name={name}
-        type="text" // use text to allow formatting like padding
-        inputMode="numeric"
-        pattern="[0-9]*"
-        label={label}
-        value={formatValue(value)}
-        aria-describedby={name}
-        onFocus={(e) => e.target.select()}
-        onChange={handleChange}
-        onBlur={handleBlur}
-    
-        sx={{
-          "& .MuiInputBase-input": {
-            fontSize: "0.875rem",
-            width: 100,
-            height: 18,
-            padding: 1,
-            textAlign: "right",
-          },
-        }}
-      />
+
+
+<Box
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    gap: 1, 
+  }}
+>
+  <FormLabel
+    htmlFor={name}
+    sx={{
+      fontSize: "0.8rem",
+      whiteSpace: "nowrap",
+      minWidth: 60, 
+      textAlign: "right",
+      color: "text.primary",
+    }}
+  >
+    {label}
+  </FormLabel>
+
+  <TextField
+    id={name}
+    name={name}
+    type="text"
+    inputMode="numeric"
+    pattern="[0-9]*"
+    value={formatValue(value)}
+    aria-describedby={name}
+    onFocus={(e) => e.target.select()}
+    onChange={handleChange}
+    onBlur={handleBlur}
+    slotProps={{
+      input: {
+        endAdornment: (
+          <InputAdornment
+            position="end"
+            sx={{
+              m: 0,
+              minHeight: "unset",
+              lineHeight: 1,
+            }}
+          >
+            <Box
+              component="span"
+              sx={{
+                fontSize: "0.7rem",
+                lineHeight: 1,
+                p: 0,
+                pt: 0.5,
+                m: 0,
+              }}
+            >
+              {abbreviateUnit(format)}
+            </Box>
+          </InputAdornment>
+        ),
+      },
+    }}
+    sx={{
+      "& .MuiInputBase-input": {
+        fontSize: "0.875rem",
+        width: 40,
+        height: 18,
+        padding: 1,
+        textAlign: "right",
+      },
+      "& .MuiInputAdornment-root": {
+        minHeight: "unset",
+        m: 0,
+        p: 0,
+      },
+    }}
+  />
+</Box>
+
   )
 }
 

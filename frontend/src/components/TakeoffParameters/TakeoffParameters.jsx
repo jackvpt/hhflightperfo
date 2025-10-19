@@ -15,7 +15,6 @@ const TakeoffParameters = () => {
   // Handle form input changes
   const handleInputChange = (event) => {
     const { name, value } = event.target
-    console.log('value :>> ', name, value);
     dispatch(updateAnyField(name, Number(value)))
   }
 
@@ -47,6 +46,7 @@ const TakeoffParameters = () => {
           name="windSpeed"
           label="Wind Speed"
           value={weatherData.windSpeed}
+          format="speed"
           onChange={handleInputChange}
           onBlur={handleBlur}
         />
@@ -70,6 +70,17 @@ const TakeoffParameters = () => {
           name="headWind"
           label="Head Wind"
           value={performancesData.headWind}
+          format="heading"
+        />
+      </FormControl>
+
+      {/* Factored Head wind */}
+      <FormControl variant="filled" size="small">
+        <DisplayValue
+          name="factoredHeadWind"
+          label="Factored Head Wind"
+          value={performancesData.factoredHeadWind}
+          format="speed"
         />
       </FormControl>
 
@@ -79,6 +90,7 @@ const TakeoffParameters = () => {
           name="qnh"
           label="QNH"
           value={weatherData.qnh}
+          format="pressure"
           onChange={handleInputChange}
           onBlur={handleBlur}
         />
@@ -90,17 +102,31 @@ const TakeoffParameters = () => {
           name="takeoffAltitude"
           label="Altitude"
           value={weatherData.takeoffAltitude}
+          format="altitude"
           onChange={handleInputChange}
           onBlur={handleBlur}
         />
       </FormControl>
 
-      {/* Head wind */}
+      {/* Pressure altitude (Zp) */}
       <FormControl variant="filled" size="small">
         <DisplayValue
           name="takeoffZp"
           label="Zp"
           value={weatherData.takeoffZp}
+          format="altitude"
+        />
+      </FormControl>
+
+      {/* Temperature */}
+      <FormControl variant="filled" size="small">
+        <InputNumber
+          name="takeoffTemperature"
+          label="Temperature"
+          value={weatherData.takeoffTemperature}
+          format="temperature"
+          onChange={handleInputChange}
+          onBlur={handleBlur}
         />
       </FormControl>
     </section>

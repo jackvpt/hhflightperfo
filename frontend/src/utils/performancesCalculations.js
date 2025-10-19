@@ -7,6 +7,11 @@ export const computeHeadWind = (windDirection, windSpeed, runwayHeading) => {
   return Math.round(headWind)
 }
 
+export const computeFactoredHeadWind = (headWind) => {
+  if (headWind <= 0) return Math.round(headWind * 1.5)
+  return Math.round(headWind * 0.5)
+}
+
 export const computeD1 = (headWind) => {
   let d1Details = []
   for (let vtoss = 40; vtoss <= 80; vtoss += 10) {
