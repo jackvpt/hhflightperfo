@@ -13,7 +13,7 @@ const PerformancesClass1 = () => {
       </div>
       <div className="container-tab__body bodyPerformancesClass1">
         <div className="container-tab__body-weatherData">
-          <div>Zp: {weatherData.takeoffAltitude} ft</div>
+          <div>Zp: {weatherData.takeoffZp} ft</div>
           <div>Temperature: {weatherData.takeoffTemperature} °C</div>
           <div>Factored Head Wind: {performancesData.factoredHeadWind} kt</div>
         </div>

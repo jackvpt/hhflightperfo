@@ -1,7 +1,12 @@
-import { useEffect, useRef } from "react"
+import "./Canvas.scss"
+
+import { useEffect, useRef, useState } from "react"
 
 // MUI imports
 import { darken, useTheme } from "@mui/material/styles"
+import { Checkbox, FormControlLabel } from "@mui/material"
+import { chartsData } from "../../public/charts/chartsData"
+import { invertColor } from "../utils/colors"
 
 const Canvas = ({
   width = 500, // Canvas width (pixels)
@@ -30,24 +35,52 @@ const Canvas = ({
   scatterPlot = [],
   curves = [],
   labels = [],
+  borderLines = [],
+  areas = [],
+  name = "",
 }) => {
   const canvasRef = useRef(null)
   const theme = useTheme()
 
+  const chartData = chartsData.find((chart) => chart.name === name)
+
+  // Use state
+  const [isCheckedScatterPlot, setIsCheckedScatterPlot] = useState(true)
+  const [isCheckedCurves, setIsCheckedCurves] = useState(true)
+  const [isCheckedLabels, setIsCheckedLabels] = useState(true)
+  const [isCheckedGrid, setIsCheckedGrid] = useState(true)
+  const [isCheckedChart, setIsCheckedChart] = useState(true)
+
   // Adjust colors based on theme mode
-  const gridColor = darken(theme.palette.primary.light, 0.4)
-  const textColor = theme.palette.text.primary
-  const axisColor = theme.palette.text.primary
+  let gridColor = darken(theme.palette.primary.light, 0.4)
+  let textColor = theme.palette.text.primary
+  let axisColor = theme.palette.text.primary
+
+  if (isCheckedChart){
+    gridColor = invertColor(gridColor)
+    textColor = invertColor(textColor)
+    axisColor = invertColor(axisColor)
+  }
 
   const fontLabels = `${fontSize}px ${fontName}`
   const fontUnits = `${fontSize + 2}px ${fontName}`
   const fontTitle = `${fontSize + 4}px ${fontName}`
 
-  const plotWidth = width - marginLeft - marginRight
-  const plotHeight = height - marginTop - marginBottom
+  let plotWidth, plotHeight, xfactor, yfactor
 
-  const xfactor = plotWidth / (xmax - xmin)
-  const yfactor = plotHeight / (ymax - ymin)
+  if (isCheckedChart) {
+    marginLeft = (chartData.xMin * width) / chartData.width
+    marginRight = ((chartData.width - chartData.xMax) * width) / chartData.width
+    marginTop = (chartData.yMin * height) / chartData.height
+    marginBottom =
+      ((chartData.height - chartData.yMax) * height) / chartData.height
+  }
+
+  plotWidth = width - marginLeft - marginRight
+  plotHeight = height - marginTop - marginBottom
+
+  xfactor = plotWidth / (xmax - xmin)
+  yfactor = plotHeight / (ymax - ymin)
 
   const toCanvasX = (x) => marginLeft + (x - xmin) * xfactor
   const toCanvasY = (y) => height - marginBottom - (y - ymin) * yfactor
@@ -55,140 +88,186 @@ const Canvas = ({
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext("2d")
-    ctx.clearRect(0, 0, width, height)
 
-    // Vertical grid lines
-    ctx.strokeStyle = gridColor
-    ctx.lineWidth = 1
-    for (let x = xmin; x <= xmax; x += gridSpacingX) {
-      const cx = toCanvasX(x)
-      ctx.beginPath()
-      ctx.moveTo(cx, marginTop)
-      ctx.lineTo(cx, height - marginBottom)
-      ctx.stroke()
-    }
+    // Chart
+    const img = new Image()
+    img.src = `/charts/${chartData.image}`
 
-    // Horizontal grid lines
-    for (let y = ymin; y <= ymax; y += gridSpacingY) {
-      const cy = toCanvasY(y)
-      ctx.beginPath()
-      ctx.moveTo(marginLeft, cy)
-      ctx.lineTo(width - marginRight, cy)
-      ctx.stroke()
-    }
+    img.onload = () => {
+      ctx.clearRect(0, 0, width, height)
 
-    // Vertical thick grid lines
-    ctx.strokeStyle = gridColor
-    ctx.lineWidth = 2
-    for (let x = x0; x <= xmax; x += gridSpacingThickX) {
-      const cx = toCanvasX(x)
-      ctx.beginPath()
-      ctx.moveTo(cx, marginTop)
-      ctx.lineTo(cx, height - marginBottom)
-      ctx.stroke()
-    }
+      if (isCheckedChart) ctx.drawImage(img, 0, 0, width, height)
 
-    // Horizontal thick grid lines
-    for (let y = y0; y <= ymax; y += gridSpacingThickY) {
-      const cy = toCanvasY(y)
-      ctx.beginPath()
-      ctx.moveTo(marginLeft, cy)
-      ctx.lineTo(width - marginRight, cy)
-      ctx.stroke()
-    }
+      // Areas
+      areas.forEach((area) => {
+        const { color, points } = area
+        ctx.fillStyle = color
+        ctx.beginPath()
 
-    // Axis
-    ctx.strokeStyle = axisColor
-    ctx.lineWidth = 2
+        points.forEach((point, index) => {
+          const cx = toCanvasX(point.x)
+          const cy = toCanvasY(point.y)
+          if (index === 0) ctx.moveTo(cx, cy)
+          else ctx.lineTo(cx, cy)
+        })
 
-    // Axis X
-    ctx.beginPath()
-    ctx.moveTo(marginLeft, height - marginBottom)
-    ctx.lineTo(width - marginRight, height - marginBottom)
-    ctx.stroke()
-
-    // Axis Y
-    ctx.beginPath()
-    ctx.moveTo(marginLeft, height - marginBottom)
-    ctx.lineTo(marginLeft, marginTop)
-    ctx.stroke()
-
-    // X labels
-    ctx.font = fontLabels
-    ctx.fillStyle = textColor
-    ctx.textAlign = "center"
-    ctx.textBaseline = "top"
-    for (let x = x0; x <= xmax; x += labelSpacingX) {
-      const cx = toCanvasX(x)
-      const cy = height - marginBottom + 5
-      ctx.fillText(x.toString(), cx, cy)
-    }
-
-    // Y labels
-    ctx.textAlign = "right"
-    ctx.textBaseline = "middle"
-    for (let y = y0; y <= ymax; y += labelSpacingY) {
-      const cx = marginLeft - 5
-      const cy = toCanvasY(y)
-      ctx.fillText(y.toString(), cx, cy)
-    }
-
-    // Axis X label (unit)
-    ctx.font = fontUnits
-    ctx.textAlign = "center"
-    ctx.textBaseline = "bottom"
-    ctx.fillText(xLabel, marginLeft + plotWidth / 2, height - 5)
-
-    // Label axe Y (unité, vertical)
-    ctx.save()
-    ctx.translate(marginLeft / 5, marginTop + plotHeight / 2)
-    ctx.rotate(-Math.PI / 2)
-    ctx.textAlign = "center"
-    ctx.textBaseline = "top"
-    ctx.fillText(yLabel, 0, 0)
-    ctx.restore()
-
-    ctx.font = fontTitle
-    ctx.textAlign = "center"
-    ctx.textBaseline = "top"
-    ctx.fillText(title, marginLeft + plotWidth / 2, 10)
-
-    ctx.strokeStyle = "#00ccff"
-    ctx.lineWidth = 1.5
-
-    // Draw lines for each curve
-    Object.values(curves).forEach((curve) => {
-      ctx.beginPath()
-      curve.forEach((point, index) => {
-        const cx = toCanvasX(point.x)
-        const cy = toCanvasY(point.y)
-        if (index === 0) ctx.moveTo(cx, cy)
-        else ctx.lineTo(cx, cy)
+        ctx.closePath()
+        ctx.fill()
       })
-      ctx.stroke()
-    })
 
-    // Draw labels
-    ctx.fillStyle = textColor
-    Object.values(labels).forEach((label) => {
-      ctx.save()
-      const cx = toCanvasX(label.x)
-      const cy = toCanvasY(label.y)
-      ctx.translate(cx, cy)
-      ctx.rotate((label.angle * Math.PI) / 180)
-      ctx.fillText(label.text, 0, 0)
-      ctx.restore()
-    })
+      if (isCheckedGrid) {
+        // Vertical grid lines
+        ctx.strokeStyle = gridColor
+        ctx.lineWidth = 1
+        for (let x = xmin; x <= xmax; x += gridSpacingX) {
+          const cx = toCanvasX(x)
+          ctx.beginPath()
+          ctx.moveTo(cx, marginTop)
+          ctx.lineTo(cx, height - marginBottom)
+          ctx.stroke()
+        }
 
-    // Draw scatter plot points
-    scatterPlot.forEach((point) => {
-      const cx = toCanvasX(point.x)
-      const cy = toCanvasY(point.y)
-      ctx.beginPath()
-      ctx.arc(cx, cy, 3, 0, Math.PI * 2)
-      ctx.fillStyle = "red"
-      ctx.fill()
-    })
+        // Horizontal grid lines
+        for (let y = ymin; y <= ymax; y += gridSpacingY) {
+          const cy = toCanvasY(y)
+          ctx.beginPath()
+          ctx.moveTo(marginLeft, cy)
+          ctx.lineTo(width - marginRight, cy)
+          ctx.stroke()
+        }
+
+        // Vertical thick grid lines
+        ctx.strokeStyle = gridColor
+        ctx.lineWidth = 2
+        for (let x = x0; x <= xmax; x += gridSpacingThickX) {
+          const cx = toCanvasX(x)
+          ctx.beginPath()
+          ctx.moveTo(cx, marginTop)
+          ctx.lineTo(cx, height - marginBottom)
+          ctx.stroke()
+        }
+
+        // Horizontal thick grid lines
+        for (let y = y0; y <= ymax; y += gridSpacingThickY) {
+          const cy = toCanvasY(y)
+          ctx.beginPath()
+          ctx.moveTo(marginLeft, cy)
+          ctx.lineTo(width - marginRight, cy)
+          ctx.stroke()
+        }
+
+        // Axis
+        ctx.strokeStyle = axisColor
+        ctx.lineWidth = 2
+
+        // Axis X
+        ctx.beginPath()
+        ctx.moveTo(marginLeft, height - marginBottom)
+        ctx.lineTo(width - marginRight, height - marginBottom)
+        ctx.stroke()
+
+        // Axis Y
+        ctx.beginPath()
+        ctx.moveTo(marginLeft, height - marginBottom)
+        ctx.lineTo(marginLeft, marginTop)
+        ctx.stroke()
+
+        // X labels
+        ctx.font = fontLabels
+        ctx.fillStyle = textColor
+        ctx.textAlign = "center"
+        ctx.textBaseline = "top"
+        for (let x = x0; x <= xmax; x += labelSpacingX) {
+          const cx = toCanvasX(x)
+          const cy = height - marginBottom + 5
+          ctx.fillText(x.toString(), cx, cy)
+        }
+
+        // Y labels
+        ctx.textAlign = "right"
+        ctx.textBaseline = "middle"
+        for (let y = y0; y <= ymax; y += labelSpacingY) {
+          const cx = marginLeft - 5
+          const cy = toCanvasY(y)
+          ctx.fillText(y.toString(), cx, cy)
+        }
+
+        // Axis X label (unit)
+        ctx.font = fontUnits
+        ctx.textAlign = "center"
+        ctx.textBaseline = "bottom"
+        ctx.fillText(xLabel, marginLeft + plotWidth / 2, height - 5)
+
+        // Label axe Y (unité, vertical)
+        ctx.save()
+        ctx.translate(marginLeft / 5, marginTop + plotHeight / 2)
+        ctx.rotate(-Math.PI / 2)
+        ctx.textAlign = "center"
+        ctx.textBaseline = "top"
+        ctx.fillText(yLabel, 0, 0)
+        ctx.restore()
+
+        ctx.font = fontTitle
+        ctx.textAlign = "center"
+        ctx.textBaseline = "top"
+        ctx.fillText(title, marginLeft + plotWidth / 2, 10)
+      }
+
+      ctx.strokeStyle = "#00ccff"
+      ctx.lineWidth = 1.5
+
+      // Draw lines for each curve
+      if (isCheckedCurves) {
+        Object.values(curves).forEach((curve) => {
+          ctx.beginPath()
+          curve.forEach((point, index) => {
+            const cx = toCanvasX(point.x)
+            const cy = toCanvasY(point.y)
+            if (index === 0) ctx.moveTo(cx, cy)
+            else ctx.lineTo(cx, cy)
+          })
+          ctx.stroke()
+        })
+
+        // Draw border lines
+        borderLines.forEach((line) => {
+          ctx.beginPath()
+          line.forEach((point, index) => {
+            const cx = toCanvasX(point.x)
+            const cy = toCanvasY(point.y)
+            if (index === 0) ctx.moveTo(cx, cy)
+            else ctx.lineTo(cx, cy)
+          })
+          ctx.stroke()
+        })
+      }
+
+      // Draw labels
+      if (isCheckedLabels) {
+        ctx.fillStyle = textColor
+        Object.values(labels).forEach((label) => {
+          ctx.save()
+          const cx = toCanvasX(label.x)
+          const cy = toCanvasY(label.y)
+          ctx.translate(cx, cy)
+          ctx.rotate((label.angle * Math.PI) / 180)
+          ctx.fillText(label.text, 0, 0)
+          ctx.restore()
+        })
+      }
+
+      // Draw scatter plot points
+      if (isCheckedScatterPlot) {
+        scatterPlot.forEach((point) => {
+          const cx = toCanvasX(point.x)
+          const cy = toCanvasY(point.y)
+          ctx.beginPath()
+          ctx.arc(cx, cy, 3, 0, Math.PI * 2)
+          ctx.fillStyle = "red"
+          ctx.fill()
+        })
+      }
+    }
   }, [
     width,
     height,
@@ -206,9 +285,74 @@ const Canvas = ({
     marginBottom,
     gridColor,
     axisColor,
+    isCheckedScatterPlot,
+    isCheckedCurves,
+    isCheckedLabels,
+    isCheckedGrid,
+    isCheckedChart,
   ])
 
-  return <canvas ref={canvasRef} width={width} height={height} />
+  return (
+    <section className="container-canvas">
+      <canvas ref={canvasRef} width={width} height={height} />
+      <div className="container-canvas__tools">
+        {/** Checkbox for Scatter Plot */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isCheckedScatterPlot}
+              onChange={() => setIsCheckedScatterPlot(!isCheckedScatterPlot)}
+            />
+          }
+          label="Scatter Plot"
+        />
+
+        {/** Checkbox for Curves */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isCheckedCurves}
+              onChange={() => setIsCheckedCurves(!isCheckedCurves)}
+            />
+          }
+          label="Curves"
+        />
+
+        {/** Checkbox for Labels */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isCheckedLabels}
+              onChange={() => setIsCheckedLabels(!isCheckedLabels)}
+            />
+          }
+          label="Labels"
+        />
+
+        {/** Checkbox for Grid */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isCheckedGrid}
+              onChange={() => setIsCheckedGrid(!isCheckedGrid)}
+            />
+          }
+          label="Grid"
+        />
+
+        {/** Checkbox for HFM Chart */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isCheckedChart}
+              onChange={() => setIsCheckedChart(!isCheckedChart)}
+            />
+          }
+          label="HFM chart"
+        />
+      </div>
+    </section>
+  )
 }
 
 export default Canvas

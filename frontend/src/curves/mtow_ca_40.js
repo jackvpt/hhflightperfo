@@ -1,79 +1,101 @@
 import { PolynomialRegression } from "ml-regression-polynomial"
 
-export const mtow_ca_40_details = {
-  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 40 KTS",
-  xmin: 3000, // X axis minimum value
-  xmax: 5000, // X axis reference 0
-  x0: 0, // X axis maximum value
-  ymin: -2000, // Y axis minimum value
-  ymax: 20000, // Y axis maximum value
-  y0: 0, // Y axis reference 0
-  gridSpacingX: 100, // X axis grid spacing (value)
-  gridSpacingY: 1000, // Y axis grid spacing (value)
-  gridSpacingThickX: 500, // X axis thick grid spacing (value)
-  gridSpacingThickY: 5000, // Y axis thick grid spacing (value)
-  labelSpacingX: 500, // X axis label spacing (value)
-  labelSpacingY: 5000, // Y axis label spacing (value)
-  xLabel: "WEIGHT (kg)",
-  yLabel: "Hp (ft x 1000)",
-}
+const labels = [
+  {
+    text: "-40",
+    x: 4200,
+    y: 8400,
+    angle: 30,
+  },
+  {
+    text: "-30",
+    x: 4200,
+    y: 7500,
+    angle: 35,
+  },
+  {
+    text: "-20",
+    x: 4200,
+    y: 6400,
+    angle: 40,
+  },
+  {
+    text: "-10",
+    x: 4200,
+    y: 5450,
+    angle: 40,
+  },
+  {
+    text: "0",
+    x: 4200,
+    y: 4450,
+    angle: 40,
+  },
+  {
+    text: "10",
+    x: 4200,
+    y: 3350,
+    angle: 40,
+  },
+  {
+    text: "20",
+    x: 4200,
+    y: 2200,
+    angle: 40,
+  },
+  {
+    text: "30",
+    x: 4100,
+    y: 1350,
+    angle: 40,
+  },
+  {
+    text: "40",
+    x: 4000,
+    y: 500,
+    angle: 42,
+  },
+  {
+    text: "50",
+    x: 3870,
+    y: -630,
+    angle: 46,
+  },
+]
 
-// export const d1_labels=[
-//   {
-//     text: "0 kt",
-//     x: 54,
-//     y: 520,
-//     angle:-40
-//   },
-//   {
-//     text: "10 kts",
-//     x: 57,
-//     y: 370,
-//     angle:-35
-//   },
-//   {
-//     text: "20 kts",
-//     x: 59,
-//     y: 255,
-//     angle:-30
-//   },
-//   {
-//     text: "30 kts",
-//     x: 62,
-//     y: 185,
-//     angle:-25
-//   },
-//   {
-//     text: "40 kts",
-//     x: 63,
-//     y: 110,
-//     angle:-25
-//   },
-//   {
-//     text: "50 kts",
-//     x: 64,
-//     y: 62,
-//     angle:-8
-//   },
-//   {
-//     text: "FACTORED HEAD WIND",
-//     x: 66,
-//     y: 710,
-//     angle:-45
-//   },
-
-// ]
+const borderLines = [
+  [
+    { x: 3873, y: -1500 },
+    { x: 4839, y: -1500 },
+  ],
+  [
+    { x: 3600, y: 11406 },
+    { x: 3636, y: 10824 },
+    { x: 3639, y: 10334 },
+    { x: 3636, y: 9292 },
+    { x: 3644, y: 8296 },
+    { x: 3644, y: 7897 },
+    { x: 3631, y: 7315 },
+    { x: 3608, y: 6362 },
+    { x: 3573, y: 5456 },
+    { x: 3516, y: 4540 },
+    { x: 3418, y: 3679 },
+    { x: 3376, y: 3389 },
+  ],
+]
 
 const data = {
   "-40": {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3598,
-    absoluteMaxY: 4826,
+    absoluteMaxY: 4839,
     ranges: [
       {
         range: [5547, 20000],
         values: [
           { x: 15686, y: 3000 },
-          { x: 12109, y: 3500 },
+          { x: 11406, y: 3600 },
           { x: 8915, y: 4000 },
           { x: 6032, y: 4500 },
           { x: 5547, y: 4600 },
@@ -101,6 +123,8 @@ const data = {
     ],
   },
   "-30": {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3638,
     absoluteMaxY: 4826,
     ranges: [
@@ -108,7 +132,7 @@ const data = {
         range: [4497, 20000],
         values: [
           { x: 14880, y: 3000 },
-          { x: 11267, y: 3500 },
+          { x: 10334, y: 3639 },
           { x: 8038, y: 4000 },
           { x: 5148, y: 4500 },
           { x: 4497, y: 4607 },
@@ -126,6 +150,8 @@ const data = {
     ],
   },
   "-20": {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3636,
     absoluteMaxY: 4826,
     ranges: [
@@ -133,7 +159,7 @@ const data = {
         range: [3525, 20000],
         values: [
           { x: 13895, y: 3000 },
-          { x: 10204, y: 3500 },
+          { x: 9292, y: 3636 },
           { x: 6896, y: 4000 },
           { x: 3958, y: 4500 },
           { x: 3525, y: 4577 },
@@ -160,7 +186,46 @@ const data = {
       },
     ],
   },
+  "-15": {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
+    absoluteMinY: 3636,
+    absoluteMaxY: 4762,
+    ranges: [
+      {
+        range: [2989, 20000],
+        values: [
+          { x: 8815, y: 3636 },
+          { x: 6404, y: 4000 },
+          { x: 5198, y: 4200 },
+          { x: 4042, y: 4400 },
+          { x: 2989, y: 4582 },
+        ],
+      },
+      {
+        range: [2474, 2988],
+        values: [
+          { x: 2989, y: 4582 },
+          { x: 2854, y: 4594 },
+          { x: 2616, y: 4613 },
+          { x: 2474, y: 4624 },
+        ],
+      },
+      {
+        range: [-2000, 2473],
+        values: [
+          { x: 2474, y: 4624 },
+          { x: 1986, y: 4643 },
+          { x: 983, y: 4682 },
+          { x: -22, y: 4717 },
+          { x: -1519, y: 4762 },
+        ],
+      },
+    ],
+  },
   "-10": {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3646,
     absoluteMaxY: 4826,
     ranges: [
@@ -168,7 +233,7 @@ const data = {
         range: [2498, 20000],
         values: [
           { x: 13018, y: 3000 },
-          { x: 9291, y: 3500 },
+          { x: 8296, y: 3644 },
           { x: 5993, y: 4000 },
           { x: 2893, y: 4500 },
           { x: 2498, y: 4568 },
@@ -196,6 +261,8 @@ const data = {
     ],
   },
   0: {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3631,
     absoluteMaxY: 4826,
     ranges: [
@@ -203,7 +270,7 @@ const data = {
         range: [1447, 20000],
         values: [
           { x: 11886, y: 3000 },
-          { x: 8210, y: 3500 },
+          { x: 7315, y: 3631 },
           { x: 4945, y: 4000 },
           { x: 1884, y: 4500 },
           { x: 1447, y: 4572 },
@@ -230,6 +297,8 @@ const data = {
     ],
   },
   10: {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3608,
     absoluteMaxY: 4826,
     ranges: [
@@ -237,7 +306,7 @@ const data = {
         range: [1, 20000],
         values: [
           { x: 10819, y: 3000 },
-          { x: 7116, y: 3500 },
+          { x: 6362, y: 3608 },
           { x: 3806, y: 4000 },
           { x: 765, y: 4500 },
           { x: 0, y: 4620 },
@@ -256,6 +325,8 @@ const data = {
     ],
   },
   20: {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3575,
     absoluteMaxY: 4826,
     ranges: [
@@ -263,7 +334,7 @@ const data = {
         range: [-1000, 20000],
         values: [
           { x: 9555, y: 3000 },
-          { x: 5946, y: 3500 },
+          { x: 5456, y: 3573 },
           { x: 2639, y: 4000 },
           { x: -395, y: 4500 },
           { x: -1000, y: 4595 },
@@ -282,6 +353,8 @@ const data = {
     ],
   },
   30: {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3517,
     absoluteMaxY: 4826,
     ranges: [
@@ -289,7 +362,7 @@ const data = {
         range: [-2000, 20000],
         values: [
           { x: 8185, y: 3000 },
-          { x: 4678, y: 3500 },
+          { x: 4540, y: 3516 },
           { x: 1308, y: 4000 },
           { x: 34, y: 4200 },
           { x: -2000, y: 4512 },
@@ -298,6 +371,8 @@ const data = {
     ],
   },
   40: {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3419,
     absoluteMaxY: 4826,
     ranges: [
@@ -305,6 +380,7 @@ const data = {
         range: [-2000, 20000],
         values: [
           { x: 6705, y: 3000 },
+          { x: 3679, y: 3418 },
           { x: 3079, y: 3500 },
           { x: 1027, y: 3800 },
           { x: -327, y: 4000 },
@@ -315,6 +391,8 @@ const data = {
     ],
   },
   50: {
+    absoluteMinX: -1500,
+    absoluteMaxX: 20000,
     absoluteMinY: 3376,
     absoluteMaxY: 4826,
     ranges: [
@@ -323,7 +401,7 @@ const data = {
         values: [
           { x: 7379, y: 3000 },
           { x: 5396, y: 3200 },
-          { x: 3145, y: 3400 },
+          { x: 3389, y: 3376 },
           { x: 2000, y: 3497 },
           { x: 0, y: 3668 },
         ],
@@ -369,7 +447,7 @@ export const mtow_ca_40_predictWeight = (temperature, zp) => {
   }
 }
 
-export const mtow_ca_40_scatterPlot = () => {
+const scatterPlot = () => {
   let points = []
 
   for (const temperature in data) {
@@ -388,12 +466,16 @@ export const mtow_ca_40_scatterPlot = () => {
   return points
 }
 
-export const mtow_ca_40_curves = () => {
+const curves = () => {
   const curves = {}
 
   for (const temperature in data) {
     const curve = []
-    for (let zp = -2000; zp <= 20000; zp += 50) {
+    for (
+      let zp = data[temperature].absoluteMinX;
+      zp <= data[temperature].absoluteMaxX;
+      zp += 10
+    ) {
       const regressions = getRegressions(zp)
       const weight = regressions[temperature].predict(zp)
       const absoluteMinY = data[temperature].absoluteMinY
@@ -404,4 +486,42 @@ export const mtow_ca_40_curves = () => {
     curves[temperature] = curve
   }
   return curves
+}
+
+const areas = [
+  {
+    color: "rgba(100,100,100,0.6)",
+    points: [
+      ...curves()["-40"],
+      { x: 3600, y: 11406 },
+      { x: 3636, y: 10824 },
+      { x: 3639, y: 10334 },
+      { x: 3636, y: 9292 },
+      ...curves()["-15"].reverse(),
+    ],
+  },
+]
+
+export const mtow_ca_40_data = {
+  name: "mtow_ca_40",
+  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 40 KTS",
+  xmin: 3000, // X axis minimum value
+  xmax: 5000, // X axis reference 0
+  x0: 0, // X axis maximum value
+  ymin: -2000, // Y axis minimum value
+  ymax: 20000, // Y axis maximum value
+  y0: 0, // Y axis reference 0
+  gridSpacingX: 100, // X axis grid spacing (value)
+  gridSpacingY: 1000, // Y axis grid spacing (value)
+  gridSpacingThickX: 500, // X axis thick grid spacing (value)
+  gridSpacingThickY: 5000, // Y axis thick grid spacing (value)
+  labelSpacingX: 500, // X axis label spacing (value)
+  labelSpacingY: 5000, // Y axis label spacing (value)
+  xLabel: "WEIGHT (kg)",
+  yLabel: "Hp (ft x 1000)",
+  scatterPlot: scatterPlot(),
+  curves: curves(),
+  labels: labels,
+  borderLines: borderLines,
+  areas: areas,
 }
