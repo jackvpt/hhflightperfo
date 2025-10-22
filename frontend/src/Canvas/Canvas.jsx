@@ -49,14 +49,15 @@ const Canvas = ({
   const [isCheckedCurves, setIsCheckedCurves] = useState(true)
   const [isCheckedLabels, setIsCheckedLabels] = useState(true)
   const [isCheckedGrid, setIsCheckedGrid] = useState(true)
-  const [isCheckedChart, setIsCheckedChart] = useState(true)
+  const [isCheckedChart, setIsCheckedChart] = useState(false)
+  const [isCheckedAreas, setIsCheckedAreas] = useState(true)
 
   // Adjust colors based on theme mode
   let gridColor = darken(theme.palette.primary.light, 0.4)
   let textColor = theme.palette.text.primary
   let axisColor = theme.palette.text.primary
 
-  if (isCheckedChart){
+  if (isCheckedChart) {
     gridColor = invertColor(gridColor)
     textColor = invertColor(textColor)
     axisColor = invertColor(axisColor)
@@ -99,21 +100,23 @@ const Canvas = ({
       if (isCheckedChart) ctx.drawImage(img, 0, 0, width, height)
 
       // Areas
-      areas.forEach((area) => {
-        const { color, points } = area
-        ctx.fillStyle = color
-        ctx.beginPath()
+      if (isCheckedAreas) {
+        areas.forEach((area) => {
+          const { color, points } = area
+          ctx.fillStyle = color
+          ctx.beginPath()
 
-        points.forEach((point, index) => {
-          const cx = toCanvasX(point.x)
-          const cy = toCanvasY(point.y)
-          if (index === 0) ctx.moveTo(cx, cy)
-          else ctx.lineTo(cx, cy)
+          points.forEach((point, index) => {
+            const cx = toCanvasX(point.x)
+            const cy = toCanvasY(point.y)
+            if (index === 0) ctx.moveTo(cx, cy)
+            else ctx.lineTo(cx, cy)
+          })
+
+          ctx.closePath()
+          ctx.fill()
         })
-
-        ctx.closePath()
-        ctx.fill()
-      })
+      }
 
       if (isCheckedGrid) {
         // Vertical grid lines
@@ -137,7 +140,6 @@ const Canvas = ({
         }
 
         // Vertical thick grid lines
-        ctx.strokeStyle = gridColor
         ctx.lineWidth = 2
         for (let x = x0; x <= xmax; x += gridSpacingThickX) {
           const cx = toCanvasX(x)
@@ -290,6 +292,7 @@ const Canvas = ({
     isCheckedLabels,
     isCheckedGrid,
     isCheckedChart,
+    isCheckedAreas,
   ])
 
   return (
@@ -300,55 +303,102 @@ const Canvas = ({
         <FormControlLabel
           control={
             <Checkbox
+              size="small"
               checked={isCheckedScatterPlot}
               onChange={() => setIsCheckedScatterPlot(!isCheckedScatterPlot)}
             />
           }
           label="Scatter Plot"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: "0.75rem", // adjust label font size
+            },
+          }}
         />
 
         {/** Checkbox for Curves */}
         <FormControlLabel
           control={
             <Checkbox
+              size="small"
               checked={isCheckedCurves}
               onChange={() => setIsCheckedCurves(!isCheckedCurves)}
             />
           }
           label="Curves"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: "0.75rem", // adjust label font size
+            },
+          }}
         />
 
         {/** Checkbox for Labels */}
         <FormControlLabel
           control={
             <Checkbox
+              size="small"
               checked={isCheckedLabels}
               onChange={() => setIsCheckedLabels(!isCheckedLabels)}
             />
           }
           label="Labels"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: "0.75rem", // adjust label font size
+            },
+          }}
         />
 
         {/** Checkbox for Grid */}
         <FormControlLabel
           control={
             <Checkbox
+              size="small"
               checked={isCheckedGrid}
               onChange={() => setIsCheckedGrid(!isCheckedGrid)}
             />
           }
           label="Grid"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: "0.75rem", // adjust label font size
+            },
+          }}
+        />
+
+        {/** Checkbox for Areas */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={isCheckedAreas}
+              onChange={() => setIsCheckedAreas(!isCheckedAreas)}
+            />
+          }
+          label="Areas"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: "0.75rem", // adjust label font size
+            },
+          }}
         />
 
         {/** Checkbox for HFM Chart */}
         <FormControlLabel
           control={
             <Checkbox
+              size="small"
               checked={isCheckedChart}
               onChange={() => setIsCheckedChart(!isCheckedChart)}
             />
           }
           label="HFM chart"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: "0.75rem", // adjust label font size
+            },
+          }}
         />
       </div>
     </section>
