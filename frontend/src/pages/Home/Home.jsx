@@ -8,9 +8,7 @@ import {
   d1_scatterPlot,
 } from "../../curves/d1"
 import Canvas from "../../Canvas/Canvas"
-import {
-  mtow_ca_40_data
-} from "../../curves/mtow_ca_40"
+import { mtow_ca_40_data } from "../../curves/mtow_ca_40"
 import TakeoffParameters from "../../components/TakeoffParameters/TakeoffParameters"
 import {
   mtow_ca_50_curves,
@@ -19,9 +17,7 @@ import {
 } from "../../curves/mtow_ca_50"
 import PerformancesClass1 from "../../components/PerformancesClass1/PerformancesClass1"
 import {
-  mtow_ca_60_curves,
-  mtow_ca_60_details,
-  mtow_ca_60_scatterPlot,
+  mtow_ca_60_data,
 } from "../../curves/mtow_ca_60"
 
 const Home = () => {
@@ -33,6 +29,7 @@ const Home = () => {
         <PerformancesClass1 />
 
         <div>
+          <Canvas {...mtow_ca_60_data} />;
           <Canvas {...mtow_ca_40_data} />;
           {/* <Canvas
             {...mtow_ca_60_details}
