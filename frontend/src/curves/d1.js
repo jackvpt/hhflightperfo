@@ -1,8 +1,8 @@
 import { PolynomialRegression } from "ml-regression-polynomial"
-import { getRegressions } from "../utils/calculations"
+import { extrapolation, getRegressions } from "../utils/calculations"
 
 // Labels for wind
-export const labels = [
+const labels = [
   {
     text: "0 kt",
     x: 54,
@@ -176,13 +176,17 @@ const data = {
   },
 }
 
-export const d1_predictDistance = (wind, vtoss) => {
+export const d1_predictD1 = (wind, vtoss) => {
+  const windLow = Math.floor(wind / 10) * 10
+  let windHigh = windLow + 10
+  if (windHigh > 50) {windHigh = 50}
+
   const regressions = getRegressions(data, vtoss)
-  if (regressions[wind]) {
-    return regressions[wind].predict(vtoss)
-  } else {
-    throw new Error(`No regression for wind=${wind}`)
-  }
+  const d1Low = regressions[windLow].predict(vtoss)
+  const d1High = regressions[windHigh].predict(vtoss)
+
+  const d1 = extrapolation(wind, windLow, d1Low, windHigh, d1High)
+  return Math.round(d1)
 }
 
 export const d1_predictRoundVtoss = (vtoss) => {
@@ -198,7 +202,7 @@ export const d1_predictRoundVtoss = (vtoss) => {
  * - `x`: VTOSS
  * - `y`: D1
  */
-export const scatterPlot = () => {
+const scatterPlot = () => {
   let points = []
 
   for (const wind in data) {
@@ -253,7 +257,6 @@ const curves = () => {
     }
     curves[wind] = curve
   }
-  console.log("curves :>> ", curves)
   return curves
 }
 
