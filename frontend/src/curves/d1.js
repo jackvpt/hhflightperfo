@@ -1,24 +1,8 @@
 import { PolynomialRegression } from "ml-regression-polynomial"
+import { getRegressions } from "../utils/calculations"
 
-export const d1_details = {
-  title: "D1 - REJECTED TAKEOFF DISTANCE",
-  xmin: 40, // X axis minimum value
-  xmax: 80, // X axis maximum value
-  x0: 40, // X axis reference 0
-  ymin: 0, // Y axis minimum value
-  ymax: 1000, // Y axis maximum value
-  y0: 0, // Y axis reference 0
-  gridSpacingX: 2, // X axis grid spacing (value)
-  gridSpacingY: 25, // Y axis grid spacing (value)
-  gridSpacingThickX: 10, // X axis thick grid spacing (value)
-  gridSpacingThickY: 100, // Y axis thick grid spacing (value)
-  labelSpacingX: 10, // X axis label spacing (value)
-  labelSpacingY: 100, // Y axis label spacing (value)
-  xLabel: "VTOSS (kts)",
-  yLabel: "Distance (m)",
-}
-
-export const d1_labels = [
+// Labels for wind
+export const labels = [
   {
     text: "0 kt",
     x: 54,
@@ -63,79 +47,139 @@ export const d1_labels = [
   },
 ]
 
+// Border lines (left side of flight envelope and bottom)
+const borderLines = []
+
+/**
+ * Data structure
+ * The data is organized by wind, each containing ranges with VTOSS (x) and D1 distance (y) points.
+ * Polynomial regressions are created for each wind to predict y from x and vice versa.
+ * The goal is to model the relationship between VTOSS and D1 for different winds.
+ */
 const data = {
-  0: [
-    { x: 40, y: 319 },
-    { x: 50, y: 434 },
-    { x: 60, y: 573 },
-    { x: 70, y: 736 },
-    { x: 80, y: 923 },
-  ],
-  10: [
-    { x: 40, y: 174 },
-    { x: 50, y: 264 },
-    { x: 60, y: 378 },
-    { x: 70, y: 516 },
-    { x: 80, y: 680 },
-  ],
-  20: [
-    { x: 40, y: 78 },
-    { x: 50, y: 143 },
-    { x: 60, y: 234 },
-    { x: 70, y: 348 },
-    { x: 80, y: 487 },
-  ],
-  30: [
-    { x: 40, y: 37 },
-    { x: 50, y: 80 },
-    { x: 60, y: 143 },
-    { x: 70, y: 234 },
-    { x: 80, y: 348 },
-  ],
-  40: [
-    { x: 40, y: 21 },
-    { x: 50, y: 32 },
-    { x: 60, y: 68 },
-    { x: 70, y: 136 },
-    { x: 80, y: 225 },
-  ],
-  50: [
-    { x: 40, y: 21 },
-    { x: 44, y: 21 },
-    { x: 50, y: 24 },
-    { x: 60, y: 32 },
-    { x: 70, y: 58 },
-    { x: 73, y: 69 },
-    { x: 76, y: 89 },
-    { x: 80, y: 116 },
-  ],
-}
-
-const regressions = {} // VTOSS to distance
-const regressionsReverse = {} // Distance to VTOSS
-
-for (const wind in data) {
-  // Extract x and y for each series
-  const xs = data[wind].map((point) => point.x)
-  const ys = data[wind].map((point) => point.y)
-
-  // Create the polynomial regression (degree 5 here)
-  regressions[wind] = new PolynomialRegression(xs, ys, 5)
-  regressionsReverse[wind] = new PolynomialRegression(ys, xs, 5)
-}
-
-export const d1_predictVtoss = (wind, distance) => {
-  if (regressions[wind]) {
-    return regressionsReverse[wind].predict(distance)
-  } else {
-    throw new Error(`No regression for wind=${wind}`)
-  }
+  0: {
+    absoluteMinY: 0,
+    absoluteMaxY: 1000,
+    absoluteMinX: 40,
+    absoluteMaxX: 80,
+    ranges: [
+      {
+        rangeX: [40, 80],
+        rangeY: [0, 1000],
+        values: [
+          { x: 40, y: 319 },
+          { x: 50, y: 434 },
+          { x: 60, y: 573 },
+          { x: 70, y: 736 },
+          { x: 80, y: 923 },
+        ],
+      },
+    ],
+  },
+  10: {
+    absoluteMinY: 0,
+    absoluteMaxY: 1000,
+    absoluteMinX: 40,
+    absoluteMaxX: 80,
+    ranges: [
+      {
+        rangeX: [40, 80],
+        rangeY: [0, 1000],
+        values: [
+          { x: 40, y: 174 },
+          { x: 50, y: 264 },
+          { x: 60, y: 378 },
+          { x: 70, y: 516 },
+          { x: 80, y: 680 },
+        ],
+      },
+    ],
+  },
+  20: {
+    absoluteMinY: 0,
+    absoluteMaxY: 1000,
+    absoluteMinX: 40,
+    absoluteMaxX: 80,
+    ranges: [
+      {
+        rangeX: [40, 80],
+        rangeY: [0, 1000],
+        values: [
+          { x: 40, y: 78 },
+          { x: 50, y: 143 },
+          { x: 60, y: 234 },
+          { x: 70, y: 348 },
+          { x: 80, y: 487 },
+        ],
+      },
+    ],
+  },
+  30: {
+    absoluteMinY: 0,
+    absoluteMaxY: 1000,
+    absoluteMinX: 40,
+    absoluteMaxX: 80,
+    ranges: [
+      {
+        rangeX: [40, 80],
+        rangeY: [0, 1000],
+        values: [
+          { x: 40, y: 37 },
+          { x: 50, y: 80 },
+          { x: 60, y: 143 },
+          { x: 70, y: 234 },
+          { x: 80, y: 348 },
+        ],
+      },
+    ],
+  },
+  40: {
+    absoluteMinY: 0,
+    absoluteMaxY: 1000,
+    absoluteMinX: 40,
+    absoluteMaxX: 80,
+    ranges: [
+      {
+        rangeX: [40, 80],
+        rangeY: [0, 1000],
+        values: [
+          { x: 40, y: 21 },
+          { x: 50, y: 32 },
+          { x: 60, y: 68 },
+          { x: 70, y: 136 },
+          { x: 80, y: 225 },
+        ],
+      },
+    ],
+  },
+  50: {
+    absoluteMinY: 0,
+    absoluteMaxY: 1000,
+    absoluteMinX: 40,
+    absoluteMaxX: 80,
+    ranges: [
+      {
+        rangeX: [40, 80],
+        rangeY: [0, 1000],
+        values: [
+          { x: 40, y: 21 },
+          { x: 44, y: 21 },
+          { x: 50, y: 24 },
+          { x: 60, y: 32 },
+          { x: 70, y: 58 },
+          { x: 73, y: 69 },
+          { x: 76, y: 89 },
+          { x: 80, y: 116 },
+        ],
+      },
+    ],
+  },
 }
 
 export const d1_predictDistance = (wind, vtoss) => {
-  if (regressionsReverse[wind]) {
-    const result = regressions[wind].predict(vtoss)
-    return Math.round(result, 0)
+  const regressions = getRegressions(data, vtoss)
+  if (regressions[wind]) {
+    return regressions[wind].predict(vtoss)
   } else {
     throw new Error(`No regression for wind=${wind}`)
   }
@@ -145,26 +189,108 @@ export const d1_predictRoundVtoss = (vtoss) => {
   return Math.round(vtoss / 10) * 10
 }
 
-export const d1_scatterPlot = () => {
+/**
+ * Generates scatter plot data points from the defined ranges for all winds.
+ *
+ * @function scatterPlot
+ * @returns {Array<{x: number, y: number}>} An array of scatter plot points,
+ * where each point contains:
+ * - `x`: VTOSS
+ * - `y`: D1
+ */
+export const scatterPlot = () => {
   let points = []
 
   for (const wind in data) {
-    points.push(...data[wind])
+    const ranges = data[wind].ranges
+
+    for (const range of ranges) {
+      const rangePoints = range.values.map((point) => ({
+        x: point.x,
+        y: point.y,
+      }))
+
+      points.push(...rangePoints)
+    }
   }
 
   return points
 }
 
-export const d1_curves = () => {
+/**
+ * Generates curve data points for each wind based on regression calculations.
+ *
+ * @function curves
+ * @returns {Object<string, Array<{x: number, y: number}>>} An object where:
+ * - Each key is a wind (as a string),
+ * - Each value is an array of points representing a curve,
+ *   with:
+ *   - `x`: VTOSS value (input),
+ *   - `y`: D1 value (predicted).
+ *
+ * @description
+ * For each wind:
+ * - Iterates through D1 values from `absoluteMinX` to `absoluteMaxX` with a step of 1.
+ * - Uses regression to compute the corresponding D1.
+ * - Only includes points where the D1 is within the defined absolute Y range.
+ */
+const curves = () => {
   const curves = {}
 
   for (const wind in data) {
     const curve = []
-    for (let vtoss = 40; vtoss <= 80; vtoss += 1) {
-      const y = regressions[wind].predict(vtoss)
-      curve.push({ x: vtoss, y })
+    for (
+      let vtoss = data[wind].absoluteMinX;
+      vtoss <= data[wind].absoluteMaxX;
+      vtoss += 1
+    ) {
+      const regressions = getRegressions(data, vtoss)
+      const d1 = regressions[wind].predict(vtoss)
+      const absoluteMinY = data[wind].absoluteMinY
+      const absoluteMaxY = data[wind].absoluteMaxY
+      if (vtoss >= absoluteMinY && d1 <= absoluteMaxY)
+        curve.push({ x: vtoss, y: d1 })
     }
     curves[wind] = curve
   }
+  console.log("curves :>> ", curves)
   return curves
+}
+
+/**
+ * Defines polygonal areas to be displayed on a chart.
+ *
+ * @constant
+ * @type {Array<{color: string, points: Array<{x: number, y: number}>>>}
+ *
+ * @property {string} color - The fill color of the area, including alpha transparency (RGBA format).
+ * @property {Array<{x: number, y: number}>} points - The ordered list of points (vertices) defining the polygon.
+ * These points are composed of:
+ * - Curve points from the `curves()` function (for specific temperatures),
+ * - Additional fixed points to close the shape.
+ */
+const areas = []
+
+export const d1_data = {
+  name: "d1",
+  title: "D1 - REJECTED TAKEOFF DISTANCE",
+  xmin: 40, // X axis minimum value
+  xmax: 80, // X axis maximum value
+  x0: 40, // X axis reference 0
+  ymin: 0, // Y axis minimum value
+  ymax: 1000, // Y axis maximum value
+  y0: 0, // Y axis reference 0
+  gridSpacingX: 2, // X axis grid spacing (value)
+  gridSpacingY: 25, // Y axis grid spacing (value)
+  gridSpacingThickX: 10, // X axis thick grid spacing (value)
+  gridSpacingThickY: 100, // Y axis thick grid spacing (value)
+  labelSpacingX: 10, // X axis label spacing (value)
+  labelSpacingY: 100, // Y axis label spacing (value)
+  xLabel: "VTOSS (kts)",
+  yLabel: "Distance (m)",
+  scatterPlot: scatterPlot(),
+  curves: curves(),
+  labels: labels,
+  borderLines: borderLines,
+  areas: areas,
 }

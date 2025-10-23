@@ -1,24 +1,11 @@
 import "./Home.scss"
-import { FormControl } from "@mui/material"
-import InputNumber from "../../components/SubComponents/InputNumber/InputNumber"
-import {
-  d1_curves,
-  d1_details,
-  d1_labels,
-  d1_scatterPlot,
-} from "../../curves/d1"
+import { d1_data } from "../../curves/d1"
 import Canvas from "../../Canvas/Canvas"
 import { mtow_ca_40_data } from "../../curves/mtow_ca_40"
 import TakeoffParameters from "../../components/TakeoffParameters/TakeoffParameters"
-import {
-  mtow_ca_50_curves,
-  mtow_ca_50_details,
-  mtow_ca_50_scatterPlot,
-} from "../../curves/mtow_ca_50"
+// import { mtow_ca_50_data } from "../../curves/mtow_ca_50"
 import PerformancesClass1 from "../../components/PerformancesClass1/PerformancesClass1"
-import {
-  mtow_ca_60_data,
-} from "../../curves/mtow_ca_60"
+import { mtow_ca_60_data } from "../../curves/mtow_ca_60"
 
 const Home = () => {
   return (
@@ -28,9 +15,10 @@ const Home = () => {
         <TakeoffParameters />
         <PerformancesClass1 />
 
-        <div>
-          <Canvas {...mtow_ca_60_data} />;
-          <Canvas {...mtow_ca_40_data} />;
+        <div className="home-page__content-curves">
+          <Canvas {...d1_data} />
+          <Canvas {...mtow_ca_60_data} />
+          <Canvas {...mtow_ca_40_data} />
           {/* <Canvas
             {...mtow_ca_60_details}
             scatterPlot={mtow_ca_60_scatterPlot()}

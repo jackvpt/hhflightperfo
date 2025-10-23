@@ -7,6 +7,14 @@
         canvas{
             border: 1px solid black;
         }
+
+        &-curves{
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+        }
     }
+
+
 
 }

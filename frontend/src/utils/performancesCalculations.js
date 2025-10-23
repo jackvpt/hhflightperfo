@@ -12,27 +12,29 @@ export const computeFactoredHeadWind = (headWind) => {
   return Math.round(headWind * 0.5)
 }
 
-export const computeD1 = (headWind) => {
-  let d1Details = []
-  for (let vtoss = 40; vtoss <= 80; vtoss += 10) {
-    const headWindLow = Math.round(headWind / 10) * 10
-    const headWindHigh = headWindLow + 10
-    const resultLow = d1_predictDistance(headWindLow, vtoss)
-    const resultHigh = d1_predictDistance(headWindHigh, vtoss)
+export const computeD1=0
 
-    const distance = Math.round(
-      extrapolation(headWind, headWindLow, resultLow, headWindHigh, resultHigh)
-    )
+// export const computeD1 = (headWind) => {
+//   let d1Details = []
+//   for (let vtoss = 40; vtoss <= 80; vtoss += 10) {
+//     const headWindLow = Math.round(headWind / 10) * 10
+//     const headWindHigh = headWindLow + 10
+//     const resultLow = d1_predictDistance(headWindLow, vtoss)
+//     const resultHigh = d1_predictDistance(headWindHigh, vtoss)
 
-    d1Details.push({
-      vtoss,
-      headWindLow,
-      headWindHigh,
-      resultLow,
-      resultHigh,
-      distance,
-    })
-  }
+//     const distance = Math.round(
+//       extrapolation(headWind, headWindLow, resultLow, headWindHigh, resultHigh)
+//     )
 
-  return d1Details
-}
+//     d1Details.push({
+//       vtoss,
+//       headWindLow,
+//       headWindHigh,
+//       resultLow,
+//       resultHigh,
+//       distance,
+//     })
+//   }
+
+//   return d1Details
+// }

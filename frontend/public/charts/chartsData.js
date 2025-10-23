@@ -1,13 +1,23 @@
 export const chartsData = [
   {
+    name: "d1",
+    image: "d1.webp",
+    width: 856,
+    height: 1171,
+    xMin: 160,
+    xMax: 708,
+    yMin: 180,
+    yMax: 900,
+  },
+  {
     name: "mtow_ca_40",
     image: "mtow_ca_40.webp",
     width: 814,
     height: 1171,
-    xMin: 116,
-    xMax: 662,
-    yMin: 204,
-    yMax: 849,
+    xMin: 159,
+    xMax: 709,
+    yMin: 179,
+    yMax: 902,
   },
   {
     name: "mtow_ca_60",

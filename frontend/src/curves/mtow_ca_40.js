@@ -1,4 +1,5 @@
 import { PolynomialRegression } from "ml-regression-polynomial"
+import { getRegressionsReverse } from "../utils/calculations"
 
 // Labels for temperatures
 const labels = [
@@ -95,10 +96,10 @@ const borderLines = [
  */
 const data = {
   "-40": {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3598,
     absoluteMaxX: 4839,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3500, 4600],
@@ -136,10 +137,10 @@ const data = {
     ],
   },
   "-30": {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3638,
     absoluteMaxX: 4826,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 4607],
@@ -165,10 +166,10 @@ const data = {
     ],
   },
   "-20": {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3636,
     absoluteMaxX: 4826,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 4577],
@@ -205,10 +206,10 @@ const data = {
     ],
   },
   "-15": {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3636,
     absoluteMaxX: 4762,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 4582],
@@ -245,10 +246,10 @@ const data = {
     ],
   },
   "-10": {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3646,
     absoluteMaxX: 4826,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 4568],
@@ -286,10 +287,10 @@ const data = {
     ],
   },
   0: {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3631,
     absoluteMaxX: 4826,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 4572],
@@ -326,10 +327,10 @@ const data = {
     ],
   },
   10: {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3608,
     absoluteMaxX: 4826,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 4620],
@@ -356,10 +357,10 @@ const data = {
     ],
   },
   20: {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3575,
     absoluteMaxX: 4826,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 4595],
@@ -386,10 +387,10 @@ const data = {
     ],
   },
   30: {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3517,
     absoluteMaxX: 4826,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 5000],
@@ -406,10 +407,10 @@ const data = {
     ],
   },
   40: {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3419,
     absoluteMaxX: 4826,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 5000],
@@ -427,10 +428,10 @@ const data = {
     ],
   },
   50: {
-    absoluteMinY: -1500,
-    absoluteMaxY: 20000,
     absoluteMinX: 3376,
     absoluteMaxX: 4826,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3000, 3668],
@@ -459,58 +460,6 @@ const data = {
 }
 
 /**
- * @param {Number} weight
- * @returns {PolynomialRegression} regressions table for each temperature
- * @description Create polynomial regressions for each temperature based on weight to Zp data.
- * These regressions can be used to predict Zp given a weight.
- * The degree of the polynomial can be adjusted as needed.
- */
-const getRegressions = (weight) => {
-  const regressions = {} // Weight to Zp
-
-  for (const temperature in data) {
-    const pointsInRange = data[temperature].ranges.flatMap((subrange) =>
-      weight >= subrange.rangeX[0] && weight <= subrange.rangeX[1]
-        ? subrange.values
-        : []
-    )
-    const xs = pointsInRange.map((point) => point.x)
-    const ys = pointsInRange.map((point) => point.y)
-
-    // Create the polynomial regression (degree 5 here)
-    regressions[temperature] = new PolynomialRegression(xs, ys, 3)
-  }
-
-  return regressions
-}
-
-/**
- * @param {Number} weight
- * @returns {PolynomialRegression} regressions table for each temperature
- * @description Create polynomial regressions for each temperature based on Zp to Weight data.
- * These regressions can be used to predict weight given a Zp.
- * The degree of the polynomial can be adjusted as needed.
- */
-const getRegressionsReverse = (zp) => {
-  const regressionsReverse = {} // Zp to weight
-
-  for (const temperature in data) {
-    const pointsInRange = data[temperature].ranges.flatMap((subrange) =>
-      zp >= subrange.rangeY[0] && zp <= subrange.rangeY[1]
-        ? subrange.values
-        : []
-    )
-    const xs = pointsInRange.map((point) => point.x)
-    const ys = pointsInRange.map((point) => point.y)
-
-    // Create the polynomial regression (degree 5 here)
-    regressionsReverse[temperature] = new PolynomialRegression(ys, xs, 3)
-  }
-
-  return regressionsReverse
-}
-
-/**
  *
  * @param {Number} temperature
  * @param {Number} zp
@@ -518,8 +467,7 @@ const getRegressionsReverse = (zp) => {
  * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
  */
 export const mtow_ca_40_predictWeight = (temperature, zp) => {
-  const regressions = getRegressionsReverse(zp)
-  console.log("zp,regressions :>> ", zp, regressions)
+  const regressions = getRegressionsReverse(data, zp)
   if (regressions[temperature]) {
     return regressions[temperature].predict(zp)
   } else {
@@ -582,7 +530,7 @@ const curves = () => {
       zp <= data[temperature].absoluteMaxY;
       zp += 10
     ) {
-      const regressions = getRegressionsReverse(zp)
+      const regressions = getRegressionsReverse(data, zp)
       const weight = regressions[temperature].predict(zp)
       const absoluteMinX = data[temperature].absoluteMinX
       const absoluteMaxX = data[temperature].absoluteMaxX
@@ -605,22 +553,6 @@ const curves = () => {
  * These points are composed of:
  * - Curve points from the `curves()` function (for specific temperatures),
  * - Additional fixed points to close the shape.
- *
- * @example
- * // Example structure:
- * const areas = [
- *   {
- *     color: "rgba(100,100,100,0.6)",
- *     points: [
- *       ...curves()["-40"],
- *       { x: 3600, y: 11406 },
- *       { x: 3636, y: 10824 },
- *       { x: 3639, y: 10334 },
- *       { x: 3636, y: 9292 },
- *       ...curves()["-15"].reverse(),
- *     ],
- *   },
- * ]
  */
 const areas = [
   {
