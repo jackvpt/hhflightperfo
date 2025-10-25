@@ -18,26 +18,32 @@ const PerformancesClass1 = () => {
           <div>Factored Head Wind: {performancesData.factoredHeadWind} kt</div>
         </div>
         <div className="performancesClass1__d1">
-          <table>
-            <thead>
+          <table className="performancesClass1__d1-labels">
+            <tbody>
               <tr>
-                <th className="header">VTOSS</th>
-                {[40, 50, 60, 70, 80].map((speed) => (
-                  <td key={speed} className="right">
-                    {speed}
+                <td>VTOSS</td>
+              </tr>
+              <tr>
+                <td>D1</td>
+              </tr>
+            </tbody>
+          </table>
+          <table className="performancesClass1__d1-values">
+            <tbody>
+              <tr>
+                {[40, 50, 60, 70, 80].map((vtoss) => (
+                  <td key={vtoss} className="right">
+                    {vtoss}
                   </td>
                 ))}
               </tr>
-            </thead>
-            <tbody>
               <tr>
-                <th className="header">D1</th>
-                {[40, 50, 60, 70, 80].map((speed) => {
+                {[40, 50, 60, 70, 80].map((vtoss) => {
                   const match = performancesData.d1.find(
-                    (d) => d.vtoss === speed
+                    (d) => d.vtoss === vtoss
                   )
                   return (
-                    <td key={speed} className="right">
+                    <td key={vtoss} className="right">
                       {match ? match.distance : "-"}
                     </td>
                   )
@@ -46,6 +52,7 @@ const PerformancesClass1 = () => {
             </tbody>
           </table>
         </div>
+      
         <div className="performancesClass1__mtowClearArea">
           <div className="performanceCell_header">
             MTOW Clear Area VTOSS=40kt
