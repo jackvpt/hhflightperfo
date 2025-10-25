@@ -1,4 +1,3 @@
-import { PolynomialRegression } from "ml-regression-polynomial"
 import { extrapolation, getRegressions } from "../utils/calculations"
 
 // Labels for wind
@@ -176,10 +175,14 @@ const data = {
   },
 }
 
+const calculationsDisplay = []
+
 export const d1_predictD1 = (wind, vtoss) => {
   const windLow = Math.floor(wind / 10) * 10
   let windHigh = windLow + 10
-  if (windHigh > 50) {windHigh = 50}
+  if (windHigh > 50) {
+    windHigh = 50
+  }
 
   const regressions = getRegressions(data, vtoss)
   const d1Low = regressions[windLow].predict(vtoss)
@@ -296,4 +299,5 @@ export const d1_data = {
   labels: labels,
   borderLines: borderLines,
   areas: areas,
+  calculationsDisplay,
 }

@@ -41,8 +41,9 @@ export const recalculatePerformances = () => (dispatch, getState) => {
   dispatch(updatePerformanceField({ field: "headWind", value: headWind }))
   const factoredHeadWind = computeFactoredHeadWind(headWind)
   dispatch(updatePerformanceField({ field: "factoredHeadWind", value: factoredHeadWind }))
+  
   // D1 calculation
-  const d1 = computeD1(headWind)
+  const d1 = computeD1(factoredHeadWind)
   dispatch(updatePerformanceField({ field: "d1", value: d1 }))
 }
 recalculatePerformances()

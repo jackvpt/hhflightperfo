@@ -1,5 +1,5 @@
 import { PolynomialRegression } from "ml-regression-polynomial"
-import { getRegressionsReverse } from "../utils/calculations"
+import { extrapolation, getRegressionsReverse } from "../utils/calculations"
 
 // Labels for temperatures
 const labels = [
@@ -467,12 +467,24 @@ const data = {
  * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
  */
 export const mtow_ca_40_predictWeight = (temperature, zp) => {
-  const regressions = getRegressionsReverse(data, zp)
-  if (regressions[temperature]) {
-    return regressions[temperature].predict(zp)
-  } else {
-    throw new Error(`No regression for temperature=${temperature}`)
+  const tempLow = Math.floor(temperature / 10) * 10
+  let tempHigh = tempLow + 10
+  if (tempHigh > 50) {
+    tempHigh = 50
   }
+
+  const regressions = getRegressionsReverse(data, zp)
+  const weightLow = regressions[tempLow].predict(zp)
+  const weightHigh = regressions[tempHigh].predict(zp)
+
+  const weight = extrapolation(
+    temperature,
+    tempLow,
+    weightLow,
+    tempHigh,
+    weightHigh
+  )
+  return Math.round(weight)
 }
 
 /**

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import "./PerformancesClass1.scss"
 import { d1_predictD1 } from "../../curves/d1"
+import { mtow_ca_40_predictWeight } from "../../curves/mtow_ca_40"
 
 const PerformancesClass1 = () => {
   // REDUX store
@@ -21,24 +22,32 @@ const PerformancesClass1 = () => {
         </div>
         <div className="performancesClass1__d1">
           <table>
-            <tr>
-              <th class="header">VTOSS</th>
-              <td class="right">40</td>
-              <td class="right">50</td>
-              <td class="right">60</td>
-              <td class="right">70</td>
-              <td class="right">80</td>
-            </tr>
-            <tr>
-              <th class="header">D1</th>
-              <td class="right">{d1_predictD1(factoredHeadWind, 40)}</td>
-              <td class="right">{d1_predictD1(factoredHeadWind, 50)}</td>
-              <td class="right">{d1_predictD1(factoredHeadWind, 60)}</td>
-              <td class="right">{d1_predictD1(factoredHeadWind, 70)}</td>
-              <td class="right">{d1_predictD1(factoredHeadWind, 80)}</td>
-            </tr>
+            <thead>
+              <tr>
+                <th className="header">VTOSS</th>
+                {[40, 50, 60, 70, 80].map((speed) => (
+                  <td key={speed} className="right">
+                    {speed}
+                  </td>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th className="header">D1</th>
+                {[40, 50, 60, 70, 80].map((speed) => (
+                  <td key={speed} className="right">
+                    {d1_predictD1(factoredHeadWind, speed)}
+                  </td>
+                ))}
+              </tr>
+            </tbody>
           </table>
         </div>
+        <div className="performancesClass1__mtowClearArea">
+          <div className="performanceCell_header">MTOW Clear Area VTOSS=40kt</div>
+          <div className="performanceCell_value">{mtow_ca_40_predictWeight(weatherData.takeoffTemperature,weatherData.takeoffZp)}</div>
+          </div>
       </div>
     </section>
   )

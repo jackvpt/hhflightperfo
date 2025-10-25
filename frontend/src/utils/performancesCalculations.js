@@ -1,5 +1,5 @@
-import { d1_predictDistance } from "../curves/d1"
-import { degToRad, extrapolation } from "./calculations"
+import { d1_predictD1 } from "../curves/d1"
+import { degToRad } from "./calculations"
 
 export const computeHeadWind = (windDirection, windSpeed, runwayHeading) => {
   const windAngle = Number(windDirection) - Number(runwayHeading)
@@ -12,29 +12,15 @@ export const computeFactoredHeadWind = (headWind) => {
   return Math.round(headWind * 0.5)
 }
 
-export const computeD1=0
+export const computeD1=(headWind)=>{
+  let d1Details = []
+  for (let vtoss = 40; vtoss <= 80; vtoss += 10) {
+    const distance = d1_predictD1(headWind, vtoss)
+    d1Details.push({
+      vtoss,
+      distance,
+    })
+  }
 
-// export const computeD1 = (headWind) => {
-//   let d1Details = []
-//   for (let vtoss = 40; vtoss <= 80; vtoss += 10) {
-//     const headWindLow = Math.round(headWind / 10) * 10
-//     const headWindHigh = headWindLow + 10
-//     const resultLow = d1_predictDistance(headWindLow, vtoss)
-//     const resultHigh = d1_predictDistance(headWindHigh, vtoss)
-
-//     const distance = Math.round(
-//       extrapolation(headWind, headWindLow, resultLow, headWindHigh, resultHigh)
-//     )
-
-//     d1Details.push({
-//       vtoss,
-//       headWindLow,
-//       headWindHigh,
-//       resultLow,
-//       resultHigh,
-//       distance,
-//     })
-//   }
-
-//   return d1Details
-// }
+  return d1Details
+}

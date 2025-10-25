@@ -7,6 +7,8 @@ import { darken, useTheme } from "@mui/material/styles"
 import { Checkbox, FormControlLabel } from "@mui/material"
 import { chartsData } from "../../public/charts/chartsData"
 import { invertColor } from "../utils/colors"
+import { useSelector } from "react-redux"
+import { drawPerformances } from "../utils/drawPerformances"
 
 const Canvas = ({
   width = 500, // Canvas width (pixels)
@@ -44,6 +46,9 @@ const Canvas = ({
 
   const chartData = chartsData.find((chart) => chart.name === name)
 
+  // REDUX store
+  const performancesData = useSelector((state) => state.performancesData)
+
   // Use state
   const [isCheckedScatterPlot, setIsCheckedScatterPlot] = useState(true)
   const [isCheckedCurves, setIsCheckedCurves] = useState(true)
@@ -51,6 +56,7 @@ const Canvas = ({
   const [isCheckedGrid, setIsCheckedGrid] = useState(true)
   const [isCheckedChart, setIsCheckedChart] = useState(false)
   const [isCheckedAreas, setIsCheckedAreas] = useState(true)
+  const [isCheckedCalculations, setIsCheckedCalculations] = useState(true)
 
   // Adjust colors based on theme mode
   let gridColor = darken(theme.palette.primary.light, 0.4)
@@ -269,6 +275,10 @@ const Canvas = ({
           ctx.fill()
         })
       }
+
+      // Draw performances calculations
+      if (isCheckedCalculations)
+        drawPerformances(name, ctx, performancesData, toCanvasX, toCanvasY)
     }
   }, [
     width,
@@ -293,6 +303,8 @@ const Canvas = ({
     isCheckedGrid,
     isCheckedChart,
     isCheckedAreas,
+    isCheckedCalculations,
+    performancesData,
   ])
 
   return (
@@ -394,6 +406,23 @@ const Canvas = ({
             />
           }
           label="HFM chart"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: "0.75rem", // adjust label font size
+            },
+          }}
+        />
+
+        {/** Checkbox for Calculations */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={isCheckedCalculations}
+              onChange={() => setIsCheckedCalculations(!isCheckedCalculations)}
+            />
+          }
+          label="Calculations"
           sx={{
             "& .MuiFormControlLabel-label": {
               fontSize: "0.75rem", // adjust label font size
