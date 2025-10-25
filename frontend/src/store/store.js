@@ -4,7 +4,9 @@ import { persistStore, persistReducer, createTransform } from "redux-persist"
 import storage from "redux-persist/lib/storage"
 
 // 🗃️ Feature slices
-import parametersSlice, { initialState as parametersInitialState } from "../features/parametersSlice"
+import parametersSlice, {
+  initialState as parametersInitialState,
+} from "../features/parametersSlice"
 import weatherDataSlice from "../features/weatherDataSlice" // import weatherData slice
 import flightDataSlice from "../features/flightDataSlice" // import flightData slice
 import performancesSlice from "../features/performancesSlice" // import performances slice
@@ -22,14 +24,16 @@ const parametersTransform = createTransform(
     bankAccount: inboundState.bankAccount,
     isTransactionEditWindowVisible: inboundState.isTransactionEditWindowVisible,
     isRecurringEditWindowVisible: inboundState.isRecurringEditWindowVisible,
-    isCheckTransactionsEditWindowVisible: inboundState.isCheckTransactionsEditWindowVisible,
-    transactionsTableScrollPosition: inboundState.transactionsTableScrollPosition,
+    isCheckTransactionsEditWindowVisible:
+      inboundState.isCheckTransactionsEditWindowVisible,
+    transactionsTableScrollPosition:
+      inboundState.transactionsTableScrollPosition,
   }),
 
   // ⬅️ Transform after rehydration
   (outboundState) => ({
     ...parametersInitialState, // restore all non-persisted fields
-    ...outboundState,           // overwrite persisted fields
+    ...outboundState, // overwrite persisted fields
   }),
 
   // Apply this transform only to the 'parameters' slice
@@ -41,7 +45,7 @@ const parametersTransform = createTransform(
  */
 const rootReducer = combineReducers({
   parameters: parametersSlice, // partial persistence controlled via transform
-  weatherData: weatherDataSlice, 
+  weatherData: weatherDataSlice,
   flightData: flightDataSlice,
   performancesData: performancesSlice,
   // add weatherData slice
@@ -55,7 +59,7 @@ const rootReducer = combineReducers({
 const rootPersistConfig = {
   key: "root",
   storage,
-  whitelist: ["weatherData", "flightData", "performances", "parameters"], // only these slices are persisted
+  whitelist: ["weatherData", "flightData", "performancesData", "parameters"], // only these slices are persisted
   transforms: [parametersTransform], // apply selective transform
 }
 

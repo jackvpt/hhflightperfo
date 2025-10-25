@@ -5,6 +5,7 @@ import {
   computeD1,
   computeFactoredHeadWind,
   computeHeadWind,
+  computeMtow_ca_40,
 } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
@@ -31,19 +32,30 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
   }
 }
 
-export const recalculatePerformances = () => (dispatch, getState) => {
+export const calculatePerformances = () => (dispatch, getState) => {
   const state = getState()
-  const { windDirection, windSpeed } = state.weatherData
+  const { windDirection, windSpeed, takeoffTemperature,takeoffZp } = state.weatherData
   const { runwayHeading } = state.flightData
 
   // Headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
   dispatch(updatePerformanceField({ field: "headWind", value: headWind }))
   const factoredHeadWind = computeFactoredHeadWind(headWind)
-  dispatch(updatePerformanceField({ field: "factoredHeadWind", value: factoredHeadWind }))
-  
+  dispatch(
+    updatePerformanceField({
+      field: "factoredHeadWind",
+      value: factoredHeadWind,
+    })
+  )
+
   // D1 calculation
   const d1 = computeD1(factoredHeadWind)
   dispatch(updatePerformanceField({ field: "d1", value: d1 }))
+
+  // MTOW Clear area VTOSS=40kt
+  const mtow_ca_40 = computeMtow_ca_40(
+    takeoffTemperature,
+    takeoffZp
+  )
+  dispatch(updatePerformanceField({ field: "mtow_ca_40", value: mtow_ca_40 }))
 }
-recalculatePerformances()

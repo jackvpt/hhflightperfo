@@ -3,10 +3,9 @@ import { createSlice } from "@reduxjs/toolkit"
 export const initialState = {
   report: "",
   d1: [],
-  vtoss: 60,
-  mtowClearArea: 0,
-  headWind: 0,
-  factoredHeadWind: 0,
+  mtow_ca_40: null,
+  headWind: null,
+  factoredHeadWind: null,
 }
 
 const performancesSlice = createSlice({

@@ -48,7 +48,8 @@ const Canvas = ({
 
   // REDUX store
   const performancesData = useSelector((state) => state.performancesData)
-
+  const weatherData = useSelector((state) => state.weatherData)
+  
   // Use state
   const [isCheckedScatterPlot, setIsCheckedScatterPlot] = useState(true)
   const [isCheckedCurves, setIsCheckedCurves] = useState(true)
@@ -278,7 +279,14 @@ const Canvas = ({
 
       // Draw performances calculations
       if (isCheckedCalculations)
-        drawPerformances(name, ctx, performancesData, toCanvasX, toCanvasY)
+        drawPerformances(
+          name,
+          ctx,
+          weatherData,
+          performancesData,
+          toCanvasX,
+          toCanvasY
+        )
     }
   }, [
     width,

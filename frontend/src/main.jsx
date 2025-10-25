@@ -43,6 +43,7 @@ const queryClient = new QueryClient({
 
 // Global theme for MUI components
 const theme = createTheme({
+  cssVariables: true,
   palette: {
     mode: "dark",
   },
@@ -68,7 +69,7 @@ createRoot(document.getElementById("root")).render(
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <App />
-            </ThemeProvider>{" "}
+            </ThemeProvider>
           </BrowserRouter>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

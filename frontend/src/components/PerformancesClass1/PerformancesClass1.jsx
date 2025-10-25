@@ -1,13 +1,10 @@
 import { useSelector } from "react-redux"
 import "./PerformancesClass1.scss"
-import { d1_predictD1 } from "../../curves/d1"
-import { mtow_ca_40_predictWeight } from "../../curves/mtow_ca_40"
 
 const PerformancesClass1 = () => {
   // REDUX store
   const weatherData = useSelector((state) => state.weatherData)
   const performancesData = useSelector((state) => state.performancesData)
-  const factoredHeadWind = performancesData.factoredHeadWind
 
   return (
     <section className="container-tab">
@@ -35,19 +32,28 @@ const PerformancesClass1 = () => {
             <tbody>
               <tr>
                 <th className="header">D1</th>
-                {[40, 50, 60, 70, 80].map((speed) => (
-                  <td key={speed} className="right">
-                    {d1_predictD1(factoredHeadWind, speed)}
-                  </td>
-                ))}
+                {[40, 50, 60, 70, 80].map((speed) => {
+                  const match = performancesData.d1.find(
+                    (d) => d.vtoss === speed
+                  )
+                  return (
+                    <td key={speed} className="right">
+                      {match ? match.distance : "-"}
+                    </td>
+                  )
+                })}
               </tr>
             </tbody>
           </table>
         </div>
         <div className="performancesClass1__mtowClearArea">
-          <div className="performanceCell_header">MTOW Clear Area VTOSS=40kt</div>
-          <div className="performanceCell_value">{mtow_ca_40_predictWeight(weatherData.takeoffTemperature,weatherData.takeoffZp)}</div>
+          <div className="performanceCell_header">
+            MTOW Clear Area VTOSS=40kt
           </div>
+          <div className="performanceCell_value">
+            {performancesData.mtow_ca_40}
+          </div>
+        </div>
       </div>
     </section>
   )

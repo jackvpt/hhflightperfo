@@ -1,9 +1,8 @@
 import "./TakeoffParameters.scss"
-import { Box, FormControl, Typography } from "@mui/material"
 import InputNumber from "../SubComponents/InputNumber/InputNumber"
 import DisplayValue from "../SubComponents/DisplayValue/DisplayValue"
 import { useDispatch, useSelector } from "react-redux"
-import { recalculatePerformances, updateAnyField } from "../../store/action"
+import { calculatePerformances, updateAnyField } from "../../store/action"
 
 const TakeoffParameters = () => {
   // REDUX store
@@ -19,7 +18,7 @@ const TakeoffParameters = () => {
   }
 
   const handleBlur = () => {
-    return dispatch(recalculatePerformances())
+    return dispatch(calculatePerformances())
   }
 
   return (

@@ -36,3 +36,17 @@
     }
   }
 }
+
+.performanceCell_header {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.performanceCell_value {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  background-color: var(--mui-palette-text-primary);
+  color: var(--mui-palette-background-default);
+
+  border: 1px solid var(--mui-palette-primary-main);
+}
