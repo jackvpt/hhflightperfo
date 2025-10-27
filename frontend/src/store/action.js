@@ -6,6 +6,7 @@ import {
   computeFactoredHeadWind,
   computeHeadWind,
   computeMtow_ca_40,
+  computeMtow_ca_50,
 } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
@@ -58,4 +59,11 @@ export const calculatePerformances = () => (dispatch, getState) => {
     takeoffZp
   )
   dispatch(updatePerformanceField({ field: "mtow_ca_40", value: mtow_ca_40 }))
+
+  // MTOW Clear area VTOSS=50kt
+  const mtow_ca_50 = computeMtow_ca_50(
+    takeoffTemperature,
+    takeoffZp
+  )
+  dispatch(updatePerformanceField({ field: "mtow_ca_50", value: mtow_ca_50 }))
 }

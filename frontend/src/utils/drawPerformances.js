@@ -15,35 +15,42 @@ export const drawPerformances = (
     case "mtow_ca_40":
       drawMtow_CA_40(ctx, weatherData, performancesData, toCanvasX, toCanvasY)
       break
+    case "mtow_ca_50":
+      drawMtow_CA_50(ctx, weatherData, performancesData, toCanvasX, toCanvasY)
+      break
     default:
       break
   }
 }
 
-const drawPoint = (ctx, cx, cy) => {
-    ctx.beginPath()
-    ctx.strokeStyle = "yellow"
-    ctx.lineWidth = 2 
-    ctx.strokeRect(cx - 4, cy - 4, 8, 8) 
- 
+const drawLines = (ctx, x0, x, y0, y) => {
+  ctx.beginPath()
+  ctx.moveTo(x0, y)
+  ctx.lineTo(x, y)
+  ctx.lineTo(x, y0)
+  ctx.strokeStyle = "orange"
+  ctx.lineWidth = 2
+  ctx.stroke()
+}
+
+const drawPoint = (ctx, x, y) => {
+  ctx.beginPath()
+  ctx.strokeStyle = "orange"
+  ctx.lineWidth = 2
+  ctx.strokeRect(x - 4, y - 4, 8, 8)
 }
 
 const drawD1 = (ctx, performancesData, toCanvasX, toCanvasY) => {
   for (let data in performancesData.d1) {
     const d1 = performancesData.d1[data]
-    const cx = toCanvasX(d1.vtoss)
-    const cy = toCanvasY(d1.distance)
+    const x0 = toCanvasX(40)
+    const y0 = toCanvasY(0)
+    const x = toCanvasX(d1.vtoss)
+    const y = toCanvasY(d1.distance)
 
-    ctx.beginPath()
-    ctx.moveTo(toCanvasX(40), cy)
-    ctx.lineTo(cx, cy)
-    ctx.lineTo(cx, toCanvasY(0))
-    ctx.strokeStyle = "yellow"
-    ctx.lineWidth = 2
-    ctx.stroke()
-
-    drawPoint(ctx, cx, cy)
- }
+    drawLines(ctx, x0, x, y0, y)
+    drawPoint(ctx, x, y)
+  }
 }
 
 const drawMtow_CA_40 = (
@@ -55,16 +62,28 @@ const drawMtow_CA_40 = (
 ) => {
   const weight = performancesData.mtow_ca_40
   const zp = weatherData.takeoffZp
-  const cx = toCanvasX(weight)
-  const cy = toCanvasY(zp)
+  const x0 = toCanvasX(3000)
+  const y0 = toCanvasY(-2000)
+  const x = toCanvasX(weight)
+  const y = toCanvasY(zp)
 
-  ctx.beginPath()
-  ctx.moveTo(toCanvasX(3000), cy)
-  ctx.lineTo(cx, cy)
-  ctx.lineTo(cx, toCanvasY(-2000))
-  ctx.strokeStyle = "yellow"
-  ctx.lineWidth = 2
-  ctx.stroke()
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+const drawMtow_CA_50 = (
+  ctx,
+  weatherData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const weight = performancesData.mtow_ca_50
+  const zp = weatherData.takeoffZp
+  const x0 = toCanvasX(3000)
+  const y0 = toCanvasY(-2000)
+  const x = toCanvasX(weight)
+  const y = toCanvasY(zp)
 
-  drawPoint(ctx, cx, cy)
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
 }

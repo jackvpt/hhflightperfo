@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from "react"
 
 // MUI imports
 import { darken, useTheme } from "@mui/material/styles"
-import { Checkbox, FormControlLabel } from "@mui/material"
+import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material"
 import { invertColor } from "../utils/colors"
 import { useSelector } from "react-redux"
 import { drawPerformances } from "../utils/drawPerformances"
 import { chartsData } from "../curves/chartsData"
+import AntSwitch from "../components/SubComponents/AntSwitch/AntSwitch"
 
 const Canvas = ({
   width = 500, // Canvas width (pixels)
@@ -49,15 +50,33 @@ const Canvas = ({
   // REDUX store
   const performancesData = useSelector((state) => state.performancesData)
   const weatherData = useSelector((state) => state.weatherData)
-  
+
   // Use state
-  const [isCheckedScatterPlot, setIsCheckedScatterPlot] = useState(true)
+  const [isCheckedScatterPlot, setIsCheckedScatterPlot] = useState(false)
   const [isCheckedCurves, setIsCheckedCurves] = useState(true)
   const [isCheckedLabels, setIsCheckedLabels] = useState(true)
   const [isCheckedGrid, setIsCheckedGrid] = useState(true)
   const [isCheckedChart, setIsCheckedChart] = useState(false)
   const [isCheckedAreas, setIsCheckedAreas] = useState(true)
   const [isCheckedCalculations, setIsCheckedCalculations] = useState(true)
+  const [displayMode, setDisplayMode] = useState("chart")
+
+const handleChangeDisplayMode = (event) => {
+    setDisplayMode(event.target.checked ? "chart" : "digitalized")
+    if (event.target.checked) {
+      setIsCheckedChart(false)
+      setIsCheckedCurves(true)
+      setIsCheckedLabels(true)
+      setIsCheckedGrid(true)
+      setIsCheckedAreas(true)
+    } else {
+      setIsCheckedChart(true)
+      setIsCheckedCurves(false)
+      setIsCheckedLabels(false)
+      setIsCheckedGrid(false)
+      setIsCheckedAreas(false)
+    }
+  }
 
   // Adjust colors based on theme mode
   let gridColor = darken(theme.palette.primary.light, 0.4)
@@ -319,6 +338,18 @@ const Canvas = ({
     <section className="container-canvas">
       <canvas ref={canvasRef} width={width} height={height} />
       <div className="container-canvas__tools">
+        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+          <Typography sx={{ fontSize: "0.75rem" }}>HFM Chart</Typography>
+          <AntSwitch
+        checked={displayMode === "chart"}
+        onChange={handleChangeDisplayMode}
+            slotProps={{
+              input: { "aria-label": "ant design" },
+            }}
+          />
+
+          <Typography sx={{ fontSize: "0.75rem" }}>Digitalized</Typography>
+        </Stack>
         {/** Checkbox for Scatter Plot */}
         <FormControlLabel
           control={
