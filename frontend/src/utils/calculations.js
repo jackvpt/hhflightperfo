@@ -63,7 +63,6 @@ export const getRegressionsReverse = (data, entry) => {
     // Create the polynomial regression (degree 5 here)
     regressionsReverse[curve] = new PolynomialRegression(ys, xs, 3)
   }
-
   return regressionsReverse
 }
 

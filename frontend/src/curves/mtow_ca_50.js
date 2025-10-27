@@ -1,7 +1,500 @@
-import { PolynomialRegression } from "ml-regression-polynomial"
+import { extrapolation, getRegressionsReverse } from "../utils/calculations"
 
-export const mtow_ca_50_details = {
-  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 50  KTS",
+// Labels for temperatures
+const labels = [
+  {
+    text: "-40",
+    x: 4200,
+    y: 8400,
+    angle: 30,
+  },
+  {
+    text: "-30",
+    x: 4200,
+    y: 7500,
+    angle: 35,
+  },
+  {
+    text: "-20",
+    x: 4200,
+    y: 6400,
+    angle: 40,
+  },
+  {
+    text: "-10",
+    x: 4200,
+    y: 5450,
+    angle: 40,
+  },
+  {
+    text: "0",
+    x: 4200,
+    y: 4450,
+    angle: 40,
+  },
+  {
+    text: "10",
+    x: 4200,
+    y: 3350,
+    angle: 40,
+  },
+  {
+    text: "20",
+    x: 4200,
+    y: 2200,
+    angle: 40,
+  },
+  {
+    text: "30",
+    x: 4100,
+    y: 1350,
+    angle: 40,
+  },
+  {
+    text: "40",
+    x: 4000,
+    y: 500,
+    angle: 42,
+  },
+  {
+    text: "50",
+    x: 3870,
+    y: -630,
+    angle: 46,
+  },
+]
+
+// Border lines (left side of flight envelope and bottom)
+const borderLines = [
+  [
+    { x: 3873, y: -1500 },
+    { x: 4839, y: -1500 },
+  ],
+  [
+    { x: 3600, y: 11406 },
+    { x: 3636, y: 10824 },
+    { x: 3639, y: 10334 },
+    { x: 3636, y: 9292 },
+    { x: 3644, y: 8296 },
+    { x: 3644, y: 7897 },
+    { x: 3631, y: 7315 },
+    { x: 3608, y: 6362 },
+    { x: 3573, y: 5456 },
+    { x: 3516, y: 4540 },
+    { x: 3418, y: 3679 },
+    { x: 3376, y: 3389 },
+  ],
+]
+
+/**
+ * Data structure
+ * The data is organized by temperature, each containing ranges with weight (x) and pressure altitude (y) points.
+ * Polynomial regressions are created for each temperature to predict y from x and vice versa.
+ * The goal is to model the relationship between weight and altitude for different temperatures.
+ * The data is used to create a flight envelope for the aircraft.
+ */
+const data = {
+  "-40": {
+    absoluteMinX: 3946,
+    absoluteMaxX: 4850,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
+    ranges: [
+      {
+        rangeX: [3946, 4850],
+        rangeY: [6380, 11412],
+        values: [
+          { x: 3000, y: 17782 },
+          { x: 3500, y: 14242 },
+          { x: 3946, y: 11402 },
+          { x: 4500, y: 8231 },
+          { x: 4850, y: 6380 },
+          { x: 5000, y: 5660 },
+        ],
+      },
+    ],
+  },
+  "-30": {
+    absoluteMinX: 3988,
+    absoluteMaxX: 4920,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
+    ranges: [
+      {
+        rangeX: [3988, 4920],
+        rangeY: [5192, 10322],
+        values: [
+          { x: 3000, y: 17000 },
+          { x: 3500, y: 13433 },
+          { x: 3988, y: 10322 },
+          { x: 4500, y: 7360 },
+          { x: 4850, y: 5517 },
+          { x: 4920, y: 5192 },
+          { x: 5000, y: 4749 },
+        ],
+      },
+    ],
+  },
+  "-20": {
+    absoluteMinX: 3985,
+    absoluteMaxX: 4920,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
+    ranges: [
+      {
+        rangeX: [3985, 4920],
+        rangeY: [4012, 9276],
+        values: [
+          { x: 3000, y: 16018 },
+          { x: 3500, y: 12432 },
+          { x: 3985, y: 9276 },
+          { x: 4500, y: 6238 },
+          { x: 4850, y: 4359 },
+          { x: 4920, y: 4012 },
+          { x: 5000, y: 3568 },
+        ],
+      },
+    ],
+  },
+  "-15": {
+    absoluteMinX: 3985,
+    absoluteMaxX: 4850,
+    absoluteMinY: 3883,
+    absoluteMaxY: 8809,
+    ranges: [
+      {
+        rangeX: [3985, 4850],
+        rangeY: [3883, 8809],
+        values: [
+          { x: 3985, y: 8809 },
+          { x: 4300, y: 6906 },
+          { x: 4600, y: 5220 },
+          { x: 4850, y: 3883 },
+        ],
+      },
+    ],
+  },
+  "-10": {
+    absoluteMinX: 3996,
+    absoluteMaxX: 4920,
+    absoluteMinY: -1500,
+    absoluteMaxY: 8275,
+    ranges: [
+      {
+        rangeX: [3996, 4920],
+        rangeY: [2935, 8275],
+        values: [
+          { x: 3000, y: 15076 },
+          { x: 3500, y: 11547 },
+          { x: 3996, y: 8275 },
+          { x: 4500, y: 5242 },
+          { x: 4850, y: 3310 },
+          { x: 4920, y: 2935 },
+          { x: 5000, y: 2519 },
+        ],
+      },
+    ],
+  },
+  0: {
+    absoluteMinX: 3981,
+    absoluteMaxX: 4920,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
+    ranges: [
+      {
+        rangeX: [3981, 4920],
+        rangeY: [-2000, 7290],
+        values: [
+          { x: 3000, y: 14009 },
+          { x: 3500, y: 10435 },
+          { x: 3981, y: 7290 },
+          { x: 4500, y: 4240 },
+          { x: 4850, y: 2301 },
+          { x: 4920, y: 1937 },
+          { x: 5000, y: 1523 },
+        ],
+      },
+    ],
+  },
+  10: {
+    absoluteMinX: 3955,
+    absoluteMaxX: 4920,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
+    ranges: [
+      {
+        rangeX: [3955, 4920],
+        rangeY: [800, 6348],
+        values: [
+          { x: 3000, y: 12926 },
+          { x: 3500, y: 9360 },
+          { x: 3955, y: 6348 },
+          { x: 4500, y: 3120 },
+          { x: 4850, y: 1194 },
+          { x: 4920, y: 800 },
+          { x: 5000, y: 390 },
+        ],
+      },
+    ],
+  },
+  20: {
+    absoluteMinX: 3919,
+    absoluteMaxX: 4920,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
+    ranges: [
+      {
+        rangeX: [3919, 4920],
+        rangeY: [-789, 5423],
+        values: [
+          { x: 3000, y: 11643 },
+          { x: 3500, y: 8145 },
+          { x: 3919, y: 5423 },
+          { x: 4500, y: 1970 },
+          { x: 4850, y: 46 },
+          { x: 4920, y: -348 },
+          { x: 5000, y: -789 },
+        ],
+      },
+    ],
+  },
+  30: {
+    absoluteMinX: 3857,
+    absoluteMaxX: 4920,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
+    ranges: [
+      {
+        rangeX: [3857, 4920],
+        rangeY: [-1424, 4530],
+        values: [
+          { x: 3000, y: 10200 },
+          { x: 3500, y: 6836 },
+          { x: 3857, y: 4530 },
+          { x: 4500, y: 615 },
+          { x: 4850, y: -1424 },
+          { x: 4951, y: -2000 },
+        ],
+      },
+    ],
+  },
+  40: {
+    absoluteMinX: 3753,
+    absoluteMaxX: 4920,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
+    ranges: [
+      {
+        rangeX: [3753, 4655],
+        rangeY: [-1500, 3654],
+        values: [
+          { x: 3197, y: 7332 },
+          { x: 3500, y: 5354 },
+          { x: 3753, y: 3654 },
+          { x: 4100, y: 1474 },
+          { x: 4500, y: -1023 },
+          { x: 4574, y: -1500 },
+          { x: 4655, y: -2000 },
+        ],
+      },
+    ],
+  },
+  50: {
+    absoluteMinX: 3708,
+    absoluteMaxX: 4920,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
+    ranges: [
+      {
+        rangeX: [3708, 4022],
+        rangeY: [24, 20000],
+        values: [
+          { x: 3000, y: 10212 },
+          { x: 3500, y: 5483 },
+          { x: 3708, y: 3362 },
+          { x: 3800, y: 2437 },
+          { x: 3900, y: 1373 },
+          { x: 4022, y: 24 },
+        ],
+      },
+      {
+        rangeX: [4023, 4331],
+        rangeY: [-2000, 23],
+        values: [
+          { x: 4022, y: 24 },
+          { x: 4100, y: -461 },
+          { x: 4200, y: -1116 },
+          { x: 4331, y: -2000 },
+        ],
+      },
+    ],
+  },
+}
+
+/**
+ *
+ * @param {Number} temperature
+ * @param {Number} zp
+ * @returns {Number} predicted weight
+ * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
+ */
+export const mtow_ca_50_predictWeight = (temperature, zp) => {
+  const tempLow = Math.floor(temperature / 10) * 10
+  let tempHigh = tempLow + 10
+  if (tempHigh > 50) {
+    tempHigh = 50
+  }
+
+  const regressions = getRegressionsReverse(data, zp)
+  const weightLow = regressions[tempLow].predict(zp)
+  const weightHigh = regressions[tempHigh].predict(zp)
+
+  const weight = extrapolation(
+    temperature,
+    tempLow,
+    weightLow,
+    tempHigh,
+    weightHigh
+  )
+  return Math.round(weight)
+}
+
+/**
+ * Generates scatter plot data points from the defined ranges for all temperatures.
+ *
+ * @function scatterPlot
+ * @returns {Array<{x: number, y: number}>} An array of scatter plot points,
+ * where each point contains:
+ * - `x`: weight value
+ * - `y`: Zp value
+ */
+const scatterPlot = () => {
+  const points = []
+
+  for (const temperature in data) {
+    const ranges = data[temperature].ranges
+
+    for (const range of ranges) {
+      const rangePoints = range.values.map((point) => ({
+        x: point.x,
+        y: point.y,
+      }))
+
+      points.push(...rangePoints)
+    }
+  }
+
+  return points
+}
+
+/**
+ * Generates curve data points for each temperature based on reverse regression calculations.
+ *
+ * @function curves
+ * @returns {Object<string, Array<{x: number, y: number}>>} An object where:
+ * - Each key is a temperature (as a string),
+ * - Each value is an array of points representing a curve,
+ *   with:
+ *   - `x`: weight value (predicted),
+ *   - `y`: Zp value (input).
+ *
+ * @description
+ * For each temperature:
+ * - Iterates through Zp values from `absoluteMinY` to `absoluteMaxY` with a step of 10.
+ * - Uses reverse regression to compute the corresponding weight.
+ * - Only includes points where the weight is within the defined absolute X range.
+ */
+const curves = () => {
+  const curves = {}
+
+  for (const temperature in data) {
+    const curve = []
+    for (
+      let zp = data[temperature].absoluteMinY;
+      zp <= data[temperature].absoluteMaxY;
+      zp += 10
+    ) {
+      console.log('zp :>> ',temperature, zp,data[temperature]);
+      const regressions = getRegressionsReverse(data, zp)
+      const weight = regressions[temperature].predict(zp)
+      const absoluteMinX = data[temperature].absoluteMinX
+      const absoluteMaxX = data[temperature].absoluteMaxX
+      if (weight >= absoluteMinX && weight <= absoluteMaxX)
+        curve.push({ x: weight, y: zp })
+    }
+    curves[temperature] = curve
+  }
+  return curves
+}
+
+/**
+ * Defines polygonal areas to be displayed on a chart.
+ *
+ * @constant
+ * @type {Array<{color: string, points: Array<{x: number, y: number}>>>}
+ *
+ * @property {string} color - The fill color of the area, including alpha transparency (RGBA format).
+ * @property {Array<{x: number, y: number}>} points - The ordered list of points (vertices) defining the polygon.
+ * These points are composed of:
+ * - Curve points from the `curves()` function (for specific temperatures),
+ * - Additional fixed points to close the shape.
+ */
+const areas = [
+  // {
+  //   color: "rgba(100,100,100,0.6)",
+  //   points: [
+  //     ...curves()["-40"],
+  //     { x: 3600, y: 11406 },
+  //     { x: 3636, y: 10824 },
+  //     { x: 3639, y: 10334 },
+  //     { x: 3636, y: 9292 },
+  //     ...curves()["-15"].reverse(),
+  //   ],
+  // },
+]
+
+/**
+ * Chart configuration and data for the MTOW Clear Area VTOSS 40 KTS graph.
+ *
+ * @constant
+ * @type {Object}
+ *
+ * @property {string} name - Unique identifier of the dataset.
+ * @property {string} title - Full title of the chart.
+ *
+ * @property {number} xmin - Minimum value of the X axis.
+ * @property {number} xmax - Reference (zero) value of the X axis.
+ * @property {number} x0 - Maximum value of the X axis.
+ *
+ * @property {number} ymin - Minimum value of the Y axis.
+ * @property {number} ymax - Maximum value of the Y axis.
+ * @property {number} y0 - Reference (zero) value of the Y axis.
+ *
+ * @property {number} gridSpacingX - Grid spacing for minor gridlines along the X axis.
+ * @property {number} gridSpacingY - Grid spacing for minor gridlines along the Y axis.
+ * @property {number} gridSpacingThickX - Grid spacing for major (thick) gridlines along the X axis.
+ * @property {number} gridSpacingThickY - Grid spacing for major (thick) gridlines along the Y axis.
+ *
+ * @property {number} labelSpacingX - Spacing of labels along the X axis.
+ * @property {number} labelSpacingY - Spacing of labels along the Y axis.
+ *
+ * @property {string} xLabel - Label displayed on the X axis.
+ * @property {string} yLabel - Label displayed on the Y axis.
+ *
+ * @property {Array<{x: number, y: number}>} scatterPlot - Data points used for the scatter plot.
+ * @property {Object<string, Array<{x: number, y: number}>>} curves - Curve data for each temperature.
+ * @property {Array<Object>} labels - Label definitions to display on the chart.
+ * @property {Array<Object>} borderLines - Border line definitions for chart boundaries or references.
+ * @property {Array<{color: string, points: Array<{x: number, y: number}>>} areas - Polygonal areas to shade or highlight on the chart.
+ *
+ * @description
+ * This object centralizes all configuration and data required to render
+ * the **MTOW Clear Area VTOSS 40 KTS** performance chart, including axis settings,
+ * grid spacing, labels, scatter plot points, regression curves, borders, and shaded areas.
+ */
+export const mtow_ca_50_data = {
+  name: "mtow_ca_50",
+  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 50 KTS",
   xmin: 3000, // X axis minimum value
   xmax: 5000, // X axis reference 0
   x0: 0, // X axis maximum value
@@ -16,296 +509,9 @@ export const mtow_ca_50_details = {
   labelSpacingY: 5000, // Y axis label spacing (value)
   xLabel: "WEIGHT (kg)",
   yLabel: "Hp (ft x 1000)",
-}
-
-// export const d1_labels=[
-//   {
-//     text: "0 kt",
-//     x: 54,
-//     y: 520,
-//     angle:-40
-//   },
-//   {
-//     text: "10 kts",
-//     x: 57,
-//     y: 370,
-//     angle:-35
-//   },
-//   {
-//     text: "20 kts",
-//     x: 59,
-//     y: 255,
-//     angle:-30
-//   },
-//   {
-//     text: "30 kts",
-//     x: 62,
-//     y: 185,
-//     angle:-25
-//   },
-//   {
-//     text: "40 kts",
-//     x: 63,
-//     y: 110,
-//     angle:-25
-//   },
-//   {
-//     text: "50 kts",
-//     x: 64,
-//     y: 62,
-//     angle:-8
-//   },
-//   {
-//     text: "FACTORED HEAD WIND",
-//     x: 66,
-//     y: 710,
-//     angle:-45
-//   },
-
-// ]
-
-const data = {
-  "-40": {
-    absoluteMinY: 3946,
-    absoluteMaxY: 4850,
-    ranges: [
-      {
-        range: [-2000, 20000],
-        values: [
-          { x: 17782, y: 3000 },
-          { x: 14242, y: 3500 },
-          { x: 11402, y: 3946 },
-          { x: 8231, y: 4500 },
-          { x: 6380, y: 4850 },
-          { x: 5660, y: 5000 },
-        ],
-      },
-    ],
-  },
-  "-30": {
-    absoluteMinY: 3988,
-    absoluteMaxY: 4920,
-    ranges: [
-      {
-        range: [-2000, 20000],
-        values: [
-          { x: 17000, y: 3000 },
-          { x: 13433, y: 3500 },
-          { x: 10322, y: 3988 },
-          { x: 7360, y: 4500 },
-          { x: 5517, y: 4850 },
-          { x: 4749, y: 5000 },
-        ],
-      },
-    ],
-  },
-  "-20": {
-    absoluteMinY: 3985,
-    absoluteMaxY: 4920,
-    ranges: [
-      {
-        range: [-2000, 20000],
-        values: [
-          { x: 16018, y: 3000 },
-          { x: 12432, y: 3500 },
-          { x: 9276, y: 3985 },
-          { x: 6238, y: 4500 },
-          { x: 4359, y: 4850 },
-          { x: 3568, y: 5000 },
-        ],
-      },
-    ],
-  },
-  "-10": {
-    absoluteMinY: 3996,
-    absoluteMaxY: 4920,
-    ranges: [
-      {
-        range: [-2000, 20000],
-        values: [
-          { x: 15076, y: 3000 },
-          { x: 11547, y: 3500 },
-          { x: 8275, y: 3996 },
-          { x: 5242, y: 4500 },
-          { x: 3310, y: 4850 },
-          { x: 2519, y: 5000 },
-        ],
-      },
-    ],
-  },
-  0: {
-    absoluteMinY: 3981,
-    absoluteMaxY: 4920,
-    ranges: [
-      {
-        range: [-2000, 20000],
-        values: [
-          { x: 14009, y: 3000 },
-          { x: 10435, y: 3500 },
-          { x: 7290, y: 3981 },
-          { x: 4240, y: 4500 },
-          { x: 2301, y: 4850 },
-          { x: 1523, y: 5000 },
-        ],
-      },
-    ],
-  },
-  10: {
-    absoluteMinY: 3955,
-    absoluteMaxY: 4920,
-    ranges: [
-      {
-        range: [-2000, 20000],
-        values: [
-          { x: 12926, y: 3000 },
-          { x: 9360, y: 3500 },
-          { x: 6348, y: 3955 },
-          { x: 3120, y: 4500 },
-          { x: 1194, y: 4850 },
-          { x: 390, y: 5000 },
-        ],
-      },
-    ],
-  },
-  20: {
-    absoluteMinY: 3919,
-    absoluteMaxY: 4920,
-    ranges: [
-      {
-        range: [-2000, 20000],
-        values: [
-          { x: 11643, y: 3000 },
-          { x: 8145, y: 3500 },
-          { x: 5423, y: 3919 },
-          { x: 1970, y: 4500 },
-          { x: 46, y: 4850 },
-          { x: -789, y: 5000 },
-        ],
-      },
-    ],
-  },
-  30: {
-    absoluteMinY: 3857,
-    absoluteMaxY: 4920,
-    ranges: [
-      {
-        range: [-2000, 20000],
-        values: [
-          { x: 10200, y: 3000 },
-          { x: 6836, y: 3500 },
-          { x: 4530, y: 3857 },
-          { x: 615, y: 4500 },
-          { x: -1424, y: 4850 },
-          { x: -2000, y: 4951 },
-        ],
-      },
-    ],
-  },
-  40: {
-    absoluteMinY: 3753,
-    absoluteMaxY: 4920,
-    ranges: [
-      {
-        range: [-2000, 20000],
-        values: [
-          { x: 7332, y: 3197 },
-          { x: 5354, y: 3500 },
-          { x: 3654, y: 3753 },
-          { x: 1474, y: 4100 },
-          { x: -1023, y: 4500 },
-          { x: -2000, y: 4655 },
-        ],
-      },
-    ],
-  },
-  50: {
-    absoluteMinY: 3708,
-    absoluteMaxY: 4920,
-    ranges: [
-      {
-        range: [24, 20000],
-        values: [
-          { x: 10212, y: 3000 },
-          { x: 5483, y: 3500 },
-          { x: 3362, y: 3708 },
-          { x: 2437, y: 3800 },
-          { x: 1373, y: 3900 },
-          { x: 24, y: 4022 },
-        ],
-      },
-      {
-        range: [-2000, 23],
-        values: [
-          { x: 24, y: 4022 },
-          { x: -461, y: 4100 },
-          { x: -1116, y: 4200 },
-          { x: -2000, y: 4331 },
-        ],
-      },
-    ],
-  },
-}
-
-const getRegressions = (zp) => {
-  const regressions = {} // Zp to weight
-
-  for (const temperature in data) {
-    const pointsInRange = data[temperature].ranges.flatMap((subrange) =>
-      zp >= subrange.range[0] && zp <= subrange.range[1] ? subrange.values : []
-    )
-    const xs = pointsInRange.map((point) => point.x)
-    const ys = pointsInRange.map((point) => point.y)
-
-    // Create the polynomial regression (degree 5 here)
-    regressions[temperature] = new PolynomialRegression(xs, ys, 3)
-  }
-
-  return regressions
-}
-
-export const mtow_ca_50_predictWeight = (temperature, zp) => {
-  const regressions = getRegressions(zp)
-  console.log("zp,regressions :>> ", zp, regressions)
-  if (regressions[temperature]) {
-    return regressions[temperature].predict(zp)
-  } else {
-    throw new Error(`No regression for temperature=${temperature}`)
-  }
-}
-
-export const mtow_ca_50_scatterPlot = () => {
-  let points = []
-
-  for (const temperature in data) {
-    const ranges = data[temperature].ranges // tableau des sous-plages pour cette température
-
-    for (const range of ranges) {
-      // Inverser x et y pour chaque point
-      const invertedPoints = range.values.map((point) => ({
-        x: point.y,
-        y: point.x,
-      }))
-
-      points.push(...invertedPoints) // ajoute tous les points inversés
-    }
-  }
-  return points
-}
-
-export const mtow_ca_50_curves = () => {
-  const curves = {}
-
-  for (const temperature in data) {
-    const curve = []
-    for (let zp = -2000; zp <= 20000; zp += 50) {
-      const regressions = getRegressions(zp)
-      const weight = regressions[temperature].predict(zp)
-      const absoluteMinY = data[temperature].absoluteMinY
-      const absoluteMaxY = data[temperature].absoluteMaxY
-      if (weight >= absoluteMinY && weight <= absoluteMaxY)
-        curve.push({ x: weight, y: zp })
-    }
-    curves[temperature] = curve
-  }
-  return curves
+  scatterPlot: scatterPlot(),
+  curves: curves(),
+  labels: labels,
+  borderLines: borderLines,
+  areas: areas,
 }
