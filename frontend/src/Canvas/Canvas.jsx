@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react"
 // MUI imports
 import { darken, useTheme } from "@mui/material/styles"
 import { Checkbox, FormControlLabel } from "@mui/material"
-import { chartsData } from "../../public/charts/chartsData"
 import { invertColor } from "../utils/colors"
 import { useSelector } from "react-redux"
 import { drawPerformances } from "../utils/drawPerformances"
+import { chartsData } from "../curves/chartsData"
 
 const Canvas = ({
   width = 500, // Canvas width (pixels)

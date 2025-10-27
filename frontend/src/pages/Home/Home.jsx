@@ -18,7 +18,7 @@ const Home = () => {
         <div className="home-page__content-curves">
           <Canvas {...d1_data} />
           <Canvas {...mtow_ca_40_data} />
-          {/* <Canvas {...mtow_ca_50_data} /> */}
+          <Canvas {...mtow_ca_50_data} />
           <Canvas {...mtow_ca_60_data} />
         </div>
       </div>

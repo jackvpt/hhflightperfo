@@ -4,62 +4,62 @@ import { extrapolation, getRegressionsReverse } from "../utils/calculations"
 const labels = [
   {
     text: "-40",
-    x: 4200,
-    y: 8400,
-    angle: 30,
-  },
-  {
-    text: "-30",
-    x: 4200,
-    y: 7500,
+    x: 4450,
+    y: 9160,
     angle: 35,
   },
   {
+    text: "-30",
+    x: 4440,
+    y: 8400,
+    angle: 37,
+  },
+  {
     text: "-20",
-    x: 4200,
-    y: 6400,
-    angle: 40,
+    x: 4430,
+    y: 7400,
+    angle: 37,
   },
   {
     text: "-10",
-    x: 4200,
-    y: 5450,
-    angle: 40,
+    x: 4420,
+    y: 6400,
+    angle: 37,
   },
   {
     text: "0",
-    x: 4200,
-    y: 4450,
+    x: 4410,
+    y: 5400,
     angle: 40,
   },
   {
     text: "10",
-    x: 4200,
-    y: 3350,
+    x: 4400,
+    y: 4400,
     angle: 40,
   },
   {
     text: "20",
-    x: 4200,
-    y: 2200,
+    x: 4350,
+    y: 3500,
     angle: 40,
   },
   {
     text: "30",
-    x: 4100,
-    y: 1350,
+    x: 4300,
+    y: 2500,
     angle: 40,
   },
   {
     text: "40",
-    x: 4000,
-    y: 500,
-    angle: 42,
+    x: 4250,
+    y: 1300,
+    angle: 45,
   },
   {
     text: "50",
-    x: 3870,
-    y: -630,
+    x: 4200,
+    y: -350,
     angle: 46,
   },
 ]
@@ -67,22 +67,24 @@ const labels = [
 // Border lines (left side of flight envelope and bottom)
 const borderLines = [
   [
-    { x: 3873, y: -1500 },
-    { x: 4839, y: -1500 },
+    { x: 4257, y: -1500 },
+    { x: 4920, y: -1500 },
+    { x: 4920, y: 5192 },
+    { x: 4850, y: 5517 },
+    { x: 4850, y: 6380 },
   ],
   [
-    { x: 3600, y: 11406 },
-    { x: 3636, y: 10824 },
-    { x: 3639, y: 10334 },
-    { x: 3636, y: 9292 },
-    { x: 3644, y: 8296 },
-    { x: 3644, y: 7897 },
-    { x: 3631, y: 7315 },
-    { x: 3608, y: 6362 },
-    { x: 3573, y: 5456 },
-    { x: 3516, y: 4540 },
-    { x: 3418, y: 3679 },
-    { x: 3376, y: 3389 },
+    { x: 3946, y: 11402 },
+    { x: 3988, y: 10322 },
+    { x: 3985, y: 9276 },
+    { x: 3985, y: 8809 },
+    { x: 3996, y: 8275 },
+    { x: 3981, y: 7290 },
+    { x: 3955, y: 6348 },
+    { x: 3919, y: 5423 },
+    { x: 3857, y: 4530 },
+    { x: 3753, y: 3654 },
+    { x: 3708, y: 3362 },
   ],
 ]
 
@@ -102,7 +104,7 @@ const data = {
     ranges: [
       {
         rangeX: [3946, 4850],
-        rangeY: [6380, 11412],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 17782 },
           { x: 3500, y: 14242 },
@@ -122,7 +124,7 @@ const data = {
     ranges: [
       {
         rangeX: [3988, 4920],
-        rangeY: [5192, 10322],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 17000 },
           { x: 3500, y: 13433 },
@@ -143,7 +145,7 @@ const data = {
     ranges: [
       {
         rangeX: [3985, 4920],
-        rangeY: [4012, 9276],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 16018 },
           { x: 3500, y: 12432 },
@@ -159,12 +161,12 @@ const data = {
   "-15": {
     absoluteMinX: 3985,
     absoluteMaxX: 4850,
-    absoluteMinY: 3883,
-    absoluteMaxY: 8809,
+    absoluteMinY: -1500,
+    absoluteMaxY: 20000,
     ranges: [
       {
         rangeX: [3985, 4850],
-        rangeY: [3883, 8809],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3985, y: 8809 },
           { x: 4300, y: 6906 },
@@ -182,7 +184,7 @@ const data = {
     ranges: [
       {
         rangeX: [3996, 4920],
-        rangeY: [2935, 8275],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 15076 },
           { x: 3500, y: 11547 },
@@ -202,8 +204,8 @@ const data = {
     absoluteMaxY: 20000,
     ranges: [
       {
-        rangeX: [3981, 4920],
-        rangeY: [-2000, 7290],
+        rangeX: [3000, 5000],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 14009 },
           { x: 3500, y: 10435 },
@@ -224,7 +226,7 @@ const data = {
     ranges: [
       {
         rangeX: [3955, 4920],
-        rangeY: [800, 6348],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 12926 },
           { x: 3500, y: 9360 },
@@ -245,7 +247,7 @@ const data = {
     ranges: [
       {
         rangeX: [3919, 4920],
-        rangeY: [-789, 5423],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 11643 },
           { x: 3500, y: 8145 },
@@ -266,7 +268,7 @@ const data = {
     ranges: [
       {
         rangeX: [3857, 4920],
-        rangeY: [-1424, 4530],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 10200 },
           { x: 3500, y: 6836 },
@@ -286,7 +288,7 @@ const data = {
     ranges: [
       {
         rangeX: [3753, 4655],
-        rangeY: [-1500, 3654],
+        rangeY: [-2000, 20000],
         values: [
           { x: 3197, y: 7332 },
           { x: 3500, y: 5354 },
@@ -412,9 +414,8 @@ const curves = () => {
     for (
       let zp = data[temperature].absoluteMinY;
       zp <= data[temperature].absoluteMaxY;
-      zp += 10
+      zp += 50
     ) {
-      console.log('zp :>> ',temperature, zp,data[temperature]);
       const regressions = getRegressionsReverse(data, zp)
       const weight = regressions[temperature].predict(zp)
       const absoluteMinX = data[temperature].absoluteMinX
@@ -440,17 +441,23 @@ const curves = () => {
  * - Additional fixed points to close the shape.
  */
 const areas = [
-  // {
-  //   color: "rgba(100,100,100,0.6)",
-  //   points: [
-  //     ...curves()["-40"],
-  //     { x: 3600, y: 11406 },
-  //     { x: 3636, y: 10824 },
-  //     { x: 3639, y: 10334 },
-  //     { x: 3636, y: 9292 },
-  //     ...curves()["-15"].reverse(),
-  //   ],
-  // },
+  {
+    color: "rgba(100,100,100,0.6)",
+    points: [
+      ...curves()["-40"],
+      { x: 3946, y: 11402 },
+      { x: 3988, y: 10322 },
+      { x: 3985, y: 9276 },
+      { x: 3985, y: 8809 },
+      ...curves()["-15"].reverse(),
+      { x: 4850, y: -1500 },
+      { x: 4920, y: -1500 },
+      { x: 4920, y: -1500 },
+      { x: 4920, y: 5192 },
+      { x: 4850, y: 5517 },
+      { x: 4850, y: 6380 },
+    ],
+  },
 ]
 
 /**

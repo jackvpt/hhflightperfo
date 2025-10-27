@@ -1,4 +1,3 @@
-import { PolynomialRegression } from "ml-regression-polynomial"
 import { getRegressionsReverse } from "../utils/calculations"
 
 // Labels for temperatures
@@ -402,7 +401,7 @@ const curves = () => {
     for (
       let zp = data[temperature].absoluteMinY;
       zp <= data[temperature].absoluteMaxY;
-      zp += 10
+      zp += 50
     ) {
       const regressions = getRegressionsReverse(data, zp)
       const weight = regressions[temperature].predict(zp)
