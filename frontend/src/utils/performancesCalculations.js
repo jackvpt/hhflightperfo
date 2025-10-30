@@ -14,6 +14,8 @@ export const computeFactoredHeadWind = (headWind) => {
   return Math.round(headWind * 0.5)
 }
 
+
+
 export const computeD1 = (headWind) => {
   let d1Details = []
   for (let vtoss = 40; vtoss <= 80; vtoss += 10) {
@@ -28,8 +30,12 @@ export const computeD1 = (headWind) => {
 }
 
 export const computeMtow_ca_40 = (temperature, zp) => {
-  return mtow_ca_40_predictWeight(temperature, zp)
+  const { value, error, text } = mtow_ca_40_predictWeight(temperature, zp)
+  if (error) return text
+  return value
 }
+
 export const computeMtow_ca_50 = (temperature, zp) => {
   return mtow_ca_50_predictWeight(temperature, zp)
+
 }

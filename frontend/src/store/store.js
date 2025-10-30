@@ -10,6 +10,7 @@ import parametersSlice, {
 import weatherDataSlice from "../features/weatherDataSlice" // import weatherData slice
 import flightDataSlice from "../features/flightDataSlice" // import flightData slice
 import performancesSlice from "../features/performancesSlice" // import performances slice
+import { calculatePerformances } from "../store/action.js"
 
 /**
  * 🎯 Transform for the 'parameters' slice.
@@ -82,4 +83,6 @@ export const store = configureStore({
 /**
  * 💾 Create persistor instance to enable store persistence.
  */
-export const persistor = persistStore(store)
+export const persistor = persistStore(store, null, () => {
+  store.dispatch(calculatePerformances())
+}) // Recalculate performances after rehydration

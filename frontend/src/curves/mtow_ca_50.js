@@ -358,6 +358,12 @@ export const mtow_ca_50_predictWeight = (temperature, zp) => {
     tempHigh,
     weightHigh
   )
+  const maxWeight = Math.min(
+    data[tempLow].absoluteMaxX,
+    data[tempHigh].absoluteMaxX
+  )
+  if (weight > maxWeight) return Math.round(maxWeight)
+
   return Math.round(weight)
 }
 

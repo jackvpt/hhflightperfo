@@ -1,4 +1,3 @@
-import { PolynomialRegression } from "ml-regression-polynomial"
 import { extrapolation, getRegressionsReverse } from "../utils/calculations"
 
 // Labels for temperatures
@@ -99,14 +98,14 @@ const data = {
     absoluteMinX: 3598,
     absoluteMaxX: 4839,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 11406,
     ranges: [
       {
         rangeX: [3500, 4600],
         rangeY: [5547, 20000],
         values: [
           { x: 3000, y: 15686 },
-          { x: 3600, y: 11406 },
+          { x: 3598, y: 11406 },
           { x: 4000, y: 8915 },
           { x: 4500, y: 6032 },
           { x: 4600, y: 5547 },
@@ -140,7 +139,7 @@ const data = {
     absoluteMinX: 3638,
     absoluteMaxX: 4826,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 10334,
     ranges: [
       {
         rangeX: [3000, 4607],
@@ -169,7 +168,7 @@ const data = {
     absoluteMinX: 3636,
     absoluteMaxX: 4826,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 9292,
     ranges: [
       {
         rangeX: [3000, 4577],
@@ -209,7 +208,7 @@ const data = {
     absoluteMinX: 3636,
     absoluteMaxX: 4762,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 8815,
     ranges: [
       {
         rangeX: [3000, 4582],
@@ -249,7 +248,7 @@ const data = {
     absoluteMinX: 3646,
     absoluteMaxX: 4826,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 8296,
     ranges: [
       {
         rangeX: [3000, 4568],
@@ -290,7 +289,7 @@ const data = {
     absoluteMinX: 3631,
     absoluteMaxX: 4826,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 7315,
     ranges: [
       {
         rangeX: [3000, 4572],
@@ -330,7 +329,7 @@ const data = {
     absoluteMinX: 3608,
     absoluteMaxX: 4826,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 6362,
     ranges: [
       {
         rangeX: [3000, 4620],
@@ -360,7 +359,7 @@ const data = {
     absoluteMinX: 3575,
     absoluteMaxX: 4826,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 5456,
     ranges: [
       {
         rangeX: [3000, 4595],
@@ -390,7 +389,7 @@ const data = {
     absoluteMinX: 3517,
     absoluteMaxX: 4826,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 4540,
     ranges: [
       {
         rangeX: [3000, 5000],
@@ -410,7 +409,7 @@ const data = {
     absoluteMinX: 3419,
     absoluteMaxX: 4826,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 3679,
     ranges: [
       {
         rangeX: [3000, 5000],
@@ -431,7 +430,7 @@ const data = {
     absoluteMinX: 3376,
     absoluteMaxX: 4826,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 3389,
     ranges: [
       {
         rangeX: [3000, 3668],
@@ -459,6 +458,16 @@ const data = {
   },
 }
 
+export const checkValueInSubrange = (data, value) => {
+  const subrange = Object.keys(data).map(Number)
+  const minSubrange = Math.min(...subrange)
+  const maxSubrange = Math.max(...subrange)
+  if (value < minSubrange || value > maxSubrange) {
+    return false
+  }
+  return true
+}
+
 /**
  *
  * @param {Number} temperature
@@ -467,10 +476,38 @@ const data = {
  * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
  */
 export const mtow_ca_40_predictWeight = (temperature, zp) => {
+  // Check flight enveloppe with temperature
+  if (!checkValueInSubrange(data, temperature)) {
+    return {
+      value: null,
+      error: "Outside defined temperature range",
+      text: "N/A",
+    }
+  }
+
+
   const tempLow = Math.floor(temperature / 10) * 10
   let tempHigh = tempLow + 10
   if (tempHigh > 50) {
     tempHigh = 50
+  }
+
+  // Check flight enveloppe with Zp
+  const minZp = Math.min(
+    data[tempHigh].absoluteMinY,
+    data[tempLow].absoluteMinY
+  )
+  const maxZp = Math.max(
+    data[tempHigh].absoluteMaxY,
+    data[tempLow].absoluteMaxY
+  )
+
+  if (zp < minZp || zp > maxZp) {
+    return {
+      value: null,
+      error: "Outside defined pressure altitude range",
+      text: "N/A",
+    }
   }
 
   const regressions = getRegressionsReverse(data, zp)
@@ -484,7 +521,32 @@ export const mtow_ca_40_predictWeight = (temperature, zp) => {
     tempHigh,
     weightHigh
   )
-  return Math.round(weight)
+
+  // Check flight enveloppe with Weight
+  const minWeight = Math.min(
+    data[tempHigh].absoluteMinX,
+    data[tempLow].absoluteMinX
+  )
+  if (weight < minWeight) {
+    return {
+      value: minWeight,
+      error: null,
+      text: null,
+    }
+  }
+  const maxWeight = Math.max(
+    data[tempHigh].absoluteMaxX,
+    data[tempLow].absoluteMaxX
+  )
+  if (weight > maxWeight) {
+    return {
+      value: maxWeight,
+      error: null,
+      text: null,
+    }
+  }
+
+  return { value: Math.round(weight), error: null, text: null }
 }
 
 /**

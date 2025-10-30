@@ -9,7 +9,7 @@ export const extrapolation = (
   valueHigh
 ) => {
   if (entryHigh === entryLow)
-    throw new Error("x0 and x1 cannot be the same value")
+    return valueLow // avoid division by zero
   return (
     valueLow +
     ((valueHigh - valueLow) * (entry - entryLow)) / (entryHigh - entryLow)
