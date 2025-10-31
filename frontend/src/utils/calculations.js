@@ -8,8 +8,7 @@ export const extrapolation = (
   entryHigh,
   valueHigh
 ) => {
-  if (entryHigh === entryLow)
-    return valueLow // avoid division by zero
+  if (entryHigh === entryLow) return valueLow // avoid division by zero
   return (
     valueLow +
     ((valueHigh - valueLow) * (entry - entryLow)) / (entryHigh - entryLow)
@@ -64,6 +63,82 @@ export const getRegressionsReverse = (data, entry) => {
     regressionsReverse[curve] = new PolynomialRegression(ys, xs, 3)
   }
   return regressionsReverse
+}
+
+/**
+ * Gets the low and high values surrounding a given value based on a step.
+ * @param {Number} value
+ * @param {Number} step
+ * @param {Number} max
+ * @returns {lowValue:Number,highValue:Number}
+ */
+export const getLowHighValues = (value, step, max) => {
+  const lowValue = Math.floor(value / step) * step
+  let highValue = lowValue + step
+  if (highValue > max) highValue = max
+  return { lowValue, highValue }
+}
+
+/**
+ * Checks if a value is within the defined subrange of a dataset.
+ * @param {[{x,y}]} data
+ * @param {Number} value
+ * @returns {Boolean}
+ */
+export const checkValueInSubrange = (data, value) => {
+  const subrange = Object.keys(data).map(Number)
+  const minSubrange = Math.min(...subrange)
+  const maxSubrange = Math.max(...subrange)
+  if (value < minSubrange || value > maxSubrange) {
+    return false
+  }
+  return true
+}
+
+/**
+ * Checks if a value is within the defined limits of a dataset.
+ * @param {[{x,y}]} data
+ * @param {Number} low
+ * @param {Number} high
+ * @param {Number} value
+ * @returns {Boolean}
+ */
+export const checkValueInLimits = (data, low, high, value, axis) => {
+  // Determine which properties to use based on the axis
+  const minKey = axis === "yAxis" ? "absoluteMinY" : "absoluteMinX"
+  const maxKey = axis === "yAxis" ? "absoluteMaxY" : "absoluteMaxX"
+
+  // Calculate lower and upper limits
+  const min = Math.min(data[high][minKey], data[low][minKey])
+  const max = Math.max(data[high][maxKey], data[low][maxKey])
+
+  // Check if the value is within limits
+  return value >= min && value <= max
+}
+
+/**
+ * Sets a value inside the defined limits of a dataset.
+ * @param {[{x,y}]} data
+ * @param {Number} low
+ * @param {Number} high
+ * @param {Number} value
+ * @returns {value:Number,error:String,text:String}
+ */
+export const setValueInsideLimits = (data, low, high, value, axis) => {
+  // Determine which properties to use based on the axis
+  const minKey = axis === "yAxis" ? "absoluteMinY" : "absoluteMinX"
+  const maxKey = axis === "yAxis" ? "absoluteMaxY" : "absoluteMaxX"
+
+  // Check lower limit
+  const min = Math.min(data[high][minKey], data[low][minKey])
+  if (value < min) return min
+
+  // Check upper limit
+  const max = Math.max(data[high][maxKey], data[low][maxKey])
+  if (value > max) return max
+
+  // Value is within limits
+  return value
 }
 
 // Utility function to convert degrees to radians

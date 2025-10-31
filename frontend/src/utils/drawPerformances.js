@@ -18,6 +18,9 @@ export const drawPerformances = (
     case "mtow_ca_50":
       drawMtow_CA_50(ctx, weatherData, performancesData, toCanvasX, toCanvasY)
       break
+    case "mtow_ca_60":
+      drawMtow_CA_60(ctx, weatherData, performancesData, toCanvasX, toCanvasY)
+      break
     default:
       break
   }
@@ -78,6 +81,23 @@ const drawMtow_CA_50 = (
   toCanvasY
 ) => {
   const weight = performancesData.mtow_ca_50
+  const zp = weatherData.takeoffZp
+  const x0 = toCanvasX(3000)
+  const y0 = toCanvasY(-2000)
+  const x = toCanvasX(weight)
+  const y = toCanvasY(zp)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+const drawMtow_CA_60 = (
+  ctx,
+  weatherData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const weight = performancesData.mtow_ca_60
   const zp = weatherData.takeoffZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)

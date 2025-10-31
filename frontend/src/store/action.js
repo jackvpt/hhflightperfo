@@ -7,6 +7,7 @@ import {
   computeHeadWind,
   computeMtow_ca_40,
   computeMtow_ca_50,
+  computeMtow_ca_60,
 } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
@@ -35,7 +36,8 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
 
 export const calculatePerformances = () => (dispatch, getState) => {
   const state = getState()
-  const { windDirection, windSpeed, takeoffTemperature,takeoffZp } = state.weatherData
+  const { windDirection, windSpeed, takeoffTemperature, takeoffZp } =
+    state.weatherData
   const { runwayHeading } = state.flightData
 
   // Headwind calculation
@@ -54,16 +56,14 @@ export const calculatePerformances = () => (dispatch, getState) => {
   dispatch(updatePerformanceField({ field: "d1", value: d1 }))
 
   // MTOW Clear area VTOSS=40kt
-  const mtow_ca_40 = computeMtow_ca_40(
-    takeoffTemperature,
-    takeoffZp
-  )
+  const mtow_ca_40 = computeMtow_ca_40(takeoffTemperature, takeoffZp)
   dispatch(updatePerformanceField({ field: "mtow_ca_40", value: mtow_ca_40 }))
 
   // MTOW Clear area VTOSS=50kt
-  const mtow_ca_50 = computeMtow_ca_50(
-    takeoffTemperature,
-    takeoffZp
-  )
+  const mtow_ca_50 = computeMtow_ca_50(takeoffTemperature, takeoffZp)
   dispatch(updatePerformanceField({ field: "mtow_ca_50", value: mtow_ca_50 }))
+
+  // MTOW Clear area VTOSS>=60kt
+  const mtow_ca_60 = computeMtow_ca_60(takeoffTemperature, takeoffZp)
+  dispatch(updatePerformanceField({ field: "mtow_ca_60", value: mtow_ca_60 }))
 }

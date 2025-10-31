@@ -1,4 +1,11 @@
-import { extrapolation, getRegressionsReverse } from "../utils/calculations"
+import {
+  checkValueInLimits,
+  checkValueInSubrange,
+  extrapolation,
+  getLowHighValues,
+  getRegressionsReverse,
+  setValueInsideLimits,
+} from "../utils/calculations"
 
 // Labels for temperatures
 const labels = [
@@ -458,16 +465,6 @@ const data = {
   },
 }
 
-export const checkValueInSubrange = (data, value) => {
-  const subrange = Object.keys(data).map(Number)
-  const minSubrange = Math.min(...subrange)
-  const maxSubrange = Math.max(...subrange)
-  if (value < minSubrange || value > maxSubrange) {
-    return false
-  }
-  return true
-}
-
 /**
  *
  * @param {Number} temperature
@@ -485,24 +482,15 @@ export const mtow_ca_40_predictWeight = (temperature, zp) => {
     }
   }
 
-
-  const tempLow = Math.floor(temperature / 10) * 10
-  let tempHigh = tempLow + 10
-  if (tempHigh > 50) {
-    tempHigh = 50
-  }
+  // Get low and high temperature surrounding values
+  const { lowValue: tempLow, highValue: tempHigh } = getLowHighValues(
+    temperature,
+    10,
+    50
+  )
 
   // Check flight enveloppe with Zp
-  const minZp = Math.min(
-    data[tempHigh].absoluteMinY,
-    data[tempLow].absoluteMinY
-  )
-  const maxZp = Math.max(
-    data[tempHigh].absoluteMaxY,
-    data[tempLow].absoluteMaxY
-  )
-
-  if (zp < minZp || zp > maxZp) {
+  if (!checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis")) {
     return {
       value: null,
       error: "Outside defined pressure altitude range",
@@ -510,10 +498,12 @@ export const mtow_ca_40_predictWeight = (temperature, zp) => {
     }
   }
 
+  // Get regressions for low and high temperature
   const regressions = getRegressionsReverse(data, zp)
   const weightLow = regressions[tempLow].predict(zp)
   const weightHigh = regressions[tempHigh].predict(zp)
 
+  // Extrapolate weight for given temperature
   const weight = extrapolation(
     temperature,
     tempLow,
@@ -523,30 +513,14 @@ export const mtow_ca_40_predictWeight = (temperature, zp) => {
   )
 
   // Check flight enveloppe with Weight
-  const minWeight = Math.min(
-    data[tempHigh].absoluteMinX,
-    data[tempLow].absoluteMinX
+  const weightInLimits = setValueInsideLimits(
+    data,
+    tempLow,
+    tempHigh,
+    weight,
+    "xAxis"
   )
-  if (weight < minWeight) {
-    return {
-      value: minWeight,
-      error: null,
-      text: null,
-    }
-  }
-  const maxWeight = Math.max(
-    data[tempHigh].absoluteMaxX,
-    data[tempLow].absoluteMaxX
-  )
-  if (weight > maxWeight) {
-    return {
-      value: maxWeight,
-      error: null,
-      text: null,
-    }
-  }
-
-  return { value: Math.round(weight), error: null, text: null }
+  return { value: Math.round(weightInLimits), error: null, text: null }
 }
 
 /**
@@ -683,7 +657,7 @@ const areas = [
  */
 export const mtow_ca_40_data = {
   name: "mtow_ca_40",
-  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 40 KTS",
+  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 40 KT",
   xmin: 3000, // X axis minimum value
   xmax: 5000, // X axis reference 0
   x0: 0, // X axis maximum value

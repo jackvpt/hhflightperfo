@@ -55,10 +55,28 @@ const PerformancesClass1 = () => {
       
         <div className="performancesClass1__mtowClearArea">
           <div className="performanceCell_header">
-            MTOW Clear Area VTOSS=40kt
+            MTOW Clear Area VTOSS = 40kt
           </div>
           <div className="performanceCell_value">
             {performancesData.mtow_ca_40}
+          </div>
+        </div>
+      
+        <div className="performancesClass1__mtowClearArea">
+          <div className="performanceCell_header">
+            MTOW Clear Area VTOSS = 50kt
+          </div>
+          <div className="performanceCell_value">
+            {performancesData.mtow_ca_50}
+          </div>
+        </div>
+
+        <div className="performancesClass1__mtowClearArea">
+          <div className="performanceCell_header">
+            MTOW Clear Area VTOSS ≥ 60kt
+          </div>
+          <div className="performanceCell_value">
+            {performancesData.mtow_ca_60}
           </div>
         </div>
       </div>

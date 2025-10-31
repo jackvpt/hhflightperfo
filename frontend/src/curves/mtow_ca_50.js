@@ -1,4 +1,11 @@
-import { extrapolation, getRegressionsReverse } from "../utils/calculations"
+import {
+  checkValueInLimits,
+  checkValueInSubrange,
+  extrapolation,
+  getLowHighValues,
+  getRegressionsReverse,
+  setValueInsideLimits,
+} from "../utils/calculations"
 
 // Labels for temperatures
 const labels = [
@@ -67,13 +74,6 @@ const labels = [
 // Border lines (left side of flight envelope and bottom)
 const borderLines = [
   [
-    { x: 4257, y: -1500 },
-    { x: 4920, y: -1500 },
-    { x: 4920, y: 5192 },
-    { x: 4850, y: 5517 },
-    { x: 4850, y: 6380 },
-  ],
-  [
     { x: 3946, y: 11402 },
     { x: 3988, y: 10322 },
     { x: 3985, y: 9276 },
@@ -85,6 +85,16 @@ const borderLines = [
     { x: 3857, y: 4530 },
     { x: 3753, y: 3654 },
     { x: 3708, y: 3362 },
+  ],
+  [
+    { x: 4257, y: -1500 },
+    { x: 4920, y: -1500 },
+    { x: 4920, y: 5192 },
+    { x: 4850, y: 5517 },
+  ],
+  [
+    { x: 4850, y: 6380 },
+    { x: 4850, y: -1500 },
   ],
 ]
 
@@ -100,10 +110,10 @@ const data = {
     absoluteMinX: 3946,
     absoluteMaxX: 4850,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 11402,
     ranges: [
       {
-        rangeX: [3946, 4850],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 17782 },
@@ -120,10 +130,10 @@ const data = {
     absoluteMinX: 3988,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 10322,
     ranges: [
       {
-        rangeX: [3988, 4920],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 17000 },
@@ -141,10 +151,10 @@ const data = {
     absoluteMinX: 3985,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 9276,
     ranges: [
       {
-        rangeX: [3985, 4920],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 16018 },
@@ -162,10 +172,10 @@ const data = {
     absoluteMinX: 3985,
     absoluteMaxX: 4850,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 8809,
     ranges: [
       {
-        rangeX: [3985, 4850],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3985, y: 8809 },
@@ -183,7 +193,7 @@ const data = {
     absoluteMaxY: 8275,
     ranges: [
       {
-        rangeX: [3996, 4920],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 15076 },
@@ -201,7 +211,7 @@ const data = {
     absoluteMinX: 3981,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 7290,
     ranges: [
       {
         rangeX: [3000, 5000],
@@ -222,10 +232,10 @@ const data = {
     absoluteMinX: 3955,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 6348,
     ranges: [
       {
-        rangeX: [3955, 4920],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 12926 },
@@ -243,10 +253,10 @@ const data = {
     absoluteMinX: 3919,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 5423,
     ranges: [
       {
-        rangeX: [3919, 4920],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 11643 },
@@ -264,10 +274,10 @@ const data = {
     absoluteMinX: 3857,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 4530,
     ranges: [
       {
-        rangeX: [3857, 4920],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 10200 },
@@ -284,10 +294,10 @@ const data = {
     absoluteMinX: 3753,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 3654,
     ranges: [
       {
-        rangeX: [3753, 4655],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3197, y: 7332 },
@@ -305,7 +315,7 @@ const data = {
     absoluteMinX: 3708,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 3362,
     ranges: [
       {
         rangeX: [3708, 4022],
@@ -341,12 +351,32 @@ const data = {
  * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
  */
 export const mtow_ca_50_predictWeight = (temperature, zp) => {
-  const tempLow = Math.floor(temperature / 10) * 10
-  let tempHigh = tempLow + 10
-  if (tempHigh > 50) {
-    tempHigh = 50
+  // Check flight enveloppe with temperature
+  if (!checkValueInSubrange(data, temperature)) {
+    return {
+      value: null,
+      error: "Outside defined temperature range",
+      text: "N/A",
+    }
   }
 
+  // Get low and high temperature surrounding values
+  const { lowValue: tempLow, highValue: tempHigh } = getLowHighValues(
+    temperature,
+    10,
+    50
+  )
+
+  // Check flight enveloppe with Zp
+  if (!checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis")) {
+    return {
+      value: null,
+      error: "Outside defined pressure altitude range",
+      text: "N/A",
+    }
+  }
+
+  // Get regressions for low and high temperature
   const regressions = getRegressionsReverse(data, zp)
   const weightLow = regressions[tempLow].predict(zp)
   const weightHigh = regressions[tempHigh].predict(zp)
@@ -358,13 +388,16 @@ export const mtow_ca_50_predictWeight = (temperature, zp) => {
     tempHigh,
     weightHigh
   )
-  const maxWeight = Math.min(
-    data[tempLow].absoluteMaxX,
-    data[tempHigh].absoluteMaxX
-  )
-  if (weight > maxWeight) return Math.round(maxWeight)
 
-  return Math.round(weight)
+  // Check flight enveloppe with Weight
+  const weightInLimits = setValueInsideLimits(
+    data,
+    tempLow,
+    tempHigh,
+    weight,
+    "xAxis"
+  )
+  return { value: Math.round(weightInLimits), error: null, text: null }
 }
 
 /**
@@ -507,7 +540,7 @@ const areas = [
  */
 export const mtow_ca_50_data = {
   name: "mtow_ca_50",
-  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 50 KTS",
+  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 50 KT",
   xmin: 3000, // X axis minimum value
   xmax: 5000, // X axis reference 0
   x0: 0, // X axis maximum value

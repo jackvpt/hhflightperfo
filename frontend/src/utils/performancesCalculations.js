@@ -1,6 +1,7 @@
 import { d1_predictD1 } from "../curves/d1"
 import { mtow_ca_40_predictWeight } from "../curves/mtow_ca_40"
 import { mtow_ca_50_predictWeight } from "../curves/mtow_ca_50"
+import { mtow_ca_60_predictWeight } from "../curves/mtow_ca_60"
 import { degToRad } from "./calculations"
 
 export const computeHeadWind = (windDirection, windSpeed, runwayHeading) => {
@@ -13,8 +14,6 @@ export const computeFactoredHeadWind = (headWind) => {
   if (headWind <= 0) return Math.round(headWind * 1.5)
   return Math.round(headWind * 0.5)
 }
-
-
 
 export const computeD1 = (headWind) => {
   let d1Details = []
@@ -36,6 +35,13 @@ export const computeMtow_ca_40 = (temperature, zp) => {
 }
 
 export const computeMtow_ca_50 = (temperature, zp) => {
-  return mtow_ca_50_predictWeight(temperature, zp)
+  const { value, error, text } = mtow_ca_50_predictWeight(temperature, zp)
+  if (error) return text
+  return value
+}
 
+export const computeMtow_ca_60 = (temperature, zp) => {
+  const { value, error, text } = mtow_ca_60_predictWeight(temperature, zp)
+  if (error) return text
+  return value
 }

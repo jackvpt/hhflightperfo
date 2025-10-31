@@ -1,4 +1,4 @@
-import { getRegressionsReverse } from "../utils/calculations"
+import { checkValueInLimits, checkValueInSubrange, extrapolation, getLowHighValues, getRegressionsReverse, setValueInsideLimits } from "../utils/calculations"
 
 // Labels for temperatures
 const labels = [
@@ -100,10 +100,10 @@ const data = {
     absoluteMinX: 4140,
     absoluteMaxX: 4850,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 11409,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 18960 },
@@ -121,10 +121,10 @@ const data = {
     absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 10325,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 18270 },
@@ -143,10 +143,10 @@ const data = {
     absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 9303,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 17398 },
@@ -164,10 +164,10 @@ const data = {
     absoluteMinX: 4140,
     absoluteMaxX: 4850,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 8774,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 4140, y: 8774 },
@@ -182,10 +182,10 @@ const data = {
     absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 8290,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 16254 },
@@ -203,10 +203,10 @@ const data = {
     absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 7308,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 15180 },
@@ -224,10 +224,10 @@ const data = {
     absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 6350,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 13876 },
@@ -245,10 +245,10 @@ const data = {
     absoluteMinX: 4125,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 5439,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 12418 },
@@ -266,10 +266,10 @@ const data = {
     absoluteMinX: 4029,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 4550,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3000, y: 10746 },
@@ -286,10 +286,10 @@ const data = {
     absoluteMinX: 3883,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 3681,
     ranges: [
       {
-        rangeX: [3500, 5000],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
           { x: 3252, y: 7494 },
@@ -306,10 +306,10 @@ const data = {
     absoluteMinX: 3822,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 20000,
+    absoluteMaxY: 3383,
     ranges: [
       {
-        rangeX: [3500, 4156],
+        rangeX: [3000, 4156],
         rangeY: [-58, 20000],
         values: [
           { x: 3000, y: 11078 },
@@ -320,7 +320,7 @@ const data = {
       },
       {
         rangeX: [4157, 5000],
-        rangeY: [-2000, 57],
+        rangeY: [-2000, -57],
         values: [
           { x: 4156, y: -58 },
           { x: 4300, y: -862 },
@@ -340,12 +340,54 @@ const data = {
  * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
  */
 export const mtow_ca_60_predictWeight = (temperature, zp) => {
-  const regressions = getRegressionsReverse(data, zp)
-  if (regressions[temperature]) {
-    return regressions[temperature].predict(zp)
-  } else {
-    throw new Error(`No regression for temperature=${temperature}`)
+  // Check flight enveloppe with temperature
+  if (!checkValueInSubrange(data, temperature)) {
+    return {
+      value: null,
+      error: "Outside defined temperature range",
+      text: "N/A",
+    }
   }
+
+  // Get low and high temperature surrounding values
+  const { lowValue: tempLow, highValue: tempHigh } = getLowHighValues(
+    temperature,
+    10,
+    50
+  )
+
+  // Check flight enveloppe with Zp
+  if (!checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis")) {
+    return {
+      value: null,
+      error: "Outside defined pressure altitude range",
+      text: "N/A",
+    }
+  }
+
+  // Get regressions for low and high temperature
+  const regressions = getRegressionsReverse(data, zp)
+  const weightLow = regressions[tempLow].predict(zp)
+  const weightHigh = regressions[tempHigh].predict(zp)
+
+  // Extrapolate weight for given temperature
+  const weight = extrapolation(
+    temperature,
+    tempLow,
+    weightLow,
+    tempHigh,
+    weightHigh
+  )
+
+  // Check flight enveloppe with Weight
+  const weightInLimits = setValueInsideLimits(
+    data,
+    tempLow,
+    tempHigh,
+    weight,
+    "xAxis"
+  )
+  return { value: Math.round(weightInLimits), error: null, text: null }
 }
 
 /**
@@ -444,7 +486,7 @@ const areas = [
 
 export const mtow_ca_60_data = {
   name: "mtow_ca_60",
-  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 60  KTS",
+  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS ≥ 60 KT",
   xmin: 3000, // X axis minimum value
   xmax: 5000, // X axis reference 0
   x0: 0, // X axis maximum value
