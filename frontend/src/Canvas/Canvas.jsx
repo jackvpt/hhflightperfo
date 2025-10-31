@@ -61,7 +61,7 @@ const Canvas = ({
   const [isCheckedCalculations, setIsCheckedCalculations] = useState(true)
   const [displayMode, setDisplayMode] = useState("chart")
 
-const handleChangeDisplayMode = (event) => {
+  const handleChangeDisplayMode = (event) => {
     setDisplayMode(event.target.checked ? "chart" : "digitalized")
     if (event.target.checked) {
       setIsCheckedChart(false)
@@ -338,18 +338,19 @@ const handleChangeDisplayMode = (event) => {
     <section className="container-canvas">
       <canvas ref={canvasRef} width={width} height={height} />
       <div className="container-canvas__tools">
-        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+        <div className="container-canvas__tools-displayMode">
           <Typography sx={{ fontSize: "0.75rem" }}>HFM Chart</Typography>
           <AntSwitch
-        checked={displayMode === "chart"}
-        onChange={handleChangeDisplayMode}
+            checked={displayMode === "chart"}
+            onChange={handleChangeDisplayMode}
             slotProps={{
               input: { "aria-label": "ant design" },
             }}
           />
-
-          <Typography sx={{ fontSize: "0.75rem" }}>Digitalized</Typography>
-        </Stack>
+          <Typography sx={{ fontSize: "0.75rem" }}>
+            Digitalized chart
+          </Typography>
+        </div>
         {/** Checkbox for Scatter Plot */}
         <FormControlLabel
           control={
