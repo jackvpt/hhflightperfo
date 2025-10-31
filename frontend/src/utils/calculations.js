@@ -141,5 +141,33 @@ export const setValueInsideLimits = (data, low, high, value, axis) => {
   return value
 }
 
+/**
+ * Generates scatter plot data points from the defined ranges for all temperatures.
+ *
+ * @function scatterPlot
+ * @returns {Array<{x: number, y: number}>} An array of scatter plot points,
+ * where each point contains:
+ * - `x`: weight value
+ * - `y`: Zp value
+ */
+export const scatterPlot =(data)=>{
+    const points = []
+
+  for (const temperature in data) {
+    const ranges = data[temperature].ranges
+
+    for (const range of ranges) {
+      const rangePoints = range.values.map((point) => ({
+        x: point.x,
+        y: point.y,
+      }))
+
+      points.push(...rangePoints)
+    }
+  }
+
+  return points
+}
+
 // Utility function to convert degrees to radians
 export const degToRad = (deg) => (deg * Math.PI) / 180

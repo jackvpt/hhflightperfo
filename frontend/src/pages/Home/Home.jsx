@@ -6,6 +6,7 @@ import TakeoffParameters from "../../components/TakeoffParameters/TakeoffParamet
 import PerformancesClass1 from "../../components/PerformancesClass1/PerformancesClass1"
 import { mtow_ca_60_data } from "../../curves/mtow_ca_60"
 import { mtow_ca_50_data } from "../../curves/mtow_ca_50"
+import { mlw_ca_data } from "../../curves/mlw_ca"
 
 const Home = () => {
   return (
@@ -20,6 +21,7 @@ const Home = () => {
           <Canvas {...mtow_ca_40_data} />
           <Canvas {...mtow_ca_50_data} />
           <Canvas {...mtow_ca_60_data} />
+          <Canvas {...mlw_ca_data} />
         </div>
       </div>
     </div>

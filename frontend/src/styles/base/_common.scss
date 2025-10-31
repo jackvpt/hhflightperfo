@@ -38,7 +38,10 @@
 }
 
 .performanceCell_header {
-  font-size: 0.9rem;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 0.8rem;
   font-weight: bold;
 }
 

@@ -39,4 +39,14 @@ export const chartsData = [
     yMin: 206,
     yMax: 857,
   },
+  {
+    name: "mlw_ca",
+    image: "mlw_ca.webp",
+    width: 814,
+    height: 1170,
+    xMin: 114,
+    xMax: 665,
+    yMin: 206,
+    yMax: 857,
+  },
 ]

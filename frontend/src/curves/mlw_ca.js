@@ -1,101 +1,90 @@
-import {
-  checkValueInLimits,
-  checkValueInSubrange,
-  extrapolation,
-  getLowHighValues,
-  getRegressionsReverse,
-  scatterPlot,
-  setValueInsideLimits,
-} from "../utils/calculations"
+import { checkValueInLimits, checkValueInSubrange, extrapolation, getLowHighValues, getRegressionsReverse, scatterPlot, setValueInsideLimits } from "../utils/calculations"
 
 // Labels for temperatures
 const labels = [
   {
     text: "-40",
-    x: 4450,
-    y: 9160,
+    x: 4750,
+    y: 8500,
     angle: 35,
   },
   {
     text: "-30",
-    x: 4440,
-    y: 8400,
-    angle: 37,
+    x: 4700,
+    y: 7650,
+    angle: 35,
   },
   {
     text: "-20",
-    x: 4430,
-    y: 7400,
-    angle: 37,
+    x: 4650,
+    y: 6900,
+    angle: 35,
   },
   {
     text: "-10",
-    x: 4420,
-    y: 6400,
-    angle: 37,
+    x: 4600,
+    y: 6100,
+    angle: 35,
   },
   {
     text: "0",
-    x: 4410,
-    y: 5400,
+    x: 4600,
+    y: 5200,
     angle: 40,
   },
   {
     text: "10",
-    x: 4400,
-    y: 4400,
-    angle: 40,
+    x: 4575,
+    y: 4300,
+    angle: 42,
   },
   {
     text: "20",
-    x: 4350,
-    y: 3500,
+    x: 4550,
+    y: 3600,
     angle: 40,
   },
   {
     text: "30",
-    x: 4300,
-    y: 2500,
-    angle: 40,
+    x: 4480,
+    y: 2600,
+    angle: 38,
   },
   {
     text: "40",
-    x: 4250,
-    y: 1300,
-    angle: 45,
+    x: 4400,
+    y: 1200,
+    angle: 40,
   },
   {
     text: "50",
-    x: 4200,
-    y: -350,
-    angle: 46,
+    x: 4300,
+    y: -250,
+    angle: 38,
   },
 ]
 
 // Border lines (left side of flight envelope and bottom)
 const borderLines = [
   [
-    { x: 3946, y: 11402 },
-    { x: 3988, y: 10322 },
-    { x: 3985, y: 9276 },
-    { x: 3985, y: 8809 },
-    { x: 3996, y: 8275 },
-    { x: 3981, y: 7290 },
-    { x: 3955, y: 6348 },
-    { x: 3919, y: 5423 },
-    { x: 3857, y: 4530 },
-    { x: 3753, y: 3654 },
-    { x: 3708, y: 3362 },
-  ],
-  [
-    { x: 4257, y: -1500 },
+    { x: 4407, y: -1500 },
     { x: 4920, y: -1500 },
-    { x: 4920, y: 5192 },
-    { x: 4850, y: 5517 },
   ],
   [
-    { x: 4850, y: 6380 },
+    { x: 4140, y: 11409 },
+    { x: 4140, y: 5757 },
+    { x: 4125, y: 5439 },
+    { x: 4029, y: 4550 },
+    { x: 3885, y: 3681 },
+    { x: 3822, y: 3383 },
+  ],
+  [
+    { x: 4850, y: 7329 },
     { x: 4850, y: -1500 },
+  ],
+  [
+    { x: 4920, y: 5829 },
+    { x: 4920, y: -1500 },
   ],
 ]
 
@@ -108,236 +97,235 @@ const borderLines = [
  */
 const data = {
   "-40": {
-    absoluteMinX: 3946,
+    absoluteMinX: 4140,
     absoluteMaxX: 4850,
     absoluteMinY: -1500,
-    absoluteMaxY: 11402,
+    absoluteMaxY: 11409,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3000, y: 17782 },
-          { x: 3500, y: 14242 },
-          { x: 3946, y: 11402 },
-          { x: 4500, y: 8231 },
-          { x: 4850, y: 6380 },
-          { x: 5000, y: 5660 },
+          { x: 3000, y: 18960 },
+          { x: 3500, y: 15500 },
+          { x: 4000, y: 12288 },
+          { x: 4140, y: 11409 },
+          { x: 4500, y: 9292 },
+          { x: 4850, y: 7329 },
+          { x: 5000, y: 6509 },
         ],
       },
     ],
   },
   "-30": {
-    absoluteMinX: 3988,
+    absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 10322,
+    absoluteMaxY: 10325,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3000, y: 17000 },
-          { x: 3500, y: 13433 },
-          { x: 3988, y: 10322 },
-          { x: 4500, y: 7360 },
-          { x: 4850, y: 5517 },
-          { x: 4920, y: 5192 },
-          { x: 5000, y: 4749 },
+          { x: 3000, y: 18270 },
+          { x: 3500, y: 14607 },
+          { x: 4000, y: 11236 },
+          { x: 4140, y: 10325 },
+          { x: 4500, y: 8185 },
+          { x: 4850, y: 6207 },
+          { x: 4920, y: 5829 },
+          { x: 5000, y: 5416 },
         ],
       },
     ],
   },
   "-20": {
-    absoluteMinX: 3985,
+    absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 9276,
+    absoluteMaxY: 9303,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3000, y: 16018 },
-          { x: 3500, y: 12432 },
-          { x: 3985, y: 9276 },
-          { x: 4500, y: 6238 },
-          { x: 4850, y: 4359 },
-          { x: 4920, y: 4012 },
-          { x: 5000, y: 3568 },
+          { x: 3000, y: 17398 },
+          { x: 3500, y: 13385 },
+          { x: 4000, y: 10195 },
+          { x: 4140, y: 9303 },
+          { x: 4500, y: 7128 },
+          { x: 4850, y: 5150 },
+          { x: 5000, y: 4280 },
         ],
       },
     ],
   },
   "-15": {
-    absoluteMinX: 3985,
+    absoluteMinX: 4140,
     absoluteMaxX: 4850,
     absoluteMinY: -1500,
-    absoluteMaxY: 8809,
+    absoluteMaxY: 8774,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3985, y: 8809 },
-          { x: 4300, y: 6906 },
-          { x: 4600, y: 5220 },
-          { x: 4850, y: 3883 },
+          { x: 4140, y: 8774 },
+          { x: 4400, y: 7194 },
+          { x: 4600, y: 6024 },
+          { x: 4850, y: 4623 },
         ],
       },
     ],
   },
   "-10": {
-    absoluteMinX: 3996,
+    absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 8275,
+    absoluteMaxY: 8290,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3000, y: 15076 },
-          { x: 3500, y: 11547 },
-          { x: 3996, y: 8275 },
-          { x: 4500, y: 5242 },
-          { x: 4850, y: 3310 },
-          { x: 4920, y: 2935 },
-          { x: 5000, y: 2519 },
+          { x: 3000, y: 16254 },
+          { x: 3500, y: 12608 },
+          { x: 4000, y: 9185 },
+          { x: 4140, y: 8290 },
+          { x: 4500, y: 6099 },
+          { x: 4850, y: 4106 },
+          { x: 5000, y: 3246 },
         ],
       },
     ],
   },
   0: {
-    absoluteMinX: 3981,
+    absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 7290,
+    absoluteMaxY: 7308,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3000, y: 14009 },
-          { x: 3500, y: 10435 },
-          { x: 3981, y: 7290 },
-          { x: 4500, y: 4240 },
-          { x: 4850, y: 2301 },
-          { x: 4920, y: 1937 },
-          { x: 5000, y: 1523 },
+          { x: 3000, y: 15180 },
+          { x: 3500, y: 11651 },
+          { x: 4000, y: 8227 },
+          { x: 4140, y: 7308 },
+          { x: 4500, y: 5111 },
+          { x: 4850, y: 3081 },
+          { x: 5000, y: 2250 },
         ],
       },
     ],
   },
   10: {
-    absoluteMinX: 3955,
+    absoluteMinX: 4140,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 6348,
+    absoluteMaxY: 6350,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3000, y: 12926 },
-          { x: 3500, y: 9360 },
-          { x: 3955, y: 6348 },
-          { x: 4500, y: 3120 },
-          { x: 4850, y: 1194 },
-          { x: 4920, y: 800 },
-          { x: 5000, y: 390 },
+          { x: 3000, y: 13876 },
+          { x: 3500, y: 10589 },
+          { x: 4000, y: 7266 },
+          { x: 4140, y: 6350 },
+          { x: 4500, y: 4130 },
+          { x: 4850, y: 2113 },
+          { x: 5000, y: 1285 },
         ],
       },
     ],
   },
   20: {
-    absoluteMinX: 3919,
+    absoluteMinX: 4125,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 5423,
+    absoluteMaxY: 5439,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3000, y: 11643 },
-          { x: 3500, y: 8145 },
-          { x: 3919, y: 5423 },
-          { x: 4500, y: 1970 },
-          { x: 4850, y: 46 },
-          { x: 4920, y: -348 },
-          { x: 5000, y: -789 },
+          { x: 3000, y: 12418 },
+          { x: 3500, y: 9201 },
+          { x: 4000, y: 6168 },
+          { x: 4125, y: 5439 },
+          { x: 4500, y: 3197 },
+          { x: 4850, y: 1187 },
+          { x: 5000, y: 347 },
         ],
       },
     ],
   },
   30: {
-    absoluteMinX: 3857,
+    absoluteMinX: 4029,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 4530,
+    absoluteMaxY: 4550,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3000, y: 10200 },
-          { x: 3500, y: 6836 },
-          { x: 3857, y: 4530 },
-          { x: 4500, y: 615 },
-          { x: 4850, y: -1424 },
-          { x: 4951, y: -2000 },
+          { x: 3000, y: 10746 },
+          { x: 3500, y: 7629 },
+          { x: 4029, y: 4550 },
+          { x: 4500, y: 1861 },
+          { x: 4850, y: -26 },
+          { x: 5000, y: -793 },
         ],
       },
     ],
   },
   40: {
-    absoluteMinX: 3753,
+    absoluteMinX: 3883,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 3654,
+    absoluteMaxY: 3681,
     ranges: [
       {
         rangeX: [3000, 5000],
         rangeY: [-2000, 20000],
         values: [
-          { x: 3197, y: 7332 },
-          { x: 3500, y: 5354 },
-          { x: 3753, y: 3654 },
-          { x: 4100, y: 1474 },
-          { x: 4500, y: -1023 },
-          { x: 4574, y: -1500 },
-          { x: 4655, y: -2000 },
+          { x: 3252, y: 7494 },
+          { x: 3500, y: 5960 },
+          { x: 3885, y: 3681 },
+          { x: 4300, y: 1182 },
+          { x: 4784, y: -1500 },
+          { x: 4871, y: -2000 },
         ],
       },
     ],
   },
   50: {
-    absoluteMinX: 3708,
+    absoluteMinX: 3822,
     absoluteMaxX: 4920,
     absoluteMinY: -1500,
-    absoluteMaxY: 3362,
+    absoluteMaxY: 3383,
     ranges: [
       {
-        rangeX: [3708, 4022],
-        rangeY: [24, 20000],
+        rangeX: [3000, 4156],
+        rangeY: [-58, 20000],
         values: [
-          { x: 3000, y: 10212 },
-          { x: 3500, y: 5483 },
-          { x: 3708, y: 3362 },
-          { x: 3800, y: 2437 },
-          { x: 3900, y: 1373 },
-          { x: 4022, y: 24 },
+          { x: 3000, y: 11078 },
+          { x: 3500, y: 6442 },
+          { x: 3822, y: 3383 },
+          { x: 4156, y: -58 },
         ],
       },
       {
-        rangeX: [4023, 4331],
-        rangeY: [-2000, 23],
+        rangeX: [4157, 5000],
+        rangeY: [-2000, -57],
         values: [
-          { x: 4022, y: 24 },
-          { x: 4100, y: -461 },
-          { x: 4200, y: -1116 },
-          { x: 4331, y: -2000 },
+          { x: 4156, y: -58 },
+          { x: 4300, y: -862 },
+          { x: 4407, y: -1500 },
+          { x: 4485, y: -2000 },
         ],
       },
     ],
@@ -351,7 +339,7 @@ const data = {
  * @returns {Number} predicted weight
  * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
  */
-export const mtow_ca_50_predictWeight = (temperature, zp) => {
+export const mlw_ca_predictWeight = (temperature, zp) => {
   // Check flight enveloppe with temperature
   if (!checkValueInSubrange(data, temperature)) {
     return {
@@ -382,6 +370,7 @@ export const mtow_ca_50_predictWeight = (temperature, zp) => {
   const weightLow = regressions[tempLow].predict(zp)
   const weightHigh = regressions[tempHigh].predict(zp)
 
+  // Extrapolate weight for given temperature
   const weight = extrapolation(
     temperature,
     tempLow,
@@ -457,63 +446,19 @@ const areas = [
     color: "rgba(100,100,100,0.6)",
     points: [
       ...curves()["-40"],
-      { x: 3946, y: 11402 },
-      { x: 3988, y: 10322 },
-      { x: 3985, y: 9276 },
-      { x: 3985, y: 8809 },
+      { x: 4140, y: 8774 },
       ...curves()["-15"].reverse(),
       { x: 4850, y: -1500 },
       { x: 4920, y: -1500 },
-      { x: 4920, y: -1500 },
-      { x: 4920, y: 5192 },
-      { x: 4850, y: 5517 },
-      { x: 4850, y: 6380 },
+      { x: 4920, y: 5829 },
+      { x: 4850, y: 6207 },
     ],
   },
 ]
 
-/**
- * Chart configuration and data for the MTOW Clear Area VTOSS 40 KTS graph.
- *
- * @constant
- * @type {Object}
- *
- * @property {string} name - Unique identifier of the dataset.
- * @property {string} title - Full title of the chart.
- *
- * @property {number} xmin - Minimum value of the X axis.
- * @property {number} xmax - Reference (zero) value of the X axis.
- * @property {number} x0 - Maximum value of the X axis.
- *
- * @property {number} ymin - Minimum value of the Y axis.
- * @property {number} ymax - Maximum value of the Y axis.
- * @property {number} y0 - Reference (zero) value of the Y axis.
- *
- * @property {number} gridSpacingX - Grid spacing for minor gridlines along the X axis.
- * @property {number} gridSpacingY - Grid spacing for minor gridlines along the Y axis.
- * @property {number} gridSpacingThickX - Grid spacing for major (thick) gridlines along the X axis.
- * @property {number} gridSpacingThickY - Grid spacing for major (thick) gridlines along the Y axis.
- *
- * @property {number} labelSpacingX - Spacing of labels along the X axis.
- * @property {number} labelSpacingY - Spacing of labels along the Y axis.
- *
- * @property {string} xLabel - Label displayed on the X axis.
- * @property {string} yLabel - Label displayed on the Y axis.
- *
- * @property {Array<{x: number, y: number}>} scatterPlot - Data points used for the scatter plot.
- * @property {Object<string, Array<{x: number, y: number}>>} curves - Curve data for each temperature.
- * @property {Array<Object>} labels - Label definitions to display on the chart.
- * @property {Array<Object>} borderLines - Border line definitions for chart boundaries or references.
- * @property {Array<{color: string, points: Array<{x: number, y: number}>>} areas - Polygonal areas to shade or highlight on the chart.
- *
- * @description
- * This object centralizes all configuration and data required to render
- * the **MTOW Clear Area VTOSS 40 KTS** performance chart, including axis settings,
- * grid spacing, labels, scatter plot points, regression curves, borders, and shaded areas.
- */
-export const mtow_ca_50_data = {
-  name: "mtow_ca_50",
-  title: "MAXIMUM TAKEOFF WEIGHT CLEAR AREA VTOSS 50 KT",
+export const mlw_ca_data = {
+  name: "mlw_ca",
+  title: "MAXIMUM LANDING WEIGHT CLEAR AREA",
   xmin: 3000, // X axis minimum value
   xmax: 5000, // X axis reference 0
   x0: 0, // X axis maximum value

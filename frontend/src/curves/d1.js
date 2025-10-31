@@ -1,4 +1,4 @@
-import { extrapolation, getRegressions } from "../utils/calculations"
+import { extrapolation, getRegressions, scatterPlot } from "../utils/calculations"
 
 // Labels for wind
 const labels = [
@@ -197,34 +197,6 @@ export const d1_predictRoundVtoss = (vtoss) => {
 }
 
 /**
- * Generates scatter plot data points from the defined ranges for all winds.
- *
- * @function scatterPlot
- * @returns {Array<{x: number, y: number}>} An array of scatter plot points,
- * where each point contains:
- * - `x`: VTOSS
- * - `y`: D1
- */
-const scatterPlot = () => {
-  let points = []
-
-  for (const wind in data) {
-    const ranges = data[wind].ranges
-
-    for (const range of ranges) {
-      const rangePoints = range.values.map((point) => ({
-        x: point.x,
-        y: point.y,
-      }))
-
-      points.push(...rangePoints)
-    }
-  }
-
-  return points
-}
-
-/**
  * Generates curve data points for each wind based on regression calculations.
  *
  * @function curves
@@ -294,7 +266,7 @@ export const d1_data = {
   labelSpacingY: 100, // Y axis label spacing (value)
   xLabel: "VTOSS (kts)",
   yLabel: "Distance (m)",
-  scatterPlot: scatterPlot(),
+  scatterPlot: scatterPlot(data),
   curves: curves(),
   labels: labels,
   borderLines: borderLines,

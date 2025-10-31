@@ -5,6 +5,7 @@ import {
   computeD1,
   computeFactoredHeadWind,
   computeHeadWind,
+  computeMlw_ca,
   computeMtow_ca_40,
   computeMtow_ca_50,
   computeMtow_ca_60,
@@ -66,4 +67,8 @@ export const calculatePerformances = () => (dispatch, getState) => {
   // MTOW Clear area VTOSS>=60kt
   const mtow_ca_60 = computeMtow_ca_60(takeoffTemperature, takeoffZp)
   dispatch(updatePerformanceField({ field: "mtow_ca_60", value: mtow_ca_60 }))
+
+  // MLW Clear area
+  const mlw_ca = computeMlw_ca(takeoffTemperature, takeoffZp)
+  dispatch(updatePerformanceField({ field: "mlw_ca", value: mlw_ca }))
 }

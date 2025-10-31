@@ -4,6 +4,7 @@ import {
   extrapolation,
   getLowHighValues,
   getRegressionsReverse,
+  scatterPlot,
   setValueInsideLimits,
 } from "../utils/calculations"
 
@@ -524,34 +525,6 @@ export const mtow_ca_40_predictWeight = (temperature, zp) => {
 }
 
 /**
- * Generates scatter plot data points from the defined ranges for all temperatures.
- *
- * @function scatterPlot
- * @returns {Array<{x: number, y: number}>} An array of scatter plot points,
- * where each point contains:
- * - `x`: weight value
- * - `y`: Zp value
- */
-const scatterPlot = () => {
-  const points = []
-
-  for (const temperature in data) {
-    const ranges = data[temperature].ranges
-
-    for (const range of ranges) {
-      const rangePoints = range.values.map((point) => ({
-        x: point.x,
-        y: point.y,
-      }))
-
-      points.push(...rangePoints)
-    }
-  }
-
-  return points
-}
-
-/**
  * Generates curve data points for each temperature based on reverse regression calculations.
  *
  * @function curves
@@ -672,7 +645,7 @@ export const mtow_ca_40_data = {
   labelSpacingY: 5000, // Y axis label spacing (value)
   xLabel: "WEIGHT (kg)",
   yLabel: "Hp (ft x 1000)",
-  scatterPlot: scatterPlot(),
+  scatterPlot: scatterPlot(data),
   curves: curves(),
   labels: labels,
   borderLines: borderLines,

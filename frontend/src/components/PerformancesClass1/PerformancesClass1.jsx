@@ -52,7 +52,7 @@ const PerformancesClass1 = () => {
             </tbody>
           </table>
         </div>
-      
+
         <div className="performancesClass1__mtowClearArea">
           <div className="performanceCell_header">
             MTOW Clear Area VTOSS = 40kt
@@ -61,7 +61,7 @@ const PerformancesClass1 = () => {
             {performancesData.mtow_ca_40}
           </div>
         </div>
-      
+
         <div className="performancesClass1__mtowClearArea">
           <div className="performanceCell_header">
             MTOW Clear Area VTOSS = 50kt
@@ -78,6 +78,11 @@ const PerformancesClass1 = () => {
           <div className="performanceCell_value">
             {performancesData.mtow_ca_60}
           </div>
+        </div>
+
+        <div className="performancesClass1__mtowClearArea">
+          <div className="performanceCell_header">MLW Clear Area</div>
+          <div className="performanceCell_value">{performancesData.mlw_ca}</div>
         </div>
       </div>
     </section>

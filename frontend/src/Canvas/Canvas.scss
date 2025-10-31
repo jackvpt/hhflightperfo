@@ -3,4 +3,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border: 1px solid white;
+  padding: 1rem;
+
+  &__tools {
+    margin-top:1rem;
+    &-displayMode {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
 }
