@@ -49,4 +49,14 @@ export const chartsData = [
     yMin: 206,
     yMax: 857,
   },
+  {
+    name: "mtow_helipad",
+    image: "mtow_helipad.webp",
+    width: 814,
+    height: 1141,
+    xMin: 115,
+    xMax: 636,
+    yMin: 185,
+    yMax: 867 ,
+  },
 ]
