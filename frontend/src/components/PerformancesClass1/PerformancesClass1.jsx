@@ -12,11 +12,14 @@ const PerformancesClass1 = () => {
         Performances Class 1
       </div>
       <div className="container-tab__body bodyPerformancesClass1">
+        {/** Weather data */}
         <div className="container-tab__body-weatherData">
           <div>Zp: {weatherData.takeoffZp} ft</div>
           <div>Temperature: {weatherData.takeoffTemperature} °C</div>
           <div>Factored Head Wind: {performancesData.factoredHeadWind} kt</div>
         </div>
+
+        {/** D1 */}
         <div className="performancesClass1__d1">
           <table className="performancesClass1__d1-labels">
             <tbody>
@@ -53,6 +56,7 @@ const PerformancesClass1 = () => {
           </table>
         </div>
 
+        {/** MTOW Clear Area VTOSS 40kt */}
         <div className="performancesClass1__mtowClearArea">
           <div className="performanceCell_header">
             MTOW Clear Area VTOSS = 40kt
@@ -62,6 +66,7 @@ const PerformancesClass1 = () => {
           </div>
         </div>
 
+        {/** MTOW Clear Area VTOSS 50kt */}
         <div className="performancesClass1__mtowClearArea">
           <div className="performanceCell_header">
             MTOW Clear Area VTOSS = 50kt
@@ -71,6 +76,7 @@ const PerformancesClass1 = () => {
           </div>
         </div>
 
+        {/** MTOW Clear Area VTOSS 60kt */}
         <div className="performancesClass1__mtowClearArea">
           <div className="performanceCell_header">
             MTOW Clear Area VTOSS ≥ 60kt
@@ -80,9 +86,18 @@ const PerformancesClass1 = () => {
           </div>
         </div>
 
+        {/** MLW Clear Area */}
         <div className="performancesClass1__mtowClearArea">
           <div className="performanceCell_header">MLW Clear Area</div>
           <div className="performanceCell_value">{performancesData.mlw_ca}</div>
+        </div>
+
+        {/** MTOW Helipad */}
+        <div className="performancesClass1__mtowClearArea">
+          <div className="performanceCell_header">MTOW Helipad</div>
+          <div className="performanceCell_value">
+            {performancesData.mtow_helipad}
+          </div>
         </div>
       </div>
     </section>

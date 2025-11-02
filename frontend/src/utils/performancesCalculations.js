@@ -3,6 +3,7 @@ import { mlw_ca_predictWeight } from "../curves/mlw_ca"
 import { mtow_ca_40_predictWeight } from "../curves/mtow_ca_40"
 import { mtow_ca_50_predictWeight } from "../curves/mtow_ca_50"
 import { mtow_ca_60_predictWeight } from "../curves/mtow_ca_60"
+import { mtow_helipad_predictWeight } from "../curves/mtow_helipad"
 import { degToRad } from "./calculations"
 
 export const computeHeadWind = (windDirection, windSpeed, runwayHeading) => {
@@ -49,6 +50,12 @@ export const computeMtow_ca_60 = (temperature, zp) => {
 
 export const computeMlw_ca = (temperature, zp) => {
   const { value, error, text } = mlw_ca_predictWeight(temperature, zp)
+  if (error) return text
+  return value
+}
+
+export const computeMtow_helipad = (temperature, zp) => {
+  const { value, error, text } = mtow_helipad_predictWeight(temperature, zp)
   if (error) return text
   return value
 }

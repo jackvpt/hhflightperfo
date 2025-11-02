@@ -9,6 +9,7 @@ import {
   computeMtow_ca_40,
   computeMtow_ca_50,
   computeMtow_ca_60,
+  computeMtow_helipad,
 } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
@@ -71,4 +72,8 @@ export const calculatePerformances = () => (dispatch, getState) => {
   // MLW Clear area
   const mlw_ca = computeMlw_ca(takeoffTemperature, takeoffZp)
   dispatch(updatePerformanceField({ field: "mlw_ca", value: mlw_ca }))
+
+  // MTOW Helipad
+  const mtow_helipad = computeMtow_helipad(takeoffTemperature, takeoffZp)
+  dispatch(updatePerformanceField({ field: "mtow_helipad", value: mtow_helipad }))
 }
