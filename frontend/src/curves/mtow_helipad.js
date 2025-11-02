@@ -615,6 +615,7 @@ const curves = () => {
       if (weight >= absoluteMinX && weight <= absoluteMaxX)
         curve.push({ x: weight, y: zp })
     }
+
     curves[temperature] = curve
   }
   return curves
@@ -637,11 +638,11 @@ const areas = [
     color: "rgba(100,100,100,0.6)",
     points: [
       ...curves()["-40"],
- { x: 3418, y: 10321 },
-    { x: 3488, y: 9314 },
-    { x: 3485, y: 8765 },
+      { x: 3418, y: 10321 },
+      { x: 3488, y: 9314 },
+      { x: 3485, y: 8765 },
       ...curves()["-15"].reverse(),
-          { x: 4293, y: -2000 },
+      { x: 4293, y: -2000 },
     ],
   },
 ]

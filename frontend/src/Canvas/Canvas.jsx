@@ -4,7 +4,18 @@ import { useEffect, useRef, useState } from "react"
 
 // MUI imports
 import { darken, useTheme } from "@mui/material/styles"
-import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material"
+import {
+  Box,
+  Button,
+  Checkbox,
+  Collapse,
+  FormControlLabel,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+
 import { invertColor } from "../utils/colors"
 import { useSelector } from "react-redux"
 import { drawPerformances } from "../utils/drawPerformances"
@@ -31,7 +42,7 @@ const Canvas = ({
   yLabel = "",
   marginLeft = 60,
   marginRight = 20,
-  marginTop = 40,
+  marginTop = 10,
   marginBottom = 40,
   fontName = "Calibri",
   fontSize = 10, // Base font size for labels (pixels)
@@ -238,7 +249,6 @@ const Canvas = ({
         ctx.font = fontTitle
         ctx.textAlign = "center"
         ctx.textBaseline = "top"
-        ctx.fillText(title, marginLeft + plotWidth / 2, 10)
       }
 
       ctx.strokeStyle = "#00ccff"
@@ -334,142 +344,167 @@ const Canvas = ({
     performancesData,
   ])
 
+  const [open, setOpen] = useState(false)
+
   return (
     <section className="container-canvas">
-      <canvas ref={canvasRef} width={width} height={height} />
-      <div className="container-canvas__tools">
-        <div className="container-canvas__tools-displayMode">
-          <Typography sx={{ fontSize: "0.75rem" }}>HFM Chart</Typography>
-          <AntSwitch
-            checked={displayMode === "chart"}
-            onChange={handleChangeDisplayMode}
-            slotProps={{
-              input: { "aria-label": "ant design" },
+      <div className="container-canvas__title">
+        <IconButton
+          className="title-icon"
+          onClick={() => setOpen(!open)}
+          sx={{
+            transition: "transform 0.3s ease",
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            display: "block",
+            mx: "auto",
+          }}
+          aria-label="toggle collapse"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+        <div className="title-text">{title}</div>
+        <div className="spacer"></div>
+      </div>
+      <Collapse in={open} className="container-canvas__body">
+        <div className="container-canvas__body-chart">
+          <canvas ref={canvasRef} width={width} height={height} />
+        </div>
+        <div className="container-canvas__tools">
+          <div className="container-canvas__tools-displayMode">
+            <Typography sx={{ fontSize: "0.75rem" }}>HFM Chart</Typography>
+            <AntSwitch
+              checked={displayMode === "chart"}
+              onChange={handleChangeDisplayMode}
+              slotProps={{
+                input: { "aria-label": "ant design" },
+              }}
+            />
+            <Typography sx={{ fontSize: "0.75rem" }}>
+              Digitalized chart
+            </Typography>
+          </div>
+          {/** Checkbox for Scatter Plot */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={isCheckedScatterPlot}
+                onChange={() => setIsCheckedScatterPlot(!isCheckedScatterPlot)}
+              />
+            }
+            label="Scatter Plot"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontSize: "0.75rem", // adjust label font size
+              },
             }}
           />
-          <Typography sx={{ fontSize: "0.75rem" }}>
-            Digitalized chart
-          </Typography>
+
+          {/** Checkbox for Curves */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={isCheckedCurves}
+                onChange={() => setIsCheckedCurves(!isCheckedCurves)}
+              />
+            }
+            label="Curves"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontSize: "0.75rem", // adjust label font size
+              },
+            }}
+          />
+
+          {/** Checkbox for Labels */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={isCheckedLabels}
+                onChange={() => setIsCheckedLabels(!isCheckedLabels)}
+              />
+            }
+            label="Labels"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontSize: "0.75rem", // adjust label font size
+              },
+            }}
+          />
+
+          {/** Checkbox for Grid */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={isCheckedGrid}
+                onChange={() => setIsCheckedGrid(!isCheckedGrid)}
+              />
+            }
+            label="Grid"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontSize: "0.75rem", // adjust label font size
+              },
+            }}
+          />
+
+          {/** Checkbox for Areas */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={isCheckedAreas}
+                onChange={() => setIsCheckedAreas(!isCheckedAreas)}
+              />
+            }
+            label="Areas"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontSize: "0.75rem", // adjust label font size
+              },
+            }}
+          />
+
+          {/** Checkbox for HFM Chart */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={isCheckedChart}
+                onChange={() => setIsCheckedChart(!isCheckedChart)}
+              />
+            }
+            label="HFM chart"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontSize: "0.75rem", // adjust label font size
+              },
+            }}
+          />
+
+          {/** Checkbox for Calculations */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={isCheckedCalculations}
+                onChange={() =>
+                  setIsCheckedCalculations(!isCheckedCalculations)
+                }
+              />
+            }
+            label="Calculations"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontSize: "0.75rem", // adjust label font size
+              },
+            }}
+          />
         </div>
-        {/** Checkbox for Scatter Plot */}
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={isCheckedScatterPlot}
-              onChange={() => setIsCheckedScatterPlot(!isCheckedScatterPlot)}
-            />
-          }
-          label="Scatter Plot"
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              fontSize: "0.75rem", // adjust label font size
-            },
-          }}
-        />
-
-        {/** Checkbox for Curves */}
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={isCheckedCurves}
-              onChange={() => setIsCheckedCurves(!isCheckedCurves)}
-            />
-          }
-          label="Curves"
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              fontSize: "0.75rem", // adjust label font size
-            },
-          }}
-        />
-
-        {/** Checkbox for Labels */}
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={isCheckedLabels}
-              onChange={() => setIsCheckedLabels(!isCheckedLabels)}
-            />
-          }
-          label="Labels"
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              fontSize: "0.75rem", // adjust label font size
-            },
-          }}
-        />
-
-        {/** Checkbox for Grid */}
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={isCheckedGrid}
-              onChange={() => setIsCheckedGrid(!isCheckedGrid)}
-            />
-          }
-          label="Grid"
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              fontSize: "0.75rem", // adjust label font size
-            },
-          }}
-        />
-
-        {/** Checkbox for Areas */}
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={isCheckedAreas}
-              onChange={() => setIsCheckedAreas(!isCheckedAreas)}
-            />
-          }
-          label="Areas"
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              fontSize: "0.75rem", // adjust label font size
-            },
-          }}
-        />
-
-        {/** Checkbox for HFM Chart */}
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={isCheckedChart}
-              onChange={() => setIsCheckedChart(!isCheckedChart)}
-            />
-          }
-          label="HFM chart"
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              fontSize: "0.75rem", // adjust label font size
-            },
-          }}
-        />
-
-        {/** Checkbox for Calculations */}
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={isCheckedCalculations}
-              onChange={() => setIsCheckedCalculations(!isCheckedCalculations)}
-            />
-          }
-          label="Calculations"
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              fontSize: "0.75rem", // adjust label font size
-            },
-          }}
-        />
-      </div>
+      </Collapse>
     </section>
   )
 }

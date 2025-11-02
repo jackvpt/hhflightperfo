@@ -1,18 +1,53 @@
 .container-canvas {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   border: 1px solid white;
-  padding: 1rem;
+  padding:0.5rem;
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .title-icon {
+    display: flex;
+    width:40px;
+    justify-content: center;
+  }
+  .title-text {
+    display:flex;
+    flex: 8;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .spacer {
+    display:flex;
+    width: 40px;
+  }
 
   &__tools {
-    margin-top:1rem;
+    margin-top: 1rem;
     &-displayMode {
       display: flex;
       flex-direction: row;
       align-items: center;
       gap: 0.5rem;
+    }
+  }
+
+  &__body{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+
+    &-chart{
+      text-align: center;
     }
   }
 }
