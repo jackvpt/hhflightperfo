@@ -1,10 +1,22 @@
 import { useSelector } from "react-redux"
 import "./PerformancesClass1.scss"
+import { useFetchMetar } from "../../hooks/useFetchMetar"
 
 const PerformancesClass1 = () => {
   // REDUX store
   const weatherData = useSelector((state) => state.weatherData)
   const performancesData = useSelector((state) => state.performancesData)
+
+  const {
+    data: metarData,
+    isLoading: isLoadingMetar,
+    error: errorMetar,
+  } = useFetchMetar("EHKD")
+
+  if (isLoadingMetar) return <div>Loading METAR data...</div>
+  if (errorMetar)
+    return <div>Error loading METAR data: {errorMetar.message}</div>
+  console.log("metarData :>> ", metarData[0].wdir)
 
   return (
     <section className="container-tab">
