@@ -28,6 +28,9 @@ export const drawPerformances = (
     case "mtow_helipad":
       drawMtow_Helipad(ctx, weatherData, performancesData, toCanvasX, toCanvasY)
       break
+    case "mlw_helipad":
+      drawMlw_Helipad(ctx, weatherData, performancesData, toCanvasX, toCanvasY)
+      break
     default:
       break
   }
@@ -152,6 +155,25 @@ const drawMtow_Helipad = (
   toCanvasY
 ) => {
   const weight = performancesData.mtow_helipad
+  const zp = weatherData.takeoffZp
+  const x0 = toCanvasX(3000)
+  const y0 = toCanvasY(-2000)
+  const x = toCanvasX(weight)
+  const y = toCanvasY(zp)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+
+// Draw MLW Helipad performance points and lines
+const drawMlw_Helipad = (
+  ctx,
+  weatherData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const weight = performancesData.mlw_helipad
   const zp = weatherData.takeoffZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)

@@ -344,7 +344,7 @@ const Canvas = ({
     performancesData,
   ])
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   return (
     <section className="container-canvas">

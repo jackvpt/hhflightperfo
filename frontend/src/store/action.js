@@ -6,6 +6,7 @@ import {
   computeFactoredHeadWind,
   computeHeadWind,
   computeMlw_ca,
+  computeMlw_helipad,
   computeMtow_ca_40,
   computeMtow_ca_50,
   computeMtow_ca_60,
@@ -76,4 +77,8 @@ export const calculatePerformances = () => (dispatch, getState) => {
   // MTOW Helipad
   const mtow_helipad = computeMtow_helipad(takeoffTemperature, takeoffZp)
   dispatch(updatePerformanceField({ field: "mtow_helipad", value: mtow_helipad }))
+
+  // MLW Helipad
+  const mlw_helipad = computeMlw_helipad(takeoffTemperature, takeoffZp)
+  dispatch(updatePerformanceField({ field: "mlw_helipad", value: mlw_helipad }))
 }

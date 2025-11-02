@@ -94,9 +94,17 @@ const PerformancesClass1 = () => {
 
         {/** MTOW Helipad */}
         <div className="performancesClass1__mtowClearArea">
-          <div className="performanceCell_header">MTOW Helipad</div>
+          <div className="performanceCell_header">MTOW Ground Helipad</div>
           <div className="performanceCell_value">
             {performancesData.mtow_helipad}
+          </div>
+        </div>
+
+        {/** MLW Helipad */}
+        <div className="performancesClass1__mtowClearArea">
+          <div className="performanceCell_header">MLW Ground Helipad</div>
+          <div className="performanceCell_value">
+            {performancesData.mlw_helipad}
           </div>
         </div>
       </div>
