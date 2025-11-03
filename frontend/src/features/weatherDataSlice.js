@@ -28,9 +28,21 @@ const weatherDataSlice = createSlice({
         state.takeoffZp = calculateZP(state.takeoffAltitude, state.qnh)
       }
     },
+
+    updateFromMetar: (state, action) => {
+      const { windDirection, windSpeed, qnh, temperature, altitude } = action.payload
+
+      if (windDirection !== undefined) state.windDirection = windDirection
+      if (windSpeed !== undefined) state.windSpeed = windSpeed
+      if (qnh !== undefined) state.qnh = qnh
+      if (temperature !== undefined) state.takeoffTemperature = temperature
+      if (altitude !== undefined) state.takeoffAltitude = altitude
+
+      state.takeoffZp = calculateZP(state.takeoffAltitude, state.qnh)
+    },
   },
 })
 
-export const { updateField } = weatherDataSlice.actions
+export const { updateField, updateFromMetar } = weatherDataSlice.actions
 
 export default weatherDataSlice.reducer

@@ -37,6 +37,18 @@
   }
 }
 
+.tabBodyWithShortCuts{
+  display:flex;
+  flex-direction: row;
+
+  .bodyShortCuts{
+    display:flex;
+    flex-direction: column;
+    gap:0.5rem;
+    margin-right:1rem;
+  }
+}
+
 .performanceCell_header {
   display:flex;
   flex-direction: column;

@@ -17,3 +17,22 @@
     if (unit === "pressure") return 90
     return 90
   }
+
+  /**
+   * Formats a date string into a more readable format.
+   * @param {Date} dateString - The date to format.
+   * @returns {Object} - An object containing the formatted day/month and time.
+   */
+  export const formatDateTimeDDMMHHMM = (dateString) => {
+  const date = new Date(dateString);
+  const dayMonth = date.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+  });
+  const time = date.toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return `${dayMonth} ${time}`;
+};
+

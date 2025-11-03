@@ -1,4 +1,11 @@
-import { extrapolation, getRegressions, scatterPlot } from "../utils/calculations"
+import {
+  checkValueInSubrange,
+  extrapolation,
+  getLowHighValues,
+  getRegressions,
+  scatterPlot,
+  setValueInsideLimits,
+} from "../utils/calculations"
 
 // Labels for wind
 const labels = [
@@ -178,18 +185,40 @@ const data = {
 const calculationsDisplay = []
 
 export const d1_predictD1 = (wind, vtoss) => {
-  const windLow = Math.floor(wind / 10) * 10
-  let windHigh = windLow + 10
-  if (windHigh > 50) {
-    windHigh = 50
+  // Check flight enveloppe with temperature
+  if (!checkValueInSubrange(data, wind)) {
+    return {
+      value: null,
+      error: "Outside defined wind range",
+      text: "N/A",
+    }
   }
 
+  // Get low and high wind surrounding values
+  const { lowValue: windLow, highValue: windHigh } = getLowHighValues(
+    wind,
+    10,
+    50
+  )
+
+  // Get regressions for low and high wind
   const regressions = getRegressions(data, vtoss)
   const d1Low = regressions[windLow].predict(vtoss)
   const d1High = regressions[windHigh].predict(vtoss)
 
+  // Extrapolate d1 for given wind
   const d1 = extrapolation(wind, windLow, d1Low, windHigh, d1High)
-  return Math.round(d1)
+
+  // Check flight enveloppe with Weight
+  const weightInLimits = setValueInsideLimits(
+    data,
+    windLow,
+    windHigh,
+    d1,
+    "yAxis"
+  )
+  return { value: Math.round(weightInLimits), error: null, text: null }
+
 }
 
 export const d1_predictRoundVtoss = (vtoss) => {
