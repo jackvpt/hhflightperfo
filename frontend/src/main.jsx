@@ -46,6 +46,18 @@ const theme = createTheme({
   cssVariables: true,
   palette: {
     mode: "dark",
+    customRed: {
+      main: "#ff0000",
+      contrastText: "#fff",
+    },
+    customBlue: {
+      main: "#2964ecff",
+      contrastText: "#fff",
+    },
+    customBlueSelect: {
+      main: "#a6bff9",
+      contrastText: "#000",
+    },
   },
 })
 

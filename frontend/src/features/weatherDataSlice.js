@@ -30,7 +30,8 @@ const weatherDataSlice = createSlice({
     },
 
     updateFromMetar: (state, action) => {
-      const { windDirection, windSpeed, qnh, temperature, altitude } = action.payload
+      const { windDirection, windSpeed, qnh, temperature, altitude } =
+        action.payload
 
       if (windDirection !== undefined) state.windDirection = windDirection
       if (windSpeed !== undefined) state.windSpeed = windSpeed

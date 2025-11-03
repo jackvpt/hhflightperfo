@@ -1,0 +1,23 @@
+@use "../../../styles/utils/variables" as *;
+
+.bodyTakeoffParameters {
+  &-metar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+    gap: 1rem;
+
+    .metar-header {
+      font-family: $font_computer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #00b894;
+    }
+
+    .metar-text {
+      font-family: $font-computer;
+      font-size: 0.8rem;
+    }
+  }
+}

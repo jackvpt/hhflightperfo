@@ -9,6 +9,7 @@ import { mtow_ca_50_data } from "../../curves/mtow_ca_50"
 import { mlw_ca_data } from "../../curves/mlw_ca"
 import { mtow_helipad_data } from "../../curves/mtow_helipad"
 import { mlw_helipad_data } from "../../curves/mlw_helipad"
+import {  mtow_elevated_heliport_data } from "../../curves/mtow_elevated_heliport"
 
 const Home = () => {
   return (
@@ -19,6 +20,7 @@ const Home = () => {
         <PerformancesClass1 />
 
         <div className="home-page__content-curves">
+          <Canvas {...mtow_elevated_heliport_data} />
           <Canvas {...d1_data} />
           <Canvas {...mtow_ca_40_data} />
           <Canvas {...mtow_ca_50_data} />

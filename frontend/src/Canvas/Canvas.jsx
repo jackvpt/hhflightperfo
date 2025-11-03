@@ -38,6 +38,8 @@ const Canvas = ({
   gridSpacingThickY, // Y axis thick grid spacing (value)
   labelSpacingX, // X axis label spacing (value)
   labelSpacingY, // Y axis label spacing (value)
+  reverseX = false,
+  reverseY = false,
   xLabel = "",
   yLabel = "",
   marginLeft = 60,
@@ -120,8 +122,14 @@ const Canvas = ({
   xfactor = plotWidth / (xmax - xmin)
   yfactor = plotHeight / (ymax - ymin)
 
-  const toCanvasX = (x) => marginLeft + (x - xmin) * xfactor
-  const toCanvasY = (y) => height - marginBottom - (y - ymin) * yfactor
+  const toCanvasX = (x) => {
+    if (reverseX) return width - marginRight - (x - xmin) * xfactor
+    return marginLeft + (x - xmin) * xfactor
+  }
+  const toCanvasY = (y) => {
+    if (reverseY) return marginTop + (ymax - y) * yfactor
+    return height - marginBottom - (y - ymin) * yfactor
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -159,6 +167,7 @@ const Canvas = ({
         // Vertical grid lines
         ctx.strokeStyle = gridColor
         ctx.lineWidth = 1
+
         for (let x = xmin; x <= xmax; x += gridSpacingX) {
           const cx = toCanvasX(x)
           ctx.beginPath()

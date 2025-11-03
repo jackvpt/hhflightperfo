@@ -3,9 +3,9 @@ import InputNumber from "../SubComponents/InputNumber/InputNumber"
 import DisplayValue from "../SubComponents/DisplayValue/DisplayValue"
 import { useDispatch, useSelector } from "react-redux"
 import { calculatePerformances, updateAnyField } from "../../store/action"
-import { useFetchMetar } from "../../hooks/useFetchMetar"
-import { Button } from "@mui/material"
-import { useEffect, useState } from "react"
+import AirfieldToggleGroup from "../SubComponents/AirfieldToggleGroup/AirfieldToggleGroup"
+import MetarDisplay from "../SubComponents/MetarDisplay/MetarDisplay"
+import { useEffect } from "react"
 import { updateFromMetar } from "../../features/weatherDataSlice"
 
 const TakeoffParameters = () => {
@@ -14,15 +14,6 @@ const TakeoffParameters = () => {
   const weatherData = useSelector((state) => state.weatherData)
   const flightData = useSelector((state) => state.flightData)
   const performancesData = useSelector((state) => state.performancesData)
-
-  // State
-  const [airfieldCode, setAirfieldCode] = useState("manual")
-
-  const {
-    data: metarData,
-    isLoading: isLoadingMetar,
-    error: errorMetar,
-  } = useFetchMetar(airfieldCode)
 
   // Handle form input changes
   const handleInputChange = (event) => {
@@ -34,22 +25,6 @@ const TakeoffParameters = () => {
     return dispatch(calculatePerformances())
   }
 
-  const handleClickAirfieldShortcut = (airfieldCode) => {
-    setAirfieldCode(airfieldCode)
-  }
-
-  useEffect(() => {
-    if (metarData && airfieldCode !== "manual") {
-      dispatch(updateFromMetar(metarData))
-      dispatch(calculatePerformances())
-    }
-  }, [metarData, airfieldCode, dispatch])
-
-  // API async status handling
-  if (isLoadingMetar) return <div>Loading METAR data...</div>
-  if (errorMetar)
-    return <div>Error loading METAR data: {errorMetar.message}</div>
-
   return (
     <section className="container-tab takeoffParameters">
       <div className="container-tab__header headerTakeoffParameters">
@@ -58,44 +33,10 @@ const TakeoffParameters = () => {
       <div className="container-tab__body">
         <div className="tabBodyWithShortCuts">
           <aside className="bodyShortCuts">
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              sx={{
-                fontSize: "0.65rem",
-                padding: "1px 4px",
-                width: 60,
-              }}
-              onClick={() => handleClickAirfieldShortcut("ehkd")}
-            >
-              EHKD
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              sx={{
-                fontSize: "0.65rem",
-                padding: "1px 4px",
-                width: 60,
-              }}
-              onClick={() => handleClickAirfieldShortcut("epgd")}
-            >
-              EPGD
-            </Button>
+            <AirfieldToggleGroup />
           </aside>
           <div className="bodyTakeoffParameters">
-            <div className="bodyTakeoffParameters-metar">
-              <div className="metar-header">
-                {metarData ? (
-                  <>
-                    {metarData?.icaoId} {metarData?.time}
-                  </>
-                ) : "NO METAR DATA"}
-              </div>
-              <div className="metar-text">{metarData?.rawText}</div>
-            </div>
+            <MetarDisplay />
             <div className="bodyTakeoffParameters-inputBoxes">
               <InputNumber
                 name="windDirection"
