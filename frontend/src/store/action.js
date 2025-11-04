@@ -10,6 +10,7 @@ import {
   computeMtow_ca_40,
   computeMtow_ca_50,
   computeMtow_ca_60,
+  computeMtow_elevated_heliport_1,
   computeMtow_helipad,
 } from "../utils/performancesCalculations.js"
 
@@ -76,9 +77,23 @@ export const calculatePerformances = () => (dispatch, getState) => {
 
   // MTOW Helipad
   const mtow_helipad = computeMtow_helipad(takeoffTemperature, takeoffZp)
-  dispatch(updatePerformanceField({ field: "mtow_helipad", value: mtow_helipad }))
+  dispatch(
+    updatePerformanceField({ field: "mtow_helipad", value: mtow_helipad })
+  )
 
   // MLW Helipad
   const mlw_helipad = computeMlw_helipad(takeoffTemperature, takeoffZp)
   dispatch(updatePerformanceField({ field: "mlw_helipad", value: mlw_helipad }))
+
+  // MTOW Elevated Heliport 1
+  const mtow_elevated_heliport_1 = computeMtow_elevated_heliport_1(
+    15,
+    60
+  )
+  dispatch(
+    updatePerformanceField({
+      field: "mtow_elevated_heliport_1",
+      value: mtow_elevated_heliport_1,
+    })
+  )
 }

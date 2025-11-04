@@ -4,77 +4,50 @@ import {
   extrapolation,
   getLowHighValues,
   getRegressions,
-  getRegressionsReverse,
   scatterPlot,
   setValueInsideLimits,
 } from "../utils/calculations"
 
 // Labels for temperatures
 const labels = [
-  // {
-  //   text: "-40",
-  //   x: 4050,
-  //   y: 7300,
-  //   angle: 35,
-  // },
-  // {
-  //   text: "-30",
-  //   x: 3970,
-  //   y: 7150,
-  //   angle: 35,
-  // },
-  // {
-  //   text: "-20",
-  //   x: 3890,
-  //   y: 7050,
-  //   angle: 38,
-  // },
-  // {
-  //   text: "-10",
-  //   x: 3850,
-  //   y: 6400,
-  //   angle: 40,
-  // },
-  // {
-  //   text: "0",
-  //   x: 3800,
-  //   y: 5600,
-  //   angle: 40,
-  // },
-  // {
-  //   text: "10",
-  //   x: 3800,
-  //   y: 4800,
-  //   angle: 42,
-  // },
-  // {
-  //   text: "20",
-  //   x: 3800,
-  //   y: 3750,
-  //   angle: 42,
-  // },
-  // {
-  //   text: "30",
-  //   x: 3800,
-  //   y: 2700,
-  //   angle: 45,
-  // },
-  // {
-  //   text: "40",
-  //   x: 3800,
-  //   y: 1550,
-  //   angle: 45,
-  // },
-  // {
-  //   text: "50",
-  //   x: 3800,
-  //   y: -100,
-  //   angle: 45,
-  // },
+  {
+    text: "HEADWIND (KT)",
+    x: 100,
+    y: 6.8,
+    angle: 0,
+  },
+  {
+    text: "AFTER FACTORING",
+    x: 100,
+    y: 6.5,
+    angle: 0,
+  },
+  {
+    text: "0",
+    x: 40,
+    y: 6.6,
+    angle: -50,
+  },
+  {
+    text: "10",
+    x: 35,
+    y: 5.2,
+    angle: -60,
+  },
+  {
+    text: "20",
+    x: 30,
+    y: 3.3,
+    angle: -60,
+  },
+  {
+    text: "30",
+    x: 25,
+    y: 1.5,
+    angle: -35,
+  },
+ 
 ]
-
-// Border lines (left side of flight envelope and bottom)
-const borderLines = []
 
 /**
  * Data structure
@@ -102,6 +75,10 @@ const data = {
           { x: 50, y: 5.44 },
           { x: 100, y: 3.43 },
           { x: 150, y: 2.25 },
+          { x: 160, y: 2.05},
+          { x: 170, y:1.87  },
+          { x: 180, y:1.7  },
+          { x: 190, y: 1.54 },
           { x: 200, y: 1.38 },
         ],
       },
@@ -189,55 +166,56 @@ const data = {
  * @returns {Number} predicted weight
  * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
  */
-export const mtow_elevated_heliport_predictWeight = (temperature, zp) => {
-  // Check flight enveloppe with temperature
-  if (!checkValueInSubrange(data, temperature)) {
+export const mtow_elevated_heliport_1_predictCoef = (wind, dropDown) => {
+  // Check flight enveloppe with wind
+  if (!checkValueInSubrange(data, wind)) {
     return {
       value: null,
-      error: "Outside defined temperature range",
+      error: "Outside defined wind range",
       text: "N/A",
     }
   }
 
-  // Get low and high temperature surrounding values
-  const { lowValue: tempLow, highValue: tempHigh } = getLowHighValues(
-    temperature,
+  // Get low and high wind surrounding values
+  const { lowValue: windLow, highValue: windHigh } = getLowHighValues(
+    wind,
     10,
-    50
+    30
   )
 
-  // Check flight enveloppe with Zp
-  if (!checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis")) {
+  // Check flight enveloppe with drop down
+  if (!checkValueInLimits(data, windLow, windHigh, dropDown, "xAxis")) {
     return {
       value: null,
-      error: "Outside defined pressure altitude range",
+      error: "Outside defined drop down range",
       text: "N/A",
     }
   }
 
   // Get regressions for low and high temperature
-  const regressions = getRegressionsReverse(data, zp)
-  const weightLow = regressions[tempLow].predict(zp)
-  const weightHigh = regressions[tempHigh].predict(zp)
+  const regressions = getRegressions(data, dropDown)
+  const coefLow = regressions[windLow].predict(dropDown)
+  const coefHigh = regressions[windHigh].predict(dropDown)
 
-  // Extrapolate weight for given temperature
-  const weight = extrapolation(
-    temperature,
-    tempLow,
-    weightLow,
-    tempHigh,
-    weightHigh
+  // Extrapolate weight for given wind
+  const coef = extrapolation(
+    wind,
+    windLow,
+    coefLow,
+    windHigh,
+    coefHigh
   )
 
+  
   // Check flight enveloppe with Weight
-  const weightInLimits = setValueInsideLimits(
+  const coefInLimits = setValueInsideLimits(
     data,
-    tempLow,
-    tempHigh,
-    weight,
-    "xAxis"
+    windLow,
+    windHigh,
+    coef,
+    "yAxis"
   )
-  return { value: Math.round(weightInLimits), error: null, text: null }
+return { value: Number(coefInLimits.toFixed(2)), error: null, text: null };
 }
 
 /**
@@ -267,7 +245,7 @@ const curves = () => {
       dropDown <= data[wind].absoluteMaxX;
       dropDown += 2
     ) {
-      const regressions = getRegressions(data, dropDown)
+      const regressions = getRegressions(data, dropDown,4)
       const coef = regressions[wind].predict(dropDown)
       const absoluteMinY = data[wind].absoluteMinY
       const absoluteMaxY = data[wind].absoluteMaxY
@@ -277,39 +255,13 @@ const curves = () => {
 
     curves[wind] = curve
   }
-  console.log("curves :>> ", curves)
   return curves
 }
 
-/**
- * Defines polygonal areas to be displayed on a chart.
- *
- * @constant
- * @type {Array<{color: string, points: Array<{x: number, y: number}>>>}
- *
- * @property {string} color - The fill color of the area, including alpha transparency (RGBA format).
- * @property {Array<{x: number, y: number}>} points - The ordered list of points (vertices) defining the polygon.
- * These points are composed of:
- * - Curve points from the `curves()` function (for specific temperatures),
- * - Additional fixed points to close the shape.
- */
-const areas = [
-  // {
-  //   color: "rgba(100,100,100,0.6)",
-  //   points: [
-  //     ...curves()["-40"],
-  //     { x: 3418, y: 10321 },
-  //     { x: 3488, y: 9314 },
-  //     { x: 3485, y: 8765 },
-  //     ...curves()["-15"].reverse(),
-  //     { x: 4293, y: -2000 },
-  //   ],
-  // },
-]
 
-export const mtow_elevated_heliport_data = {
-  name: "mtow_elevated_heliport",
-  title: "MAXIMUM TAKEOFF WEIGHT ELEVATED HELIPORT",
+export const mtow_elevated_heliport_1_data = {
+  name: "mtow_elevated_heliport_1",
+  title: "MAXIMUM TAKEOFF WEIGHT ELEVATED HELIPORT #1",
   xmin: 0, // X axis minimum value
   xmax: 200, // X axis reference 0
   x0: 0, // X axis maximum value
@@ -328,6 +280,6 @@ export const mtow_elevated_heliport_data = {
   scatterPlot: scatterPlot(data),
   curves: curves(),
   labels: labels,
-  borderLines: borderLines,
-  areas: areas,
+  borderLines: [],
+  areas: []
 }

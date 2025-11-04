@@ -22,7 +22,7 @@ export const extrapolation = (
  * These regressions can be used to predict y given a x.
  * The degree of the polynomial can be adjusted as needed.
  */
-export const getRegressions = (data, entry) => {
+export const getRegressions = (data, entry,degree=3) => {
   const regressions = {}
   for (const curve in data) {
     const pointsInRange = data[curve].ranges.flatMap((subrange) =>
@@ -34,7 +34,7 @@ export const getRegressions = (data, entry) => {
     const ys = pointsInRange.map((point) => point.y)
 
     // Create the polynomial regression (degree 5 here)
-    regressions[curve] = new PolynomialRegression(xs, ys, 3)
+    regressions[curve] = new PolynomialRegression(xs, ys, degree)
   }
 
   return regressions
@@ -47,7 +47,7 @@ export const getRegressions = (data, entry) => {
  * These regressions can be used to predict x given y
  * The degree of the polynomial can be adjusted as needed.
  */
-export const getRegressionsReverse = (data, entry) => {
+export const getRegressionsReverse = (data, entry,degree=3) => {
   const regressionsReverse = {}
 
   for (const curve in data) {
@@ -60,7 +60,7 @@ export const getRegressionsReverse = (data, entry) => {
     const ys = pointsInRange.map((point) => point.y)
 
     // Create the polynomial regression (degree 5 here)
-    regressionsReverse[curve] = new PolynomialRegression(ys, xs, 3)
+    regressionsReverse[curve] = new PolynomialRegression(ys, xs, degree)
   }
   return regressionsReverse
 }
