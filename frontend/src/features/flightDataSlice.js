@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit"
 export const initialState = {
   takeoffAirfield: null,
   runwayHeading: 20,
-  takeOffWeight: 0,
+  takeOffWeight: 4800,
+  platformDropDown: 60,
 }
 
 const flightDataSlice = createSlice({

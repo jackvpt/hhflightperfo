@@ -11,7 +11,7 @@ import {
 // Labels for temperatures
 const labels = [
   {
-    text: "HEADWIND (KT)",
+    text: "HEADWIND (kt)",
     x: 100,
     y: 6.8,
     angle: 0,
@@ -46,7 +46,6 @@ const labels = [
     y: 1.5,
     angle: -35,
   },
- 
 ]
 
 /**
@@ -73,11 +72,19 @@ const data = {
           { x: 30, y: 6.71 },
           { x: 40, y: 6.03 },
           { x: 50, y: 5.44 },
+          { x: 60, y: 4.91 },
+          { x: 70, y: 4.47 },
+          { x: 80, y: 4.09 },
+          { x: 90, y: 3.73 },
           { x: 100, y: 3.43 },
+          { x: 110, y: 3.15 },
+          { x: 120, y: 2.9 },
+          { x: 130, y: 2.66 },
+          { x: 140, y: 2.44 },
           { x: 150, y: 2.25 },
-          { x: 160, y: 2.05},
-          { x: 170, y:1.87  },
-          { x: 180, y:1.7  },
+          { x: 160, y: 2.05 },
+          { x: 170, y: 1.87 },
+          { x: 180, y: 1.7 },
           { x: 190, y: 1.54 },
           { x: 200, y: 1.38 },
         ],
@@ -100,8 +107,20 @@ const data = {
           { x: 30, y: 4.95 },
           { x: 40, y: 4.32 },
           { x: 50, y: 3.81 },
+          { x: 60, y: 3.4 },
+          { x: 70, y: 3.04 },
+          { x: 80, y: 2.74 },
+          { x: 90, y: 2.47 },
           { x: 100, y: 2.24 },
+          { x: 110, y: 2.0 },
+          { x: 120, y: 1.79 },
+          { x: 130, y: 1.61 },
+          { x: 140, y: 1.43 },
           { x: 150, y: 1.27 },
+          { x: 160, y: 1.11 },
+          { x: 170, y: 0.96 },
+          { x: 180, y: 0.82 },
+          { x: 190, y: 0.68 },
           { x: 200, y: 0.55 },
         ],
       },
@@ -198,15 +217,8 @@ export const mtow_elevated_heliport_1_predictCoef = (wind, dropDown) => {
   const coefHigh = regressions[windHigh].predict(dropDown)
 
   // Extrapolate weight for given wind
-  const coef = extrapolation(
-    wind,
-    windLow,
-    coefLow,
-    windHigh,
-    coefHigh
-  )
+  const coef = extrapolation(wind, windLow, coefLow, windHigh, coefHigh)
 
-  
   // Check flight enveloppe with Weight
   const coefInLimits = setValueInsideLimits(
     data,
@@ -215,7 +227,7 @@ export const mtow_elevated_heliport_1_predictCoef = (wind, dropDown) => {
     coef,
     "yAxis"
   )
-return { value: Number(coefInLimits.toFixed(2)), error: null, text: null };
+  return { value: Number(coefInLimits.toFixed(2)), error: null, text: null }
 }
 
 /**
@@ -245,7 +257,7 @@ const curves = () => {
       dropDown <= data[wind].absoluteMaxX;
       dropDown += 2
     ) {
-      const regressions = getRegressions(data, dropDown,4)
+      const regressions = getRegressions(data, dropDown,4 )
       const coef = regressions[wind].predict(dropDown)
       const absoluteMinY = data[wind].absoluteMinY
       const absoluteMaxY = data[wind].absoluteMaxY
@@ -257,7 +269,6 @@ const curves = () => {
   }
   return curves
 }
-
 
 export const mtow_elevated_heliport_1_data = {
   name: "mtow_elevated_heliport_1",
@@ -274,6 +285,7 @@ export const mtow_elevated_heliport_1_data = {
   gridSpacingThickY: 2, // Y axis thick grid spacing (value)
   labelSpacingX: 50, // X axis label spacing (value)
   labelSpacingY: 2, // Y axis label spacing (value)
+  yAxisSide: "right",
   reverseX: true, // Reverse X axis
   xLabel: "DROP DOWN (ft)",
   yLabel: "",
@@ -281,5 +293,5 @@ export const mtow_elevated_heliport_1_data = {
   curves: curves(),
   labels: labels,
   borderLines: [],
-  areas: []
+  areas: [],
 }

@@ -4,8 +4,10 @@ export const drawPerformances = (
   ctx,
   weatherData,
   performancesData,
+  flightData,
   toCanvasX,
-  toCanvasY
+  toCanvasY,
+  yAxisSide = "left"
 ) => {
   if (!performancesData) return
 
@@ -32,7 +34,13 @@ export const drawPerformances = (
       drawMlw_Helipad(ctx, weatherData, performancesData, toCanvasX, toCanvasY)
       break
     case "mtow_elevated_heliport_1":
-      drawMtow_Elevated_Heliport_1(ctx, weatherData, performancesData, toCanvasX, toCanvasY)
+      drawMtow_Elevated_Heliport_1(
+        ctx,
+        performancesData,
+        flightData,
+        toCanvasX,
+        toCanvasY
+      )
       break
     default:
       break
@@ -46,6 +54,9 @@ const drawLines = (ctx, x0, x, y0, y) => {
   ctx.moveTo(x0 - 5, y)
   ctx.lineTo(x, y)
   ctx.lineTo(x, y0 + 5)
+  ctx.moveTo(x0 + 5, y)
+  ctx.lineTo(x, y)
+  ctx.lineTo(x, y0 - 5)
   ctx.strokeStyle = "orange"
   ctx.lineWidth = 2
   ctx.stroke()
@@ -66,7 +77,7 @@ const drawD1 = (ctx, performancesData, toCanvasX, toCanvasY) => {
     const x0 = toCanvasX(40)
     const y0 = toCanvasY(0)
     const x = toCanvasX(d1.vtoss)
-    const y = toCanvasY(d1.distance)
+    const y = toCanvasY(d1.distance.value)
 
     drawLines(ctx, x0, x, y0, y)
     drawPoint(ctx, x, y)
@@ -190,14 +201,14 @@ const drawMlw_Helipad = (
 // Draw MTOW Elevated Heliport #1 performance points and lines
 const drawMtow_Elevated_Heliport_1 = (
   ctx,
-  weatherData,
   performancesData,
+  flightData,
   toCanvasX,
   toCanvasY
 ) => {
   const coef = performancesData.mtow_elevated_heliport_1
-  const dropDown = 60
-  const x0 = toCanvasX(200)
+  const dropDown = flightData.platformDropDown
+  const x0 = toCanvasX(0)
   const y0 = toCanvasY(0)
   const x = toCanvasX(dropDown)
   const y = toCanvasY(coef)

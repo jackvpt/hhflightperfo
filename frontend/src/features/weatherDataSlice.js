@@ -7,6 +7,7 @@ export const initialState = {
   takeoffTemperature: 15,
   takeoffAltitude: 0,
   takeoffZp: 0,
+  platformWindSpeed:15,
 }
 
 const calculateZP = (altitude, qnh) => {

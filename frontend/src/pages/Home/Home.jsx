@@ -10,6 +10,7 @@ import { mlw_ca_data } from "../../curves/mlw_ca"
 import { mtow_helipad_data } from "../../curves/mtow_helipad"
 import { mlw_helipad_data } from "../../curves/mlw_helipad"
 import { mtow_elevated_heliport_1_data } from "../../curves/mtow_elevated_heliport_1"
+import PlatformParameters from "../../components/PlatformParameters/PlatformParameters"
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
       <h1>EC155 Flight Performances</h1>
       <div className="home-page__content">
         <TakeoffParameters />
+        <PlatformParameters />
         <PerformancesClass1 />
 
         <div className="home-page__content-curves">

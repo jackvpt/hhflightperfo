@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { calculatePerformances, updateAnyField } from "../../store/action"
 import AirfieldToggleGroup from "../SubComponents/AirfieldToggleGroup/AirfieldToggleGroup"
 import MetarDisplay from "../SubComponents/MetarDisplay/MetarDisplay"
-import { useEffect } from "react"
-import { updateFromMetar } from "../../features/weatherDataSlice"
 
 const TakeoffParameters = () => {
   // REDUX store

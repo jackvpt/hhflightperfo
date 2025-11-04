@@ -26,8 +26,9 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
     "takeoffTemperature",
     "takeoffAltitude",
     "mainAirfieldHeadWind",
+    "platformWindSpeed",
   ])
-  const flightFields = new Set(["runwayHeading"])
+  const flightFields = new Set(["runwayHeading", "platformDropDown"])
 
   if (weatherFields.has(name)) {
     dispatch(updateWeatherField({ field: name, value }))
@@ -40,11 +41,16 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
 
 export const calculatePerformances = () => (dispatch, getState) => {
   const state = getState()
-  const { windDirection, windSpeed, takeoffTemperature, takeoffZp } =
-    state.weatherData
-  const { runwayHeading } = state.flightData
+  const {
+    windDirection,
+    windSpeed,
+    takeoffTemperature,
+    takeoffZp,
+    platformWindSpeed,
+  } = state.weatherData
+  const { runwayHeading, platformDropDown } = state.flightData
 
-  // Headwind calculation
+  // Takeoff Headwind & Factored headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
   dispatch(updatePerformanceField({ field: "headWind", value: headWind }))
   const factoredHeadWind = computeFactoredHeadWind(headWind)
@@ -85,10 +91,19 @@ export const calculatePerformances = () => (dispatch, getState) => {
   const mlw_helipad = computeMlw_helipad(takeoffTemperature, takeoffZp)
   dispatch(updatePerformanceField({ field: "mlw_helipad", value: mlw_helipad }))
 
+  // Platform Factored headwind calculation
+  const platformFactoredHeadwind = computeFactoredHeadWind(platformWindSpeed)
+  dispatch(
+    updatePerformanceField({
+      field: "platformFactoredWind",
+      value: platformFactoredHeadwind,
+    })
+  )
+
   // MTOW Elevated Heliport 1
   const mtow_elevated_heliport_1 = computeMtow_elevated_heliport_1(
-    15,
-    60
+    platformFactoredHeadwind,
+    platformDropDown
   )
   dispatch(
     updatePerformanceField({

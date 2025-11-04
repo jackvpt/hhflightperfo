@@ -5,13 +5,10 @@ import { useEffect, useRef, useState } from "react"
 // MUI imports
 import { darken, useTheme } from "@mui/material/styles"
 import {
-  Box,
-  Button,
   Checkbox,
   Collapse,
   FormControlLabel,
   IconButton,
-  Stack,
   Typography,
 } from "@mui/material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
@@ -38,6 +35,7 @@ const Canvas = ({
   gridSpacingThickY, // Y axis thick grid spacing (value)
   labelSpacingX, // X axis label spacing (value)
   labelSpacingY, // Y axis label spacing (value)
+  yAxisSide="left",
   reverseX = false,
   reverseY = false,
   xLabel = "",
@@ -63,6 +61,7 @@ const Canvas = ({
   // REDUX store
   const performancesData = useSelector((state) => state.performancesData)
   const weatherData = useSelector((state) => state.weatherData)
+  const flightData = useSelector((state) => state.flightData)
 
   // Use state
   const [isCheckedScatterPlot, setIsCheckedScatterPlot] = useState(false)
@@ -216,8 +215,9 @@ const Canvas = ({
 
         // Axis Y
         ctx.beginPath()
-        ctx.moveTo(marginLeft, height - marginBottom)
-        ctx.lineTo(marginLeft, marginTop)
+        const xAxis = yAxisSide === "left" ? marginLeft : width - marginRight
+        ctx.moveTo(xAxis, height - marginBottom)
+        ctx.lineTo(xAxis, marginTop)
         ctx.stroke()
 
         // X labels
@@ -232,21 +232,21 @@ const Canvas = ({
         }
 
         // Y labels
-        ctx.textAlign = "right"
+        ctx.textAlign = yAxisSide === "left" ? "right" : "left"
         ctx.textBaseline = "middle"
         for (let y = y0; y <= ymax; y += labelSpacingY) {
-          const cx = marginLeft - 5
+          const cx = yAxisSide === "left" ? marginLeft - 5 : width - marginRight + 8
           const cy = toCanvasY(y)
           ctx.fillText(y.toString(), cx, cy)
         }
 
-        // Axis X label (unit)
+        // Axis X label (horizontal)
         ctx.font = fontUnits
         ctx.textAlign = "center"
         ctx.textBaseline = "bottom"
         ctx.fillText(xLabel, marginLeft + plotWidth / 2, height - 5)
 
-        // Label axe Y (unité, vertical)
+        // Axis Y label (vertical)
         ctx.save()
         ctx.translate(marginLeft / 5, marginTop + plotHeight / 2)
         ctx.rotate(-Math.PI / 2)
@@ -289,7 +289,7 @@ const Canvas = ({
         })
       }
 
-      // Draw labels
+      // Draw custom labels
       if (isCheckedLabels) {
         ctx.fillStyle = textColor
         Object.values(labels).forEach((label) => {
@@ -322,8 +322,10 @@ const Canvas = ({
           ctx,
           weatherData,
           performancesData,
+          flightData,
           toCanvasX,
-          toCanvasY
+          toCanvasY,
+          yAxisSide
         )
     }
   }, [

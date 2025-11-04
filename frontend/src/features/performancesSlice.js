@@ -6,6 +6,7 @@ export const initialState = {
   mtow_ca_40: null,
   headWind: null,
   factoredHeadWind: null,
+  platformFactoredWind: null,
 }
 
 const performancesSlice = createSlice({
