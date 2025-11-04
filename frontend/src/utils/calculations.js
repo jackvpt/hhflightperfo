@@ -22,7 +22,7 @@ export const extrapolation = (
  * These regressions can be used to predict y given a x.
  * The degree of the polynomial can be adjusted as needed.
  */
-export const getRegressions = (data, entry,degree=3) => {
+export const getRegressions = (data, entry, degree = 3) => {
   const regressions = {}
   for (const curve in data) {
     const pointsInRange = data[curve].ranges.flatMap((subrange) =>
@@ -47,7 +47,7 @@ export const getRegressions = (data, entry,degree=3) => {
  * These regressions can be used to predict x given y
  * The degree of the polynomial can be adjusted as needed.
  */
-export const getRegressionsReverse = (data, entry,degree=3) => {
+export const getRegressionsReverse = (data, entry, degree = 3) => {
   const regressionsReverse = {}
 
   for (const curve in data) {
@@ -59,8 +59,13 @@ export const getRegressionsReverse = (data, entry,degree=3) => {
     const xs = pointsInRange.map((point) => point.x)
     const ys = pointsInRange.map((point) => point.y)
 
-    // Create the polynomial regression (degree 5 here)
-    regressionsReverse[curve] = new PolynomialRegression(ys, xs, degree)
+    // Create the polynomial regression
+    try {
+      regressionsReverse[curve] = new PolynomialRegression(ys, xs, degree)
+    } catch (error) {
+      console.info("curve, entry, xs, ys:>>>", curve, entry, xs, ys)
+      throw new Error(error)
+    }
   }
   return regressionsReverse
 }
@@ -150,8 +155,8 @@ export const setValueInsideLimits = (data, low, high, value, axis) => {
  * - `x`: weight value
  * - `y`: Zp value
  */
-export const scatterPlot =(data)=>{
-    const points = []
+export const scatterPlot = (data) => {
+  const points = []
 
   for (const temperature in data) {
     const ranges = data[temperature].ranges

@@ -7,7 +7,6 @@ export const drawPerformances = (
   flightData,
   toCanvasX,
   toCanvasY,
-  yAxisSide = "left"
 ) => {
   if (!performancesData) return
 

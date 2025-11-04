@@ -8,7 +8,7 @@ import {
   setValueInsideLimits,
 } from "../utils/calculations"
 
-// Labels for temperatures
+// Labels for winds
 const labels = [
   {
     text: "HEADWIND (kt)",
@@ -50,9 +50,9 @@ const labels = [
 
 /**
  * Data structure
- * The data is organized by temperature, each containing ranges with weight (x) and pressure altitude (y) points.
- * Polynomial regressions are created for each temperature to predict y from x and vice versa.
- * The goal is to model the relationship between weight and altitude for different temperatures.
+ * The data is organized by wind, each containing ranges with dropdown (x) and coefficient (y) points.
+ * Polynomial regressions are created for each wind to predict y from x and vice versa.
+ * The goal is to model the relationship between dropdown and coefficient for different winds.
  * The data is used to create a flight envelope for the aircraft.
  */
 const data = {
@@ -231,21 +231,21 @@ export const mtow_elevated_heliport_1_predictCoef = (wind, dropDown) => {
 }
 
 /**
- * Generates curve data points for each temperature based on reverse regression calculations.
+ * Generates curve data points for each wind based on regression calculations.
  *
  * @function curves
  * @returns {Object<string, Array<{x: number, y: number}>>} An object where:
- * - Each key is a temperature (as a string),
+ * - Each key is a wind (as a string),
  * - Each value is an array of points representing a curve,
  *   with:
- *   - `x`: weight value (predicted),
- *   - `y`: Zp value (input).
+ *   - `x`: Dropdown value (input),
+ *   - `y`: coefficient value (predicted).
  *
  * @description
- * For each temperature:
- * - Iterates through Zp values from `absoluteMinY` to `absoluteMaxY` with a step of 10.
- * - Uses reverse regression to compute the corresponding weight.
- * - Only includes points where the weight is within the defined absolute X range.
+ * For each wind:
+ * - Iterates through Dropdown values from `absoluteMinX` to `absoluteMaxX` with a step of 2.
+ * - Uses regression to compute the corresponding coef.
+ * - Only includes points where the coef is within the defined absolute Y range.
  */
 const curves = () => {
   const curves = {}
