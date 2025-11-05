@@ -205,7 +205,7 @@ const drawMtow_Elevated_Heliport_1 = (
   toCanvasX,
   toCanvasY
 ) => {
-  const coef = performancesData.mtow_elevated_heliport_1
+  const coef = performancesData.mtow_elevated_heliport_coef
   const dropDown = flightData.platformDropDown
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(0)

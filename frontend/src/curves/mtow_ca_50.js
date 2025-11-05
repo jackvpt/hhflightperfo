@@ -527,7 +527,7 @@ export const mtow_ca_50_data = {
   labelSpacingX: 500, // X axis label spacing (value)
   labelSpacingY: 5000, // Y axis label spacing (value)
   xLabel: "WEIGHT (kg)",
-  yLabel: "Hp (ft x 1000)",
+  yLabel: "Hp (ft)",
   scatterPlot: scatterPlot(data),
   curves: curves(),
   labels: labels,

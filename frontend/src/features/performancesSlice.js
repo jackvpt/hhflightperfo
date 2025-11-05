@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 export const initialState = {
-  report: "",
   d1: [],
   mtow_ca_40: null,
   headWind: null,

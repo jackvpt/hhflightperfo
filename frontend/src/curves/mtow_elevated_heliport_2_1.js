@@ -428,14 +428,14 @@ const curves = () => {
 }
 
 export const mtow_elevated_heliport_2_1_data = {
-  name: "mtow_elevated_heliport_2",
+  name: "mtow_elevated_heliport_2_1",
   title: "MAXIMUM TAKEOFF WEIGHT ELEVATED HELIPORT #2",
   xmin: 3000, // X axis minimum value
   xmax: 5000, // X axis reference 0
-  x0: 0, // X axis maximum value
+  x0: 3000, // X axis maximum value
   ymin: -2000, // Y axis minimum value
   ymax: 5000, // Y axis maximum value
-  y0: 0, // Y axis reference 0
+  y0: -2000, // Y axis reference 0
   gridSpacingX: 100, // X axis grid spacing (value)
   gridSpacingY: 500, // Y axis grid spacing (value)
   gridSpacingThickX: 200, // X axis thick grid spacing (value)

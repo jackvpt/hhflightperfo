@@ -11,6 +11,7 @@ import {
   computeMtow_ca_50,
   computeMtow_ca_60,
   computeMtow_elevated_heliport_1,
+  computeMtow_elevated_heliport_2_1,
   computeMtow_helipad,
 } from "../utils/performancesCalculations.js"
 
@@ -27,6 +28,9 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
     "takeoffAltitude",
     "mainAirfieldHeadWind",
     "platformWindSpeed",
+    "platformQnh",
+    "platformAltitude",
+    "platformTemperature",
   ])
   const flightFields = new Set(["runwayHeading", "platformDropDown"])
 
@@ -100,15 +104,27 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  // MTOW Elevated Heliport 1
+  // MTOW Elevated Heliport
+  // #1: coefficient
   const mtow_elevated_heliport_1 = computeMtow_elevated_heliport_1(
     platformFactoredHeadwind,
     platformDropDown
   )
   dispatch(
     updatePerformanceField({
-      field: "mtow_elevated_heliport_1",
+      field: "mtow_elevated_heliport_coef",
       value: mtow_elevated_heliport_1,
     })
   )
+  // #2: weight A
+  // const mtow_elevated_heliport_2 = computeMtow_elevated_heliport_2_1(
+  //   platformFactoredHeadwind,
+  //   platformDropDown
+  // )
+  // dispatch(
+  //   updatePerformanceField({
+  //     field: "mtow_elevated_heliport_coef",
+  //     value: mtow_elevated_heliport_1,
+  //   })
+  // )
 }

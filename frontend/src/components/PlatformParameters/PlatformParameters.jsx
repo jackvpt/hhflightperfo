@@ -48,6 +48,44 @@ const PlatformParameters = () => {
                 format="speed"
               />
 
+              {/* QNH */}
+              <InputNumber
+                name="platformQnh"
+                label="QNH"
+                value={weatherData.platformQnh}
+                format="pressure"
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+              />
+
+              {/* Takeoff altitude */}
+              <InputNumber
+                name="platformAltitude"
+                label="Altitude"
+                value={weatherData.platformAltitude}
+                format="altitude"
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+              />
+
+              {/* Pressure altitude (Zp) */}
+              <DisplayValue
+                name="platformZp"
+                label="Zp"
+                value={weatherData.platformZp}
+                format="altitude"
+              />
+
+              {/* Temperature */}
+              <InputNumber
+                name="platformTemperature"
+                label="Temperature"
+                value={weatherData.platformTemperature}
+                format="temperature"
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+              />
+
               {/* Drop down */}
               <InputNumber
                 name="platformDropDown"
