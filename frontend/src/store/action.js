@@ -12,6 +12,8 @@ import {
   computeMtow_ca_60,
   computeMtow_elevated_heliport_1,
   computeMtow_elevated_heliport_2_1,
+  computeMtow_elevated_heliport_2_2,
+  computeMtow_elevated_heliport_2_3,
   computeMtow_helipad,
 } from "../utils/performancesCalculations.js"
 
@@ -51,8 +53,11 @@ export const calculatePerformances = () => (dispatch, getState) => {
     takeoffTemperature,
     takeoffZp,
     platformWindSpeed,
+    platformTemperature,
+    platformZp,
   } = state.weatherData
   const { runwayHeading, platformDropDown } = state.flightData
+  const { performancesData } = state
 
   // Takeoff Headwind & Factored headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
@@ -105,26 +110,59 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // MTOW Elevated Heliport
-  // #1: coefficient
+  // #1: Coefficient
   const mtow_elevated_heliport_1 = computeMtow_elevated_heliport_1(
     platformFactoredHeadwind,
     platformDropDown
   )
   dispatch(
     updatePerformanceField({
-      field: "mtow_elevated_heliport_coef",
+      field: "mtow_elevated_heliport_1",
       value: mtow_elevated_heliport_1,
     })
   )
-  // #2: weight A
-  // const mtow_elevated_heliport_2 = computeMtow_elevated_heliport_2_1(
-  //   platformFactoredHeadwind,
-  //   platformDropDown
-  // )
-  // dispatch(
-  //   updatePerformanceField({
-  //     field: "mtow_elevated_heliport_coef",
-  //     value: mtow_elevated_heliport_1,
-  //   })
-  // )
+
+  // #2: Minimal weight
+  const mtow_elevated_heliport_2_1 = computeMtow_elevated_heliport_2_1(
+    platformTemperature,
+    platformZp
+  )
+  dispatch(
+    updatePerformanceField({
+      field: "mtow_elevated_heliport_2_1",
+      value: mtow_elevated_heliport_2_1,
+    })
+  )
+
+  // #3: Weight A
+  const mtow_elevated_heliport_2_2 = computeMtow_elevated_heliport_2_2(
+    performancesData.mtow_elevated_heliport_2_1,
+    performancesData.mtow_elevated_heliport_1
+  )
+  dispatch(
+    updatePerformanceField({
+      field: "mtow_elevated_heliport_2_2",
+      value: mtow_elevated_heliport_2_2,
+    })
+  )
+
+  // #4: Weight B
+  const mtow_elevated_heliport_2_3 = computeMtow_elevated_heliport_2_3(
+    platformTemperature,
+    platformZp
+  )
+  dispatch(
+    updatePerformanceField({
+      field: "mtow_elevated_heliport_2_3",
+      value: mtow_elevated_heliport_2_3,
+    })
+  )
+  
+  // Final MTOW Elevated Heliport is the minimum of Weight A and Weight B
+  dispatch(
+    updatePerformanceField({
+      field: "mtow_elevated_heliport",
+      value: Math.min(mtow_elevated_heliport_2_2, mtow_elevated_heliport_2_3),
+    })
+  )
 }

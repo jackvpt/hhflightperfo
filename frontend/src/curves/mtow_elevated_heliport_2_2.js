@@ -221,13 +221,13 @@ export const mtow_elevated_heliport_2_2_predictWeight = (weight, coef) => {
   if (!checkValueInLimits(data, weightLow, weightHigh, coef, "yAxis")) {
     return {
       value: null,
-      error: "Outside defined coefficient range",
+      error: "Outside defined weight range",
       text: "N/A",
     }
   }
 
   // Get regressions for low and high weight
-  const regressions = getRegressionsReverse(data, coef, 4)
+  const regressions = getRegressionsReverse(data, coef, 3)
   const weightResultLow = regressions[weightLow].predict(coef)
   const weightResultHigh = regressions[weightHigh].predict(coef)
 

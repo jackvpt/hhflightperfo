@@ -48,6 +48,21 @@ const labels = [
   // },
 ]
 
+// Border lines (left and right side of flight envelope)
+const borderLines = [
+  [
+    { x: 4091, y: 5000 },
+    { x: 4082, y: 4543 },
+    { x: 4045, y: 3604 },
+    { x: 3976, y: 2703 },
+    { x: 3869, y: 1814 },
+  ],
+  [
+              { x: 4820, y: 4009 },
+{ x: 4820, y: -2000 },
+  ]
+]
+
 /**
  * Data structure
  * The data is organized by temperature, each containing ranges with weight (x) and pressure altitude (y) points.
@@ -57,273 +72,189 @@ const labels = [
  */
 const data = {
   "-25": {
-    absoluteMinX: 3604,
-    absoluteMaxX: 3726,
-    absoluteMinY: -2000,
+    absoluteMinX: 4638,
+    absoluteMaxX: 4820,
+    absoluteMinY: 4009,
     absoluteMaxY: 5000,
     ranges: [
       {
-        rangeX: [3000, 3629],
-        rangeY: [4500, 5000],
+        rangeX: [3000, 5000],
+        rangeY: [-2000, 5000],
         values: [
-          { x: 3604, y: 5000 },
-          { x: 3611, y: 4844 },
-          { x: 3621, y: 4649 },
-          { x: 3629, y: 4500 },
-        ],
-      },
-      {
-        rangeX: [3630, 3800],
-        rangeY: [-2000, 4499],
-        values: [
-          { x: 3629, y: 4500 },
-          { x: 3660, y: 3000 },
-          { x: 3678, y: 2000 },
-          { x: 3694, y: 1000 },
-          { x: 3708, y: 0 },
-          { x: 3717, y: -1000 },
-          { x: 3726, y: -2000 },
+          { x: 4638, y: 5000 },
+          { x: 4700, y: 4643 },
+          { x: 4763, y: 4329 },
+          { x: 4820, y: 4009 },
         ],
       },
     ],
   },
   "-20": {
-    absoluteMinX: 3562,
-    absoluteMaxX: 3721,
-    absoluteMinY: -2000,
+    absoluteMinX: 4532,
+    absoluteMaxX: 4820,
+    absoluteMinY: 3261,
     absoluteMaxY: 5000,
     ranges: [
       {
-        rangeX: [3000, 3615],
-        rangeY: [4500, 5000],
+        rangeX: [3000, 4800],
+        rangeY: [3500, 5000],
         values: [
-          { x: 3562, y: 5000 },
-          { x: 3576, y: 4844 },
-          { x: 3598, y: 4656 },
-          { x: 3615, y: 4500 },
+          { x: 4532, y: 5000 },
+          { x: 4622, y: 4500 },
+          { x: 4714, y: 4000 },
+          { x: 4800, y: 3500 },
         ],
       },
       {
-        rangeX: [3616, 3800],
-        rangeY: [-2000, 4499],
+        rangeX: [4801, 5000],
+        rangeY: [-2000, 3499],
         values: [
-          { x: 3615, y: 4500 },
-          { x: 3649, y: 3000 },
-          { x: 3668, y: 2000 },
-          { x: 3685, y: 1000 },
-          { x: 3701, y: 0 },
-          { x: 3713, y: -1000 },
-          { x: 3721, y: -2000 },
+          { x: 4800, y: 3500 },
+          { x: 4809, y: 3431 },
+          { x: 4816, y: 3356 },
+          { x: 4820, y: 3261 },
         ],
       },
     ],
   },
   "-10": {
-    absoluteMinX: 3424,
-    absoluteMaxX: 3721,
-    absoluteMinY: -2000,
+    absoluteMinX: 4353,
+    absoluteMaxX: 4820,
+    absoluteMinY: 2185,
     absoluteMaxY: 5000,
     ranges: [
       {
-        rangeX: [3000, 3598],
-        rangeY: [3500, 5000],
+        rangeX: [3000, 4789],
+        rangeY: [2500, 5000],
         values: [
-          { x: 3424, y: 5000 },
-          { x: 3480, y: 4500 },
-          { x: 3538, y: 4000 },
-          { x: 3598, y: 3500 },
+          { x: 4353, y: 5000 },
+          { x: 4500, y: 4143 },
+          { x: 4700, y: 3018 },
+          { x: 4789, y: 2500 },
         ],
       },
       {
-        rangeX: [3599, 3627],
-        rangeY: [2993, 3499],
+        rangeX: [4790, 5000],
+        rangeY: [-2000, 2499],
         values: [
-          { x: 3598, y: 3500 },
-          { x: 3607, y: 3337 },
-          { x: 3619, y: 3147 },
-          { x: 3627, y: 2993 },
-        ],
-      },
-      {
-        rangeX: [3628, 3800],
-        rangeY: [-2000, 2992],
-        values: [
-          { x: 3627, y: 2993 },
-          { x: 3648, y: 2000 },
-          { x: 3668, y: 1000 },
-          { x: 3685, y: 0 },
-          { x: 3700, y: -1000 },
-          { x: 3711, y: -2000 },
+          { x: 4789, y: 2500 },
+          { x: 4802, y: 2372 },
+          { x: 4816, y: 2250 },
+          { x: 4820, y: 2185 },
         ],
       },
     ],
   },
   0: {
-    absoluteMinX: 3302,
-    absoluteMaxX: 3698,
-    absoluteMinY: -2000,
+    absoluteMinX: 4184,
+    absoluteMaxX: 4820,
+    absoluteMinY: 1156,
     absoluteMaxY: 5000,
     ranges: [
       {
-        rangeX: [3000, 3588],
-        rangeY: [2498, 5000],
+        rangeX: [3000, 4787],
+        rangeY: [1500, 5000],
         values: [
-          { x: 3302, y: 5000 },
-          { x: 3400, y: 4111 },
-          { x: 3500, y: 3246 },
-          { x: 3588, y: 2498 },
+          { x: 4184, y: 5000 },
+          { x: 4400, y: 3720 },
+          { x: 4600, y: 2550 },
+          { x: 4787, y: 1500 },
         ],
       },
       {
-        rangeX: [3589, 3625],
-        rangeY: [2000, 2497],
+        rangeX: [4788, 5000],
+        rangeY: [-2000, 1499],
         values: [
-          { x: 3588, y: 2498 },
-          { x: 3600, y: 2341 },
-          { x: 3614, y: 2154 },
-          { x: 3625, y: 2000 },
-        ],
-      },
-      {
-        rangeX: [3626, 3800],
-        rangeY: [-2000, 1999],
-        values: [
-          { x: 3625, y: 2000 },
-          { x: 3647, y: 1000 },
-          { x: 3666, y: 0 },
-          { x: 3684, y: -1000 },
-          { x: 3698, y: -2000 },
+          { x: 4787, y: 1500 },
+          { x: 4800, y: 1380 },
+          { x: 4812, y: 1261 },
+          { x: 4820, y: 1156 },
         ],
       },
     ],
   },
   10: {
-    absoluteMinX: 3208,
-    absoluteMaxX: 3684,
-    absoluteMinY: -2000,
+    absoluteMinX: 4082,
+    absoluteMaxX: 4820,
+    absoluteMinY: 122,
     absoluteMaxY: 5000,
     ranges: [
       {
-        rangeX: [3000, 3600],
-        rangeY: [1531, 5000],
+        rangeX: [3000, 4767],
+        rangeY: [500, 5000],
         values: [
-          { x: 3208, y: 5000 },
-          { x: 3372, y: 3500 },
-          { x: 3486, y: 2500 },
-          { x: 3600, y: 1531 },
+          { x: 4007, y: 5000 },
+          { x: 4082, y: 4543 },
+          { x: 4300, y: 3184 },
+          { x: 4600, y: 1433 },
+          { x: 4767, y: 500 },
         ],
       },
       {
-        rangeX: [3601, 3626],
-        rangeY: [997, 1530],
+        rangeX: [4768, 5000],
+        rangeY: [-2000, 499],
         values: [
-          { x: 3600, y: 1531 },
-          { x: 3609, y: 1383 },
-          { x: 3619, y: 1153 },
-          { x: 3626, y: 997 },
-        ],
-      },
-      {
-        rangeX: [3627, 3800],
-        rangeY: [-2000, 996],
-        values: [
-          { x: 3626, y: 997 },
-          { x: 3647, y: 0 },
-          { x: 3668, y: -1000 },
-          { x: 3684, y: -2000 },
+          { x: 4767, y: 500 },
+          { x: 4787, y: 383 },
+          { x: 4808, y: 234 },
+          { x: 4820, y: 122 },
         ],
       },
     ],
   },
   20: {
-    absoluteMinX: 3097,
-    absoluteMaxX: 3669,
-    absoluteMinY: -2000,
+    absoluteMinX: 4045,
+    absoluteMaxX: 4820,
+    absoluteMinY: -1022,
     absoluteMaxY: 5000,
     ranges: [
       {
-        rangeX: [3000, 3597],
-        rangeY: [500, 5000],
+        rangeX: [3000, 5000],
+        rangeY: [-2000, 5000],
         values: [
-          { x: 3097, y: 5000 },
-          { x: 3300, y: 3111 },
-          { x: 3481, y: 1500 },
-          { x: 3597, y: 500 },
-        ],
-      },
-      {
-        rangeX: [3598, 3628],
-        rangeY: [0, 499],
-        values: [
-          { x: 3597, y: 500 },
-          { x: 3607, y: 361 },
-          { x: 3620, y: 148 },
-          { x: 3628, y: 0 },
-        ],
-      },
-      {
-        rangeX: [3628, 3800],
-        rangeY: [-2000, -1],
-        values: [
-          { x: 3628, y: 0 },
-          { x: 3647, y: -1000 },
-          { x: 3669, y: -2000 },
+          { x: 3822, y: 5000 },
+          { x: 4045, y: 3604 },
+          { x: 4300, y: 2006 },
+          { x: 4600, y: 277 },
+          { x: 4820, y: -1022 },
         ],
       },
     ],
   },
   30: {
-    absoluteMinX: 3000,
-    absoluteMaxX: 3650,
+    absoluteMinX: 3976,
+    absoluteMaxX: 4732,
     absoluteMinY: -2000,
-    absoluteMaxY: 4907,
+    absoluteMaxY: 5000,
     ranges: [
       {
-        rangeX: [3000, 3584],
-        rangeY: [-500, 5000],
+        rangeX: [3000, 5000],
+        rangeY: [-2000, 5000],
         values: [
-          { x: 3000, y: 4907 },
-          { x: 3255, y: 2500 },
-          { x: 3419, y: 1000 },
-          { x: 3584, y: -500 },
-        ],
-      },
-      {
-        rangeX: [3585, 3630],
-        rangeY: [-1000, -501],
-        values: [
-          { x: 3584, y: -500 },
-          { x: 3600, y: -661 },
-          { x: 3615, y: -862 },
-          { x: 3630, y: -1000 },
-        ],
-      },
-      {
-        rangeX: [3631, 3800],
-        rangeY: [-2000, -1001],
-        values: [
-          { x: 3630, y: -1000 },
-          { x: 3635, y: -1321 },
-          { x: 3644, y: -1664 },
-          { x: 3650, y: -2000 },
+          { x: 3624, y: 5000 },
+          { x: 3976, y: 2703 },
+          { x: 4200, y: 1273 },
+          { x: 4500, y: -564 },
+          { x: 4732, y: -2000 },
         ],
       },
     ],
   },
   40: {
-    absoluteMinX: 3000,
-    absoluteMaxX: 3608,
+    absoluteMinX: 3869,
+    absoluteMaxX: 4448,
     absoluteMinY: -2000,
-    absoluteMaxY: 3768,
+    absoluteMaxY: 5000,
     ranges: [
       {
-        rangeX: [3000, 3800],
+        rangeX: [3000, 5000],
         rangeY: [-2000, 5000],
         values: [
-          { x: 3000, y: 3768 },
-          { x: 3182, y: 2000 },
-          { x: 3399, y: 0 },
-          { x: 3608, y: -2000 },
+          { x: 3398, y: 5000 },
+          { x: 3600, y: 3610 },
+          { x: 3869, y: 1814 },
+          { x: 4200, y: -322 },
+          { x: 4448, y: -2000 },
         ],
       },
     ],
@@ -337,7 +268,7 @@ const data = {
  * @returns {Number} predicted weight
  * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
  */
-export const mtow_elevated_heliport_2_1_predictWeight = (temperature, zp) => {
+export const mtow_elevated_heliport_2_3_predictWeight = (temperature, zp) => {
   // Check flight enveloppe with temperature
   if (!checkValueInSubrange(data, temperature)) {
     return {
@@ -427,8 +358,8 @@ const curves = () => {
   return curves
 }
 
-export const mtow_elevated_heliport_2_1_data = {
-  name: "mtow_elevated_heliport_2_1",
+export const mtow_elevated_heliport_2_3_data = {
+  name: "mtow_elevated_heliport_2_3",
   title: "MAXIMUM TAKEOFF WEIGHT ELEVATED HELIPORT #2",
   xmin: 3000, // X axis minimum value
   xmax: 5000, // X axis reference 0
@@ -447,6 +378,6 @@ export const mtow_elevated_heliport_2_1_data = {
   scatterPlot: scatterPlot(data),
   curves: curves(),
   labels: labels,
-  borderLines: [],
+  borderLines: borderLines,
   areas: [],
 }

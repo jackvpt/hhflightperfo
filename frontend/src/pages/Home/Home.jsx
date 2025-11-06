@@ -13,6 +13,8 @@ import { mtow_elevated_heliport_1_data } from "../../curves/mtow_elevated_helipo
 import PlatformParameters from "../../components/PlatformParameters/PlatformParameters"
 import { mtow_elevated_heliport_2_1_data } from "../../curves/mtow_elevated_heliport_2_1"
 import { mtow_elevated_heliport_2_2_data } from "../../curves/mtow_elevated_heliport_2_2"
+import CanvasElevatedHeliport from "../../CanvasElevatedHeliport/CanvasElevatedHeliport"
+import { mtow_elevated_heliport_2_3_data } from "../../curves/mtow_elevated_heliport_2_3"
 
 const Home = () => {
   return (
@@ -24,8 +26,13 @@ const Home = () => {
         <PerformancesClass1 />
 
         <div className="home-page__content-curves">
-          <Canvas {...mtow_elevated_heliport_2_2_data} />
-          <Canvas {...mtow_elevated_heliport_2_1_data} />
+          <CanvasElevatedHeliport
+            data={[
+              mtow_elevated_heliport_2_1_data,
+              mtow_elevated_heliport_2_2_data,
+              mtow_elevated_heliport_2_3_data,
+            ]}
+          />
           <Canvas {...mtow_elevated_heliport_1_data} />
           <Canvas {...d1_data} />
           <Canvas {...mtow_ca_40_data} />

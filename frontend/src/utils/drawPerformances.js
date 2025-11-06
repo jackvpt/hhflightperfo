@@ -6,7 +6,7 @@ export const drawPerformances = (
   performancesData,
   flightData,
   toCanvasX,
-  toCanvasY,
+  toCanvasY
 ) => {
   if (!performancesData) return
 
@@ -37,6 +37,36 @@ export const drawPerformances = (
         ctx,
         performancesData,
         flightData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
+    case "mtow_elevated_heliport_2_1":
+      drawMtow_Elevated_Heliport_2_1(
+        ctx,
+        weatherData,
+        flightData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
+    case "mtow_elevated_heliport_2_2":
+      drawMtow_Elevated_Heliport_2_2(
+        ctx,
+        weatherData,
+        flightData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
+    case "mtow_elevated_heliport_2_3":
+      drawMtow_Elevated_Heliport_2_3(
+        ctx,
+        weatherData,
+        flightData,
+        performancesData,
         toCanvasX,
         toCanvasY
       )
@@ -205,12 +235,72 @@ const drawMtow_Elevated_Heliport_1 = (
   toCanvasX,
   toCanvasY
 ) => {
-  const coef = performancesData.mtow_elevated_heliport_coef
   const dropDown = flightData.platformDropDown
+  const coef = performancesData.mtow_elevated_heliport_1
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(0)
   const x = toCanvasX(dropDown)
   const y = toCanvasY(coef)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+
+// Draw MTOW Elevated Heliport #2 performance points and lines
+const drawMtow_Elevated_Heliport_2_1 = (
+  ctx,
+  weatherData,
+  flightData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const weight = performancesData.mtow_elevated_heliport_2_1
+  const zp = weatherData.platformZp
+  const x0 = toCanvasX(3000)
+  const y0 = toCanvasY(-2000)
+  const x = toCanvasX(weight)
+  const y = toCanvasY(zp)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+
+// Draw MTOW Elevated Heliport #3 performance points and lines
+const drawMtow_Elevated_Heliport_2_2 = (
+  ctx,
+  weatherData,
+  flightData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const weight = performancesData.mtow_elevated_heliport_2_2
+  const coef = performancesData.mtow_elevated_heliport_1
+  const x0 = toCanvasX(3000)
+  const y0 = toCanvasY(0)
+  const x = toCanvasX(weight)
+  const y = toCanvasY(coef)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+
+// Draw MTOW Elevated Heliport #4 performance points and lines
+const drawMtow_Elevated_Heliport_2_3 = (
+  ctx,
+  weatherData,
+  flightData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const weight = performancesData.mtow_elevated_heliport_2_3
+  const zp = weatherData.platformZp
+  const x0 = toCanvasX(3000)
+  const y0 = toCanvasY(5000)
+  const x = toCanvasX(weight)
+  const y = toCanvasY(zp)
 
   drawLines(ctx, x0, x, y0, y)
   drawPoint(ctx, x, y)
