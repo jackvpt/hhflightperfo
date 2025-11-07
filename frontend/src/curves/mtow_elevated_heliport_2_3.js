@@ -10,42 +10,61 @@ import {
 
 // Labels for temperatures
 const labels = [
-  // {
-  //   text: "HEADWIND (kt)",
-  //   x: 100,
-  //   y: 6.8,
-  //   angle: 0,
-  // },
-  // {
-  //   text: "AFTER FACTORING",
-  //   x: 100,
-  //   y: 6.5,
-  //   angle: 0,
-  // },
-  // {
-  //   text: "0",
-  //   x: 40,
-  //   y: 6.6,
-  //   angle: -50,
-  // },
-  // {
-  //   text: "10",
-  //   x: 35,
-  //   y: 5.2,
-  //   angle: -60,
-  // },
-  // {
-  //   text: "20",
-  //   x: 30,
-  //   y: 3.3,
-  //   angle: -60,
-  // },
-  // {
-  //   text: "30",
-  //   x: 25,
-  //   y: 1.5,
-  //   angle: -35,
-  // },
+  {
+    text: "OAT (°C)",
+    x: 4200,
+    y: 3300,
+    angle: 40,
+  },
+  {
+    text: "-25",
+    x: 4770,
+    y: 4900,
+    angle: 40,
+  },
+  {
+    text: "-20",
+    x: 4720,
+    y: 4550,
+    angle: 40,
+  },
+  {
+    text: "-10",
+    x: 4640,
+    y: 3950,
+    angle: 40,
+  },
+  {
+    text: "0",
+    x: 4580,
+    y: 3300,
+    angle: 40,
+  },
+  {
+    text: "10",
+    x: 4510,
+    y: 2600,
+    angle: 40,
+  },
+  {
+    text: "20",
+    x: 4430,
+    y: 1900,
+    angle: 40,
+  },
+  {
+    text: "30",
+    x: 4320,
+    y: 1150,
+    angle: 40,
+  },
+  {
+    text: "40",
+    x: 4210,
+    y: 300,
+    angle: 40,
+  },
+
 ]
 
 // Border lines (left and right side of flight envelope)

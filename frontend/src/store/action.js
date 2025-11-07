@@ -57,7 +57,6 @@ export const calculatePerformances = () => (dispatch, getState) => {
     platformZp,
   } = state.weatherData
   const { runwayHeading, platformDropDown } = state.flightData
-  const { performancesData } = state
 
   // Takeoff Headwind & Factored headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
@@ -136,8 +135,8 @@ export const calculatePerformances = () => (dispatch, getState) => {
 
   // #3: Weight A
   const mtow_elevated_heliport_2_2 = computeMtow_elevated_heliport_2_2(
-    performancesData.mtow_elevated_heliport_2_1,
-    performancesData.mtow_elevated_heliport_1
+    mtow_elevated_heliport_2_1,
+    mtow_elevated_heliport_1
   )
   dispatch(
     updatePerformanceField({
@@ -157,7 +156,6 @@ export const calculatePerformances = () => (dispatch, getState) => {
       value: mtow_elevated_heliport_2_3,
     })
   )
-  
   // Final MTOW Elevated Heliport is the minimum of Weight A and Weight B
   dispatch(
     updatePerformanceField({

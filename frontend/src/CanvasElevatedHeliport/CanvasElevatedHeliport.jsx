@@ -149,13 +149,24 @@ const CanvasElevatedHeliport = ({ data }) => {
 
         let plotWidth, plotHeight, xfactor, yfactor
 
-        marginLeft = (chartData.xMin[index] * width) / chartData.width
-        marginRight =
-          ((chartData.width - chartData.xMax[index]) * width) / chartData.width
-        marginTop = (chartData.yMin[index] * height) / chartData.height
-        marginBottom =
-          ((chartData.height - chartData.yMax[index]) * height) /
-          chartData.height
+        if (isCheckedChart) {
+          marginLeft = (chartData.xMin[index] * width) / chartData.width
+          marginRight =
+            ((chartData.width - chartData.xMax[index]) * width) /
+            chartData.width
+          marginTop = (chartData.yMin[index] * height) / chartData.height
+          marginBottom =
+            ((chartData.height - chartData.yMax[index]) * height) /
+            chartData.height
+        } else {
+          const canvasHeight = height - marginTop - marginBottom
+          const chartHeight =
+            Math.max(...chartData.yMax) - Math.min(...chartData.yMin)
+          const scaleY = canvasHeight / chartHeight
+          marginTop += (chartData.yMin[index] - chartData.yMin[0]) * scaleY
+          marginBottom +=
+            (Math.max(...chartData.yMax) - chartData.yMax[index]) * scaleY
+        }
 
         plotWidth = width - marginLeft - marginRight
         plotHeight = height - marginTop - marginBottom

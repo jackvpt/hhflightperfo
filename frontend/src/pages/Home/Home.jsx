@@ -21,11 +21,6 @@ const Home = () => {
     <div className="home-page">
       <h1>EC155 Flight Performances</h1>
       <div className="home-page__content">
-        <TakeoffParameters />
-        <PlatformParameters />
-        <PerformancesClass1 />
-
-        <div className="home-page__content-curves">
           <CanvasElevatedHeliport
             data={[
               mtow_elevated_heliport_2_1_data,
@@ -33,14 +28,19 @@ const Home = () => {
               mtow_elevated_heliport_2_3_data,
             ]}
           />
-          <Canvas {...mtow_elevated_heliport_1_data} />
+        <TakeoffParameters />
+        <PlatformParameters />
+        <PerformancesClass1 />
+
+        <div className="home-page__content-curves">
+          {/* <Canvas {...mtow_elevated_heliport_1_data} />
           <Canvas {...d1_data} />
           <Canvas {...mtow_ca_40_data} />
           <Canvas {...mtow_ca_50_data} />
           <Canvas {...mtow_ca_60_data} />
           <Canvas {...mlw_ca_data} />
           <Canvas {...mtow_helipad_data} />
-          <Canvas {...mlw_helipad_data} />
+          <Canvas {...mlw_helipad_data} /> */}
         </div>
       </div>
     </div>

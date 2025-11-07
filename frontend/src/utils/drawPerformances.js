@@ -1,3 +1,5 @@
+import { mtow_elevated_heliport_2_2_predictWeight } from "../curves/mtow_elevated_heliport_2_2"
+
 // Function to draw performance points and lines on the canvas
 export const drawPerformances = (
   name,
@@ -275,8 +277,29 @@ const drawMtow_Elevated_Heliport_2_2 = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_elevated_heliport_2_2
   const coef = performancesData.mtow_elevated_heliport_1
+  const weightA = performancesData.mtow_elevated_heliport_2_1
+
+  ctx.beginPath()
+  ctx.moveTo(
+    toCanvasX(weightA),
+    toCanvasY(10)-5
+  )
+  ctx.lineTo(
+    toCanvasX(weightA),
+    toCanvasY(10)
+  )
+
+  for (let drawCoef = 9.9; drawCoef >= coef; drawCoef -= 0.1) {
+    const {value: weight} = mtow_elevated_heliport_2_2_predictWeight(weightA, drawCoef)
+    ctx.lineTo(toCanvasX(weight), toCanvasY(drawCoef))
+  }
+
+  ctx.strokeStyle = "orange"
+  ctx.lineWidth = 2
+  ctx.stroke()
+
+  const weight = performancesData.mtow_elevated_heliport_2_2
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(0)
   const x = toCanvasX(weight)
