@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../styles/utils/_variables.scss","../../components/TakeoffParameters/TakeoffParameters.scss","TakeoffParameters.css"],"names":[],"mappings":"AAkBA,eAAA;AChBA;EACE,yBAAA;ACAF;;ADGA;EACE,WAAA;EACA,iBAAA;EACA,aAAA;EACA,sBAAA;EACA,SAAA;ACAF;ADIE;EACE,WAAA;EACA,aAAA;EACA,4DAAA;EACA,SAAA;ACFJ","file":"TakeoffParameters.css"}

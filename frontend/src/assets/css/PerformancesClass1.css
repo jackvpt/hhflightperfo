@@ -1,0 +1,37 @@
+.headerPerformancesClass1 {
+  background-color: #152c41;
+}
+
+.bodyPerformancesClass1 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #152c41;
+  max-width: 500px;
+}
+.bodyPerformancesClass1 .performancesClass1__d1 {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.bodyPerformancesClass1 .performancesClass1__d1-values td {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  text-align: center;
+  width: 60px;
+}
+.bodyPerformancesClass1 .performancesClass1__d1 table {
+  border-collapse: collapse;
+}
+.bodyPerformancesClass1 .performancesClass1__d1 table td {
+  padding: 0.25rem 0;
+  font-size: 0.8rem;
+}
+.bodyPerformancesClass1 .performancesClass1__mtowClearArea {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}/*# sourceMappingURL=PerformancesClass1.css.map */

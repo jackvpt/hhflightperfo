@@ -1,0 +1,106 @@
+// CSS
+import "./AirBase.scss"
+
+// REDUX
+import { useSelector } from "react-redux"
+
+// SVG
+import HelicopterRunway from "../../assets/images/helicopter-runway.svg?react"
+
+// FONTAWESOME
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCloudSunRain } from "@fortawesome/free-solid-svg-icons"
+
+const AirBase = () => {
+  // REDUX store
+  const weatherData = useSelector((state) => state.weatherData)
+  const performancesData = useSelector((state) => state.performancesData)
+
+  const items = [
+    {
+      name: "MTOW Clear Area VTOSS = 40kt",
+      calculation: performancesData.mtow_ca_40,
+    },
+    {
+      name: "MTOW Clear Area VTOSS = 50kt",
+      calculation: performancesData.mtow_ca_50,
+    },
+    {
+      name: "MTOW Clear Area VTOSS ≥ 60kt",
+      calculation: performancesData.mtow_ca_60,
+    },
+    { name: "MLW Clear Area", calculation: performancesData.mlw_ca },
+    { name: "MTOW Ground Helipad", calculation: performancesData.mtow_helipad },
+    { name: "MLW Ground Helipad", calculation: performancesData.mlw_helipad },
+  ]
+
+  return (
+    <section className="container-tab">
+      <div className="container-tab__header headerAirbase">
+        <HelicopterRunway className="header-icon" />
+        Air Base
+      </div>
+      <div className="container-tab__body bodyAirbase">
+        {/** Weather data */}
+        <div className="container-tab__body-weatherData">
+          <FontAwesomeIcon icon={faCloudSunRain} className="weatherIcon" />
+          <div className="weatherElement">Zp: {weatherData.takeoffZp} ft</div>
+          <div className="weatherElement">
+            Temperature: {weatherData.takeoffTemperature} °C
+          </div>
+          <div className="weatherElement">
+            Factored Head Wind: {performancesData.factoredHeadWind} kt
+          </div>
+        </div>
+        {/** D1 */}
+        <div className="container-tab__body-item d1">
+          <table>
+            <tbody>
+              <tr>
+                <td>VTOSS</td>
+              </tr>
+              <tr>
+                <td>D1</td>
+              </tr>
+            </tbody>
+          </table>
+          <table className="d1-values">
+            <tbody>
+              <tr>
+                {[40, 50, 60, 70, 80].map((vtoss) => (
+                  <td key={vtoss} className="right">
+                    {vtoss}
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                {[40, 50, 60, 70, 80].map((vtoss) => {
+                  const match = performancesData.d1.find(
+                    (d) => d.vtoss === vtoss
+                  )
+                  return (
+                    <td key={vtoss} className="right">
+                      {match
+                        ? match.distance.value
+                          ? match.distance.value
+                          : match.distance.text
+                        : "-"}
+                    </td>
+                  )
+                })}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        {items.map((item) => (
+          <div className="container-tab__body-item">
+            <div className="performanceCell_header">{item.name}</div>
+            <div className="performanceCell_value">{item.calculation}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+export default AirBase

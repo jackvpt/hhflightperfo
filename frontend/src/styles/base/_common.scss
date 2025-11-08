@@ -1,9 +1,16 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
 .container-tab {
   display: flex;
   flex-direction: column;
   padding: 12px 0;
 
   &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
     width: 230px;
     text-align: center;
     font-weight: bold;
@@ -13,6 +20,13 @@
     border-top: 1px solid #333333;
     border-right: 1px solid #333333;
     border-radius: 0.5rem 0.5rem 0 0;
+
+    .header-icon {
+      height: 30px;
+      width: auto;
+      margin-right: 1rem;
+      color: $text-color-2;
+    }
   }
 
   &__body {
@@ -27,30 +41,39 @@
     &-weatherData {
       display: flex;
       flex-direction: row;
+      align-items: center;
       gap: 1rem;
 
-      * {
+      .weatherElement {
         font-size: 0.7rem;
         font-style: italic;
       }
     }
+
+    &-item {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background-color: #152c41;
+      max-width: 500px;
+    }
   }
 }
 
-.tabBodyWithShortCuts{
-  display:flex;
+.tabBodyWithShortCuts {
+  display: flex;
   flex-direction: row;
 
-  .bodyShortCuts{
-    display:flex;
+  .bodyShortCuts {
+    display: flex;
     flex-direction: column;
-    gap:0.5rem;
-    margin-right:1rem;
+    gap: 0.5rem;
+    margin-right: 1rem;
   }
 }
 
 .performanceCell_header {
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   font-size: 0.8rem;

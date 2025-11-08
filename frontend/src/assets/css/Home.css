@@ -1,0 +1,13 @@
+.home-page__content {
+  display: flex;
+  flex-direction: column;
+}
+.home-page__content canvas {
+  border: 1px solid black;
+}
+.home-page__content-curves {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: wrap;
+}/*# sourceMappingURL=Home.css.map */

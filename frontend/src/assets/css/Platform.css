@@ -1,0 +1,13 @@
+/* Responsive */
+/* Responsive */
+.headerPlatform {
+  background-color: #152c41;
+}
+
+.bodyPlatform {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #152c41;
+  max-width: 500px;
+}/*# sourceMappingURL=Platform.css.map */
