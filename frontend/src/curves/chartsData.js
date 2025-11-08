@@ -87,7 +87,6 @@ export const chartsData = [
     yMin: 438,
     yMax: 678,
   },
-
   {
     name: "mtow_elevated_heliport_2_1",
     image: "mtow_elevated_heliport_2.webp",
@@ -98,5 +97,16 @@ export const chartsData = [
     xMax: [705, 705, 705],
     yMin: [189, 423, 704],
     yMax: [398, 649, 928],
+  },
+  {
+    name: "mlw_elevated_heliport",
+    image: "mlw_elevated_heliport.webp",
+    type: "single",
+    width: 815,
+    height: 1115,
+    xMin: 144,
+    xMax: 683,
+    yMin: 213,
+    yMax: 823,
   },
 ]

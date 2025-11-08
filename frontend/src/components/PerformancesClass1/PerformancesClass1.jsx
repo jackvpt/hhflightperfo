@@ -115,6 +115,14 @@ const PerformancesClass1 = () => {
             {performancesData.mtow_elevated_heliport}
           </div>
         </div>
+
+        {/** MLW Elevated Heliport */}
+        <div className="performancesClass1__mtowClearArea">
+          <div className="performanceCell_header">MLW Elevated Heliport</div>
+          <div className="performanceCell_value">
+            {performancesData.mlw_elevated_heliport}
+          </div>
+        </div>
       </div>
     </section>
   )

@@ -6,6 +6,7 @@ import {
   computeFactoredHeadWind,
   computeHeadWind,
   computeMlw_ca,
+  computeMlw_elevated_heliport,
   computeMlw_helipad,
   computeMtow_ca_40,
   computeMtow_ca_50,
@@ -163,4 +164,9 @@ export const calculatePerformances = () => (dispatch, getState) => {
       value: Math.min(mtow_elevated_heliport_2_2, mtow_elevated_heliport_2_3),
     })
   )
+
+  // MLW Elevated Heliport
+  const mlw_elevated_heliport = computeMlw_elevated_heliport(platformTemperature, platformZp)
+  dispatch(updatePerformanceField({ field: "mlw_elevated_heliport", value: mlw_elevated_heliport }))
+
 }

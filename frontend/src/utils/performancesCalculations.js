@@ -1,5 +1,6 @@
 import { d1_predictD1 } from "../curves/d1"
 import { mlw_ca_predictWeight } from "../curves/mlw_ca"
+import { mlw_elevated_heliport_predictWeight } from "../curves/mlw_elevated_heliport"
 import { mlw_helipad_predictWeight } from "../curves/mlw_helipad"
 import { mtow_ca_40_predictWeight } from "../curves/mtow_ca_40"
 import { mtow_ca_50_predictWeight } from "../curves/mtow_ca_50"
@@ -100,6 +101,15 @@ export const computeMtow_elevated_heliport_2_2 = (weight, coef) => {
 
 export const computeMtow_elevated_heliport_2_3 = (temperature, zp) => {
   const { value, error, text } = mtow_elevated_heliport_2_3_predictWeight(
+    temperature,
+    zp
+  )
+  if (error) return text
+  return value
+}
+
+export const computeMlw_elevated_heliport = (temperature, zp) => {
+  const { value, error, text } = mlw_elevated_heliport_predictWeight(
     temperature,
     zp
   )

@@ -73,6 +73,15 @@ export const drawPerformances = (
         toCanvasY
       )
       break
+    case "mlw_elevated_heliport":
+      drawMlw_Elevated_Heliport(
+        ctx,
+        weatherData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
     default:
       break
   }
@@ -281,17 +290,14 @@ const drawMtow_Elevated_Heliport_2_2 = (
   const weightA = performancesData.mtow_elevated_heliport_2_1
 
   ctx.beginPath()
-  ctx.moveTo(
-    toCanvasX(weightA),
-    toCanvasY(10)-5
-  )
-  ctx.lineTo(
-    toCanvasX(weightA),
-    toCanvasY(10)
-  )
+  ctx.moveTo(toCanvasX(weightA), toCanvasY(10) - 5)
+  ctx.lineTo(toCanvasX(weightA), toCanvasY(10))
 
   for (let drawCoef = 9.9; drawCoef >= coef; drawCoef -= 0.1) {
-    const {value: weight} = mtow_elevated_heliport_2_2_predictWeight(weightA, drawCoef)
+    const { value: weight } = mtow_elevated_heliport_2_2_predictWeight(
+      weightA,
+      drawCoef
+    )
     ctx.lineTo(toCanvasX(weight), toCanvasY(drawCoef))
   }
 
@@ -322,6 +328,25 @@ const drawMtow_Elevated_Heliport_2_3 = (
   const zp = weatherData.platformZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(5000)
+  const x = toCanvasX(weight)
+  const y = toCanvasY(zp)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+
+// Draw MLW Elevated Heliport performance points and lines
+const drawMlw_Elevated_Heliport = (
+  ctx,
+  weatherData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const weight = performancesData.mlw_elevated_heliport
+  const zp = weatherData.platformZp
+  const x0 = toCanvasX(3000)
+  const y0 = toCanvasY(-2000)
   const x = toCanvasX(weight)
   const y = toCanvasY(zp)
 
