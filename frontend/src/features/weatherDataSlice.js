@@ -7,11 +7,11 @@ export const initialState = {
   takeoffTemperature: 15,
   takeoffAltitude: 0,
   takeoffZp: 0,
-  platformWindSpeed:15,
-  platformQnh:1013,
-  platformAltitude:100,
-  platformZp:100,
-  platformTemperature:15,
+  platformWindSpeed: 15,
+  platformQnh: 1013,
+  platformAltitude: 100,
+  platformZp: 100,
+  platformTemperature: 15,
 }
 
 const calculateZP = (altitude, qnh) => {
@@ -35,7 +35,10 @@ const weatherDataSlice = createSlice({
 
       // Recalculate platformZp if altitude or QNH change
       if (field === "platformAltitude" || field === "platformQnh") {
-        state.platformZp = calculateZP(state.platformAltitude, state.platformQnh)
+        state.platformZp = calculateZP(
+          state.platformAltitude,
+          state.platformQnh
+        )
       }
     },
 

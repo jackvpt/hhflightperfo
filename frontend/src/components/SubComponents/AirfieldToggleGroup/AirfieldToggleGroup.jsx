@@ -13,6 +13,7 @@ const AirfieldToggleGroup = () => {
   const [activeAirfield, setActiveAirfield] = useState(takeoffAirfield)
 
   const handleChange = (event, newAirfield) => {
+    if (newAirfield === null) return
     setActiveAirfield( newAirfield)
     dispatch(
       updateFlightField({ field: "takeoffAirfield", value: newAirfield })

@@ -47,6 +47,7 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
 }
 
 export const calculatePerformances = () => (dispatch, getState) => {
+  console.log("calculate")
   const state = getState()
   const {
     windDirection,
@@ -166,7 +167,14 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // MLW Elevated Heliport
-  const mlw_elevated_heliport = computeMlw_elevated_heliport(platformTemperature, platformZp)
-  dispatch(updatePerformanceField({ field: "mlw_elevated_heliport", value: mlw_elevated_heliport }))
-
+  const mlw_elevated_heliport = computeMlw_elevated_heliport(
+    platformTemperature,
+    platformZp
+  )
+  dispatch(
+    updatePerformanceField({
+      field: "mlw_elevated_heliport",
+      value: mlw_elevated_heliport,
+    })
+  )
 }
