@@ -10,6 +10,7 @@ import { mtow_elevated_heliport_2_1_predictWeight } from "../curves/mtow_elevate
 import { mtow_elevated_heliport_2_2_predictWeight } from "../curves/mtow_elevated_heliport_2_2"
 import { mtow_elevated_heliport_2_3_predictWeight } from "../curves/mtow_elevated_heliport_2_3"
 import { mtow_helipad_predictWeight } from "../curves/mtow_helipad"
+import { mtow_pc2dle_isa_1_predictWeight } from "../curves/mtow_pc2dle_isa_1"
 import { degToRad } from "./calculations"
 
 export const computeHeadWind = (windDirection, windSpeed, runwayHeading) => {
@@ -111,6 +112,15 @@ export const computeMtow_elevated_heliport_2_3 = (temperature, zp) => {
 export const computeMlw_elevated_heliport = (temperature, zp) => {
   const { value, error, text } = mlw_elevated_heliport_predictWeight(
     temperature,
+    zp
+  )
+  if (error) return text
+  return value
+}
+
+export const computeMtow_pc2dle = (platformISA, zp) => {
+  const { value, error, text } = mtow_pc2dle_isa_1_predictWeight(
+    platformISA,
     zp
   )
   if (error) return text

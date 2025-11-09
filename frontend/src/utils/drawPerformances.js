@@ -82,6 +82,15 @@ export const drawPerformances = (
         toCanvasY
       )
       break
+    case "mtow_pc2dle_isa":
+      drawMtow_Pc2Dle_ISA(
+        ctx,
+        weatherData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
     default:
       break
   }
@@ -349,6 +358,25 @@ const drawMlw_Elevated_Heliport = (
   const y0 = toCanvasY(-2000)
   const x = toCanvasX(weight)
   const y = toCanvasY(zp)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+
+// Draw MLW Elevated Heliport performance points and lines
+const drawMtow_Pc2Dle_ISA = (
+  ctx,
+  weatherData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const weight = performancesData.mtow_pc2dle
+  const zp = weatherData.platformZp
+  const x0 = toCanvasX(-1000)
+  const y0 = toCanvasY(3000)
+  const x = toCanvasX(zp)
+  const y = toCanvasY(weight)
 
   drawLines(ctx, x0, x, y0, y)
   drawPoint(ctx, x, y)

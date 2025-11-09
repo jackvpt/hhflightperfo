@@ -34,6 +34,9 @@ const MetarDisplay = () => {
           "NO METAR DATA"
         )}
       </div>
+      <div className={`metar-weatherCategory ${metarData?.wxCategory}`}>
+        {metarData?.wxCategory}
+      </div>
       <div className="metar-text">{metarData?.rawText}</div>
     </div>
   )

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { getISA } from "../utils/calculations"
 
 export const initialState = {
   windDirection: 10,
@@ -12,6 +13,7 @@ export const initialState = {
   platformAltitude: 100,
   platformZp: 100,
   platformTemperature: 15,
+  platformISA: 0,
 }
 
 const calculateZP = (altitude, qnh) => {
@@ -39,6 +41,11 @@ const weatherDataSlice = createSlice({
           state.platformAltitude,
           state.platformQnh
         )
+      }
+
+      // Recalculate ISA if platform altitude or temperature change
+      if (field === "platformAltitude" || field === "platformTemperature") {
+        state.platformISA = getISA(state.platformAltitude, state.platformTemperature)
       }
     },
 

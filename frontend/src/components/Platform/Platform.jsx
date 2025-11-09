@@ -39,19 +39,29 @@ const Platform = () => {
           <FontAwesomeIcon icon={faCloudSunRain} className="weatherIcon" />
           <div className="weatherElement">Zp: {weatherData.platformZp} ft</div>
           <div className="weatherElement">
-            Temperature: {weatherData.platformTemperature} °C
+            Temperature: {weatherData.platformTemperature} °C (ISA
+            {weatherData.platformISA >= 0 ? "+" : ""}
+            {weatherData.platformISA})
           </div>
           <div className="weatherElement">
-            Factored Wind: {weatherData.platformWindSpeed} kt
+            Altitude: {weatherData.platformAltitude} ft
+          </div>
+          <div className="weatherElement">
+            Factored Wind: {performancesData.platformFactoredWind} kt
           </div>
         </div>
-       
-        {items.map((item) => (
-          <div className="container-tab__body-item">
-            <div className="performanceCell_header">{item.name}</div>
-            <div className="performanceCell_value">{item.calculation}</div>
+        <div className="container-tab__body-group">
+          <div className="container-tab__body-category">PC1</div>
+
+          <div className="container-tab__body-allItems">
+            {items.map((item) => (
+              <div key={item.name} className="container-tab__body-item">
+                <div className="performanceCell_header">{item.name}</div>
+                <div className="performanceCell_value">{item.calculation}</div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </section>
   )

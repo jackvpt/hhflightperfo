@@ -50,12 +50,38 @@
       }
     }
 
+    &-group {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap:1rem;
+    }
+
+    &-category {
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      writing-mode: vertical-lr;
+      text-orientation: upright;
+      width: 20px;
+      background-color: $primary-color-3;
+      color:$text-color-1;
+      font-size:0.8rem;
+      font-weight:700;
+    }
+
+    &-allItems {
+      width:100%;
+      display: flex;
+      flex-direction: column;
+      gap:0.5rem;
+    }
+
     &-item {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       background-color: #152c41;
-      max-width: 500px;
     }
   }
 }

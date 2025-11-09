@@ -213,7 +213,7 @@ export const mtow_elevated_heliport_2_2_predictWeight = (weight, coef) => {
   // Get low and high weight surrounding values
   const { lowValue: weightLow, highValue: weightHigh } = getLowHighValues(
     weight,
-    3000,
+    100,
     3700
   )
 

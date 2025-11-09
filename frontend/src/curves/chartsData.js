@@ -109,4 +109,15 @@ export const chartsData = [
     yMin: 213,
     yMax: 823,
   },
+  {
+    name: "mtow_pc2dle_isa_1",
+    image: "mtow_pc2dle_isa.webp",
+    type: "multiple",
+    width: 815,
+    height: 1182,
+    xMin: [138, 138],
+    xMax: [685, 685],
+    yMin: [61, 459],
+    yMax: [412, 809],
+  },
 ]

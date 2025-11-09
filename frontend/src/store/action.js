@@ -16,6 +16,7 @@ import {
   computeMtow_elevated_heliport_2_2,
   computeMtow_elevated_heliport_2_3,
   computeMtow_helipad,
+  computeMtow_pc2dle,
 } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
@@ -47,7 +48,6 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
 }
 
 export const calculatePerformances = () => (dispatch, getState) => {
-  console.log("calculate")
   const state = getState()
   const {
     windDirection,
@@ -57,6 +57,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     platformWindSpeed,
     platformTemperature,
     platformZp,
+    platformISA,
   } = state.weatherData
   const { runwayHeading, platformDropDown } = state.flightData
 
@@ -175,6 +176,15 @@ export const calculatePerformances = () => (dispatch, getState) => {
     updatePerformanceField({
       field: "mlw_elevated_heliport",
       value: mlw_elevated_heliport,
+    })
+  )
+
+  // MTOW PC2DLE
+  const mtow_pc2dle = computeMtow_pc2dle(platformISA, platformZp)
+  dispatch(
+    updatePerformanceField({
+      field: "mtow_pc2dle",
+      value: mtow_pc2dle,
     })
   )
 }

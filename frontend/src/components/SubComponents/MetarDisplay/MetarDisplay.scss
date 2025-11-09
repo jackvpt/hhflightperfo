@@ -15,6 +15,29 @@
       color: #00b894;
     }
 
+    .metar-weatherCategory {
+      font-size: 0.65rem;
+      font-weight: 400;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 4px 6px;
+      border-radius: 0.3rem;
+      width:2.5rem;
+
+      &.VFR {
+        background-color: #00b894;
+      }
+      &.MVFR {
+        background-color: #0984e3; 
+      }
+      &.IFR {
+        background-color: #d63031; 
+      }
+      &.LIFR {
+        background-color: #6c5ce7;
+      }
+    }
+
     .metar-text {
       font-family: $font-computer;
       font-size: 0.8rem;

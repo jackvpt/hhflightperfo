@@ -52,52 +52,57 @@ const AirBase = () => {
             Factored Head Wind: {performancesData.factoredHeadWind} kt
           </div>
         </div>
-        {/** D1 */}
-        <div className="container-tab__body-item d1">
-          <table>
-            <tbody>
-              <tr>
-                <td>VTOSS</td>
-              </tr>
-              <tr>
-                <td>D1</td>
-              </tr>
-            </tbody>
-          </table>
-          <table className="d1-values">
-            <tbody>
-              <tr>
-                {[40, 50, 60, 70, 80].map((vtoss) => (
-                  <td key={vtoss} className="right">
-                    {vtoss}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                {[40, 50, 60, 70, 80].map((vtoss) => {
-                  const match = performancesData.d1.find(
-                    (d) => d.vtoss === vtoss
-                  )
-                  return (
-                    <td key={vtoss} className="right">
-                      {match
-                        ? match.distance.value
-                          ? match.distance.value
-                          : match.distance.text
-                        : "-"}
-                    </td>
-                  )
-                })}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        {items.map((item) => (
-          <div className="container-tab__body-item">
-            <div className="performanceCell_header">{item.name}</div>
-            <div className="performanceCell_value">{item.calculation}</div>
+        <div className="container-tab__body-group">
+          <div className="container-tab__body-category">PC1</div>
+          <div className="container-tab__body-allItems">
+            {/** D1 */}
+            <div className="container-tab__body-item d1">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>VTOSS</td>
+                  </tr>
+                  <tr>
+                    <td>D1</td>
+                  </tr>
+                </tbody>
+              </table>
+              <table className="d1-values">
+                <tbody>
+                  <tr>
+                    {[40, 50, 60, 70, 80].map((vtoss) => (
+                      <td key={vtoss} className="right">
+                        {vtoss}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr>
+                    {[40, 50, 60, 70, 80].map((vtoss) => {
+                      const match = performancesData.d1.find(
+                        (d) => d.vtoss === vtoss
+                      )
+                      return (
+                        <td key={vtoss} className="right">
+                          {match
+                            ? match.distance.value
+                              ? match.distance.value
+                              : match.distance.text
+                            : "-"}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            {items.map((item) => (
+              <div key={item.name} className="container-tab__body-item">
+                <div className="performanceCell_header">{item.name}</div>
+                <div className="performanceCell_value">{item.calculation}</div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </section>
   )

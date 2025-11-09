@@ -176,3 +176,9 @@ export const scatterPlot = (data) => {
 
 // Utility function to convert degrees to radians
 export const degToRad = (deg) => (deg * Math.PI) / 180
+
+// Utility function to get ISA from altitude and temperature
+export const getISA = (altitude, temperature) => {
+  const isaTemperature = 15 - (2 / 1000) * altitude
+  return Math.round(temperature - isaTemperature)
+}
