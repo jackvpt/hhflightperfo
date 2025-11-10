@@ -82,7 +82,25 @@ export const drawPerformances = (
         toCanvasY
       )
       break
-    case "mtow_pc2dle_isa":
+    case "mtow_pc2dle_isa_1":
+      drawMtow_Pc2Dle_ISA(
+        ctx,
+        weatherData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
+    case "mtow_pc2dle_isa_2":
+      drawTtet_Pc2Dle_ISA(
+        ctx,
+        weatherData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
+    case "mtow_pc2dle_isa+20_1":
       drawMtow_Pc2Dle_ISA(
         ctx,
         weatherData,
@@ -363,7 +381,7 @@ const drawMlw_Elevated_Heliport = (
   drawPoint(ctx, x, y)
 }
 
-// Draw MLW Elevated Heliport performance points and lines
+// Draw MTOW PC2DLE performance points and lines
 const drawMtow_Pc2Dle_ISA = (
   ctx,
   weatherData,
@@ -376,6 +394,25 @@ const drawMtow_Pc2Dle_ISA = (
   const x0 = toCanvasX(-1000)
   const y0 = toCanvasY(3000)
   const x = toCanvasX(zp)
+  const y = toCanvasY(weight)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+
+// Draw MTOW PC2DLE performance points and lines
+const drawTtet_Pc2Dle_ISA = (
+  ctx,
+  weatherData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const ttet = performancesData.ttet_pc2dle
+  const weight = performancesData.mtow_pc2dle
+  const x0 = toCanvasX(0)
+  const y0 = toCanvasY(3000)
+  const x = toCanvasX(ttet)
   const y = toCanvasY(weight)
 
   drawLines(ctx, x0, x, y0, y)

@@ -54,27 +54,38 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      gap:1rem;
+      gap: 1rem;
     }
 
     &-category {
-      display:flex;
+      display: flex;
       justify-content: center;
       align-items: center;
       writing-mode: vertical-lr;
       text-orientation: upright;
       width: 20px;
+
+      color: $text-color-1;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.6rem 0;
+      border-radius: 5px;
+    }
+
+    .pc1 {
       background-color: $primary-color-3;
-      color:$text-color-1;
-      font-size:0.8rem;
-      font-weight:700;
+    }
+
+    .pc2 {
+      background-color: $secondary-color-1;
     }
 
     &-allItems {
-      width:100%;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      gap:0.5rem;
+      justify-content: center;
+      gap: 0.5rem;
     }
 
     &-item {
@@ -100,8 +111,9 @@
 
 .performanceCell_header {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
   font-size: 0.8rem;
   font-weight: bold;
 }

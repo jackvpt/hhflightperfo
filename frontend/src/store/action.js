@@ -17,6 +17,8 @@ import {
   computeMtow_elevated_heliport_2_3,
   computeMtow_helipad,
   computeMtow_pc2dle,
+  computeTtet_pc2dle,
+  computeTtet_pc2dle_corrected,
 } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
@@ -185,6 +187,25 @@ export const calculatePerformances = () => (dispatch, getState) => {
     updatePerformanceField({
       field: "mtow_pc2dle",
       value: mtow_pc2dle,
+    })
+  )
+
+  // TTET PC2DLE
+  const ttet_pc2dle = computeTtet_pc2dle(platformDropDown, mtow_pc2dle,platformFactoredHeadwind,platformZp,platformISA)
+  dispatch(
+    updatePerformanceField({
+      field: "ttet_pc2dle",
+      value: ttet_pc2dle,
+    })
+  )
+
+
+  // CORRECTED TTET PC2DLE
+  const ttet_pc2dle_corrected = computeTtet_pc2dle_corrected(ttet_pc2dle, platformFactoredHeadwind, platformZp, platformISA)
+  dispatch(
+    updatePerformanceField({
+      field: "ttet_pc2dle_corrected",
+      value: ttet_pc2dle_corrected,
     })
   )
 }

@@ -11,88 +11,42 @@ import {
 
 // Labels for temperatures
 const labels = [
-  // {
-  //   text: "-40",
-  //   x: 4200,
-  //   y: 8400,
-  //   angle: 30,
-  // },
-  // {
-  //   text: "-30",
-  //   x: 4200,
-  //   y: 7500,
-  //   angle: 35,
-  // },
-  // {
-  //   text: "-20",
-  //   x: 4200,
-  //   y: 6400,
-  //   angle: 40,
-  // },
-  // {
-  //   text: "-10",
-  //   x: 4200,
-  //   y: 5450,
-  //   angle: 40,
-  // },
-  // {
-  //   text: "0",
-  //   x: 4200,
-  //   y: 4450,
-  //   angle: 40,
-  // },
-  // {
-  //   text: "10",
-  //   x: 4200,
-  //   y: 3350,
-  //   angle: 40,
-  // },
-  // {
-  //   text: "20",
-  //   x: 4200,
-  //   y: 2200,
-  //   angle: 40,
-  // },
-  // {
-  //   text: "30",
-  //   x: 4100,
-  //   y: 1350,
-  //   angle: 40,
-  // },
-  // {
-  //   text: "40",
-  //   x: 4000,
-  //   y: 500,
-  //   angle: 42,
-  // },
-  // {
-  //   text: "50",
-  //   x: 3870,
-  //   y: -630,
-  //   angle: 46,
-  // },
+  {
+    text: "AVAILABLE DROP DOWN (ft)",
+    x: 2.5,
+    y: 4150,
+    angle: -40,
+  },
+  {
+    text: "0",
+    x: 3,
+    y: 4520,
+    angle: -38,
+  },
+  {
+    text: "50",
+    x: 2,
+    y: 4740,
+    angle: -38,
+  },
+  {
+    text: "100",
+    x: 1,
+    y: 4870,
+    angle: -30,
+  },
 ]
 
-// Border lines (left side of flight envelope and bottom)
+// Border lines (sides of flight envelope)
 const borderLines = [
-  // [
-  //   { x: 3873, y: -1500 },
-  //   { x: 4839, y: -1500 },
-  // ],
-  // [
-  //   { x: 3600, y: 11406 },
-  //   { x: 3636, y: 10824 },
-  //   { x: 3639, y: 10334 },
-  //   { x: 3636, y: 9292 },
-  //   { x: 3644, y: 8296 },
-  //   { x: 3644, y: 7897 },
-  //   { x: 3631, y: 7315 },
-  //   { x: 3608, y: 6362 },
-  //   { x: 3573, y: 5456 },
-  //   { x: 3516, y: 4540 },
-  //   { x: 3418, y: 3679 },
-  //   { x: 3376, y: 3389 },
-  // ],
+  [
+    { x: 0.5, y: 3815 },
+    { x: 0.5, y: 4920 },
+  ],
+  [
+    { x: 0.5, y: 4920 },
+    { x: 4.9, y: 4920 },
+  ],
 ]
 
 /**
@@ -221,7 +175,7 @@ const data = {
           { x: 1, y: 4285 },
           { x: 2, y: 4487 },
           { x: 3, y: 4704 },
-          { x: 3.99, y: 4920 },
+          { x: 4, y: 4920 },
         ],
       },
     ],
@@ -251,7 +205,7 @@ const data = {
           { x: 1, y: 4377 },
           { x: 2, y: 4569 },
           { x: 3, y: 4776 },
-          { x: 3.69, y: 4920 },
+          { x: 3.7, y: 4920 },
         ],
       },
     ],
@@ -288,7 +242,7 @@ const data = {
   },
   60: {
     absoluteMinX: 0.5,
-    absoluteMaxX: 3.08,
+    absoluteMaxX: 3.1,
     absoluteMinY: 4438,
     absoluteMaxY: 4920,
     ranges: [
@@ -311,14 +265,14 @@ const data = {
           { x: 1, y: 4531 },
           { x: 1.7, y: 4657 },
           { x: 2.5, y: 4807 },
-          { x: 3.08, y: 4920 },
+          { x: 3.1, y: 4920 },
         ],
       },
     ],
   },
   70: {
     absoluteMinX: 0.5,
-    absoluteMaxX: 2.78,
+    absoluteMaxX: 2.8,
     absoluteMinY: 4508,
     absoluteMaxY: 4920,
     ranges: [
@@ -341,14 +295,14 @@ const data = {
           { x: 1, y: 4600 },
           { x: 1.5, y: 4686 },
           { x: 2.2, y: 4810 },
-          { x: 2.78, y: 4920 },
+          { x: 2.8, y: 4920 },
         ],
       },
     ],
   },
   80: {
     absoluteMinX: 0.5,
-    absoluteMaxX: 2.48,
+    absoluteMaxX: 2.5,
     absoluteMinY: 4574,
     absoluteMaxY: 4920,
     ranges: [
@@ -371,14 +325,14 @@ const data = {
           { x: 1, y: 4663 },
           { x: 1.5, y: 4748 },
           { x: 2, y: 4832 },
-          { x: 2.48, y: 4920 },
+          { x: 2.5, y: 4920 },
         ],
       },
     ],
   },
   90: {
     absoluteMinX: 0.5,
-    absoluteMaxX: 2.24,
+    absoluteMaxX: 2.3,
     absoluteMinY: 4634,
     absoluteMaxY: 4920,
     ranges: [
@@ -401,14 +355,14 @@ const data = {
           { x: 1, y: 4721 },
           { x: 1.4, y: 4787 },
           { x: 1.8, y: 4853 },
-          { x: 2.28, y: 4920 },
+          { x: 2.3, y: 4920 },
         ],
       },
     ],
   },
   100: {
     absoluteMinX: 0.5,
-    absoluteMaxX: 1.88,
+    absoluteMaxX: 1.9,
     absoluteMinY: 4693,
     absoluteMaxY: 4920,
     ranges: [
@@ -419,14 +373,14 @@ const data = {
           { x: 0.5, y: 4693 },
           { x: 1, y: 4778 },
           { x: 1.5, y: 4858 },
-          { x: 1.88, y: 4920 },
+          { x: 1.9, y: 4920 },
         ],
       },
     ],
   },
   110: {
     absoluteMinX: 0.5,
-    absoluteMaxX: 1.56,
+    absoluteMaxX: 1.6,
     absoluteMinY: 4747,
     absoluteMaxY: 4920,
     ranges: [
@@ -437,14 +391,14 @@ const data = {
           { x: 0.5, y: 4747 },
           { x: 0.8, y: 4798 },
           { x: 1.2, y: 4863 },
-          { x: 1.56, y: 4920 },
+          { x: 1.6, y: 4920 },
         ],
       },
     ],
   },
   120: {
     absoluteMinX: 0.5,
-    absoluteMaxX: 1.26,
+    absoluteMaxX: 1.3,
     absoluteMinY: 4802,
     absoluteMaxY: 4920,
     ranges: [
@@ -455,14 +409,14 @@ const data = {
           { x: 0.5, y: 4802 },
           { x: 0.8, y: 4848 },
           { x: 1.1, y: 4897 },
-          { x: 1.26, y: 4920 },
+          { x: 1.3, y: 4920 },
         ],
       },
     ],
   },
   130: {
     absoluteMinX: 0.5,
-    absoluteMaxX: 0.93,
+    absoluteMaxX: 0.9,
     absoluteMinY: 4846,
     absoluteMaxY: 4920,
     ranges: [
@@ -473,14 +427,14 @@ const data = {
           { x: 0.5, y: 4846 },
           { x: 0.7, y: 4881 },
           { x: 0.8, y: 4897 },
-          { x: 0.93, y: 4920 },
+          { x: 0.9, y: 4920 },
         ],
       },
     ],
   },
   140: {
     absoluteMinX: 0.5,
-    absoluteMaxX: 0.64,
+    absoluteMaxX: 0.6,
     absoluteMinY: 4899,
     absoluteMaxY: 4920,
     ranges: [
@@ -491,7 +445,7 @@ const data = {
           { x: 0.5, y: 4899 },
           { x: 0.54, y: 4904 },
           { x: 0.58, y: 4910 },
-          { x: 0.64, y: 4920 },
+          { x: 0.6, y: 4920 },
         ],
       },
     ],
@@ -532,7 +486,7 @@ export const mtow_pc2dle_isa_2_predictTtet = (dropDown, weight) => {
   }
 
   // Get reverse regressions for low and high temperature
-  const regressions = getRegressionsReverse(data, weight)
+  const regressions = getRegressionsReverse(data, weight, 4)
   const ttetLow = regressions[dropDownLow].predict(weight)
   const ttetHigh = regressions[dropDownHigh].predict(weight)
 
@@ -581,13 +535,16 @@ const curves = () => {
     for (
       let ttet = data[dropdown].absoluteMinX;
       ttet <= data[dropdown].absoluteMaxX;
-      ttet += 0.1
+      ttet = Math.round((ttet + 0.1) * 10) / 10
     ) {
       const regressions = getRegressions(data, ttet)
       const weight = regressions[dropdown].predict(ttet)
       const absoluteMinY = data[dropdown].absoluteMinY
       const absoluteMaxY = data[dropdown].absoluteMaxY
-      if (weight >= absoluteMinY && weight <= absoluteMaxY)
+      if (
+        Math.round(weight) >= absoluteMinY &&
+        Math.round(weight) <= absoluteMaxY
+      )
         curve.push({ x: ttet, y: weight })
     }
     curves[dropdown] = curve
@@ -607,19 +564,7 @@ const curves = () => {
  * - Curve points from the `curves()` function (for specific temperatures),
  * - Additional fixed points to close the shape.
  */
-const areas = [
-  // {
-  //   color: "rgba(100,100,100,0.6)",
-  //   points: [
-  //     ...curves()["-40"],
-  //     { x: 3600, y: 11406 },
-  //     { x: 3636, y: 10824 },
-  //     { x: 3639, y: 10334 },
-  //     { x: 3636, y: 9292 },
-  //     ...curves()["-15"].reverse(),
-  //   ],
-  // },
-]
+const areas = []
 
 /**
  * Chart configuration and data for the MTOW PC2DLE ISA graph.

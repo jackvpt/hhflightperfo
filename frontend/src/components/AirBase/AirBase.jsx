@@ -53,7 +53,7 @@ const AirBase = () => {
           </div>
         </div>
         <div className="container-tab__body-group">
-          <div className="container-tab__body-category">PC1</div>
+          <div className="container-tab__body-category pc1">PC1</div>
           <div className="container-tab__body-allItems">
             {/** D1 */}
             <div className="container-tab__body-item d1">

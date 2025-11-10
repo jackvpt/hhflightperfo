@@ -11,21 +11,21 @@ import {
 // Labels for temperatures
 const labels = [
   {
-    text: "ISA -3",
-    x: 900,
-    y: 4980,
-    angle: 8,
-  },
-  {
-    text: "ISA",
-    x: 700,
-    y: 4980,
-    angle: 6,
-  },
-  {
     text: "ISA +10",
-    x: 500,
-    y: 4810,
+    x: 880,
+    y: 4970,
+    angle: 7,
+  },
+  {
+    text: "ISA +20",
+    x: 730,
+    y: 4690,
+    angle: 5,
+  },
+  {
+    text: "ISA +30",
+    x: 580,
+    y: 4380,
     angle: 4,
   },
 ]
@@ -41,69 +41,69 @@ const borderLines = []
  * The data is used to create a flight envelope for the aircraft.
  */
 const data = {
-  "-3": {
-    absoluteMinX: 295,
-    absoluteMaxX: 1000,
-    absoluteMinY: 4922,
-    absoluteMaxY: 5000,
-    ranges: [
-      {
-        rangeX: [-1000, 1000],
-        rangeY: [3000, 5000],
-        values: [
-          { x: 295, y: 5000 },
-          { x: 500, y: 4976 },
-          { x: 800, y: 4941 },
-          { x: 1000, y: 4922 },
-        ],
-      },
-    ],
-  },
-  0: {
+  10: {
     absoluteMinX: -1000,
     absoluteMaxX: 1000,
-    absoluteMinY: 4863,
+    absoluteMinY: 4871,
     absoluteMaxY: 4920,
     ranges: [
       {
-        rangeX: [-1000, 500],
-        rangeY: [4920, 4921],
+        rangeX: [-1000, 600],
+        rangeY: [3000, 5000],
         values: [
           { x: -1000, y: 4920 },
           { x: -500, y: 4920 },
           { x: 0, y: 4920 },
-          { x: 500, y: 4920 },
+          { x: 600, y: 4920 },
         ],
       },
       {
-        rangeX: [501, 1000],
-        rangeY: [4863, 4919],
+        rangeX: [601, 1000],
+        rangeY: [3000, 5000],
         values: [
-          { x: 500, y: 4920 },
-          { x: 600, y: 4908 },
-          { x: 700, y: 4896 },
-          { x: 800, y: 4884 },
-          { x: 900, y: 4874 },
-          { x: 1000, y: 4863 },
+          { x: 600, y: 4920 },
+          { x: 700, y: 4906 },
+          { x: 800, y: 4897 },
+          { x: 900, y: 4884 },
+          { x: 1000, y: 4871 },
         ],
       },
     ],
   },
-  10: {
+  20: {
     absoluteMinX: -1000,
     absoluteMaxX: 1000,
-    absoluteMinY: 4676,
-    absoluteMaxY: 4870,
+    absoluteMinY: 4572,
+    absoluteMaxY: 4810,
     ranges: [
       {
         rangeX: [-1000, 1000],
         rangeY: [3000, 5000],
         values: [
-          { x: -1000, y: 4870 },
-          { x: -500, y: 4824 },
-          { x: 0, y: 4779 },
-          { x: 500, y: 4726 },
-          { x: 1000, y: 4676 },
+          { x: -1000, y: 4810 },
+          { x: -500, y: 4749 },
+          { x: 0, y: 4691 },
+          { x: 500, y: 4630 },
+          { x: 1000, y: 4572 },
+        ],
+      },
+    ],
+  },
+  30: {
+    absoluteMinX: -1000,
+    absoluteMaxX: 1000,
+    absoluteMinY: 4245,
+    absoluteMaxY: 4454,
+    ranges: [
+      {
+        rangeX: [-1000, 1000],
+        rangeY: [3000, 5000],
+        values: [
+          { x: -1000, y: 4454 },
+          { x: -500, y: 4398 },
+          { x: 0, y: 4346 },
+          { x: 500, y: 4296 },
+          { x: 1000, y: 4245 },
         ],
       },
     ],
@@ -112,32 +112,27 @@ const data = {
 
 /**
  *
- * @param {Number} temperature
+ * @param {Number} ISA
  * @param {Number} zp
  * @returns {Number} predicted weight
- * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
+ * @description Predict weight given ISA and Zp using the polynomial regressions.
  */
-export const mtow_pc2dle_isa_1_predictWeight = (platformISA, zp) => {
-  if (platformISA <= -3) return { value: 4920, error: null, text: null }
-
-  // Check flight enveloppe with temperature
+export const mtow_pc2dle_isa20_1_predictWeight = (platformISA, zp) => {
+  // Check flight enveloppe with ISA
   if (!checkValueInSubrange(data, platformISA)) {
     return {
       value: null,
-      error: "Outside defined temperature range",
+      error: "Outside defined ISA range",
       text: "N/A",
     }
   }
 
-  // Get low and high temperature surrounding values
+  // Get low and high ISA surrounding values
   let { lowValue: isaLow, highValue: isaHigh } = getLowHighValues(
     platformISA,
     10,
     10
   )
-
-  // Set limits for ISA (no curve below ISA -3)
-  if (isaLow < -3) isaLow = -3
 
   // Check flight enveloppe with Zp
   if (!checkValueInLimits(data, isaLow, isaHigh, zp, "xAxis")) {
@@ -148,12 +143,12 @@ export const mtow_pc2dle_isa_1_predictWeight = (platformISA, zp) => {
     }
   }
 
-  // Get regressions for low and high temperature
+  // Get regressions for low and high ISA
   const regressions = getRegressions(data, zp)
   const weightLow = regressions[isaLow].predict(zp)
   const weightHigh = regressions[isaHigh].predict(zp)
 
-  // Extrapolate weight for given temperature
+  // Extrapolate weight for given ISA
   let weight = extrapolation(
     platformISA,
     isaLow,
@@ -161,11 +156,6 @@ export const mtow_pc2dle_isa_1_predictWeight = (platformISA, zp) => {
     isaHigh,
     weightHigh
   )
-
-  // Max weight limit (in case of ISA < 0)
-  if (weight > 4920) {
-    weight = 4920
-  }
 
   // Check flight enveloppe with Weight
   const weightInLimits = setValueInsideLimits(
@@ -183,14 +173,14 @@ export const mtow_pc2dle_isa_1_predictWeight = (platformISA, zp) => {
  *
  * @function curves
  * @returns {Object<string, Array<{x: number, y: number}>>} An object where:
- * - Each key is a isa (as a string),
+ * - Each key is a ISA,
  * - Each value is an array of points representing a curve,
  *   with:
  *   - `x`: zp value (input),
  *   - `y`: weight value (predicted).
  *
  * @description
- * For each isa:
+ * For each ISA:
  * - Iterates through Zp values from `absoluteMinX` to `absoluteMaxX` with a step of 10.
  * - Uses  regression to compute the corresponding weight.
  * - Only includes points where the weight is within the defined absolute Y range.
@@ -270,9 +260,9 @@ const areas = []
  * the **MTOW PC2DLE ISA** performance chart, including axis settings,
  * grid spacing, labels, scatter plot points, regression curves, borders, and shaded areas.
  */
-export const mtow_pc2dle_isa_1_data = {
-  name: "mtow_pc2dle_isa_1",
-  title: "MAXIMUM TAKEOFF WEIGHT PC2DLE ISA",
+export const mtow_pc2dle_isa20_1_data = {
+  name: "mtow_pc2dle_isa+20_1",
+  title: "MAXIMUM TAKEOFF WEIGHT PC2DLE ISA+20",
   xmin: -1000, // X axis minimum value
   xmax: 1000, // X axis reference 0
   x0: -1000, // X axis maximum value

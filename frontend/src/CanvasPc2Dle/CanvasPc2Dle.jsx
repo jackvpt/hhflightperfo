@@ -285,7 +285,7 @@ const CanvasPc2Dle = ({ data }) => {
           ctx.font = fontUnits
           ctx.textAlign = "center"
           ctx.textBaseline = "bottom"
-          ctx.fillText(xLabel, marginLeft + plotWidth / 2, height - 5)
+          ctx.fillText(xLabel, marginLeft + plotWidth / 2,height - marginBottom+30)
 
           // Axis Y label (vertical)
           ctx.save()

@@ -20,19 +20,32 @@ import Platform from "../../components/Platform/Platform"
 import CanvasPc2Dle from "../../CanvasPc2Dle/CanvasPc2Dle"
 import { mtow_pc2dle_isa_1_data } from "../../curves/mtow_pc2dle_isa_1"
 import { mtow_pc2dle_isa_2_data } from "../../curves/mtow_pc2dle_isa_2"
+import { mtow_pc2dle_isa20_1_data } from "../../curves/mtow_pc2dle_isa+20_1"
+import { useSelector } from "react-redux"
 
 const Home = () => {
+  // REDUX store
+  const weatherData = useSelector((state) => state.weatherData)
+
   return (
     <div className="home-page">
       <h1>EC155 Flight Performances</h1>
       <div className="home-page__content">
-        <CanvasPc2Dle data={[mtow_pc2dle_isa_1_data,mtow_pc2dle_isa_2_data]} />
         <TakeoffParameters />
         <PlatformParameters />
         <AirBase />
         <Platform />
 
         <div className="home-page__content-curves">
+          {/** PC2DLE curves in acordance with platform ISA */}
+          {weatherData.platformISA < 10 ? (
+            <CanvasPc2Dle
+              data={[mtow_pc2dle_isa_1_data, mtow_pc2dle_isa_2_data]}
+            />
+          ) : (
+            <CanvasPc2Dle data={[mtow_pc2dle_isa20_1_data]} />
+          )}
+
           <Canvas {...mlw_elevated_heliport_data} />
           <CanvasElevatedHeliport
             data={[
