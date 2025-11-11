@@ -11,6 +11,7 @@ import { mtow_elevated_heliport_2_2_predictWeight } from "../curves/mtow_elevate
 import { mtow_elevated_heliport_2_3_predictWeight } from "../curves/mtow_elevated_heliport_2_3"
 import { mtow_helipad_predictWeight } from "../curves/mtow_helipad"
 import { mtow_pc2dle_isa20_1_predictWeight } from "../curves/mtow_pc2dle_isa+20_1"
+import { mtow_pc2dle_isa20_2_predictTtet } from "../curves/mtow_pc2dle_isa+20_2"
 import { mtow_pc2dle_isa_1_predictWeight } from "../curves/mtow_pc2dle_isa_1"
 import { mtow_pc2dle_isa_2_predictTtet } from "../curves/mtow_pc2dle_isa_2"
 import { degToRad } from "./calculations"
@@ -137,8 +138,19 @@ export const computeMtow_pc2dle = (platformISA, zp) => {
   return value
 }
 
-export const computeTtet_pc2dle = (dropDown, weight) => {
-  const { value, error, text } = mtow_pc2dle_isa_2_predictTtet(dropDown, weight)
+export const computeTtet_pc2dle = (platformISA, dropDown, weight) => {
+  let value
+  let error
+  let text
+
+  if (platformISA >= 10) {
+    ;({ value, error, text } = mtow_pc2dle_isa20_2_predictTtet(
+      dropDown,
+      weight
+    ))
+  } else
+    ({ value, error, text } = mtow_pc2dle_isa_2_predictTtet(dropDown, weight))
+
   if (error) return text
   return value
 }
@@ -149,13 +161,22 @@ export const computeTtet_pc2dle_corrected = (
   platformZp,
   platformISA
 ) => {
+  let zpCorrection, isaCorrection
+
   // Factored wind correction
   const windCorrection = platformFactoredWind * 0.15
-  // Zp correction
-  const zpCorrection = platformZp > 0 ? (platformZp * 0.5) / 1000 : 0
-  // ISA correction
-  const isaCorrection = platformISA > 0 ? platformISA * 0.1 : 0
 
+  if (platformISA >= 10) {
+    // Zp correction
+    zpCorrection = platformZp > 0 ? (platformZp * 1) / 1000 : 0
+    // ISA correction
+    isaCorrection = platformISA > 20 ? platformISA * 0.15 : -platformISA * 0.05
+  } else {
+    // Zp correction
+    zpCorrection = platformZp > 0 ? (platformZp * 0.5) / 1000 : 0
+    // ISA correction
+    isaCorrection = platformISA > 0 ? platformISA * 0.1 : 0
+  }
   const ttet_corrected = ttet - windCorrection + zpCorrection + isaCorrection
   return Number(ttet_corrected.toFixed(1))
 }

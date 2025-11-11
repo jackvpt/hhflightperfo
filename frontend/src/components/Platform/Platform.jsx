@@ -39,10 +39,10 @@ const Platform = () => {
     },
     {
       name: "TTET PC2DLE",
-      calculation: performancesData.ttet_pc2dle_corrected,
+      calculation: performancesData.ttet_pc2dle_corrected.toFixed(1),
       info: `Corrections for factored wind, Zp and ISA are applied (${
         deltaTtet > 0 ? "+" : ""
-      }${deltaTtet}s)`,
+      }${deltaTtet.toFixed(1)} s)`,
     },
   ]
 
@@ -70,6 +70,9 @@ const Platform = () => {
           </div>
         </div>
 
+        {/** Separator */}
+        <div className="container-tab__body-separator" />
+
         {/** PC1 */}
         <div className="container-tab__body-group">
           <div className="container-tab__body-category pc1">PC1</div>
@@ -82,6 +85,9 @@ const Platform = () => {
             ))}
           </div>
         </div>
+
+        {/** Separator */}
+        <div className="container-tab__body-separator" />
 
         {/** PC2 DLE */}
         <div className="container-tab__body-group">

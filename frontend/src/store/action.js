@@ -191,7 +191,14 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // TTET PC2DLE
-  const ttet_pc2dle = computeTtet_pc2dle(platformDropDown, mtow_pc2dle,platformFactoredHeadwind,platformZp,platformISA)
+  const ttet_pc2dle = computeTtet_pc2dle(
+    platformISA,
+    platformDropDown,
+    mtow_pc2dle,
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
   dispatch(
     updatePerformanceField({
       field: "ttet_pc2dle",
@@ -199,9 +206,13 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-
   // CORRECTED TTET PC2DLE
-  const ttet_pc2dle_corrected = computeTtet_pc2dle_corrected(ttet_pc2dle, platformFactoredHeadwind, platformZp, platformISA)
+  const ttet_pc2dle_corrected = computeTtet_pc2dle_corrected(
+    ttet_pc2dle,
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
   dispatch(
     updatePerformanceField({
       field: "ttet_pc2dle_corrected",

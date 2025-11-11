@@ -22,6 +22,7 @@ import { mtow_pc2dle_isa_1_data } from "../../curves/mtow_pc2dle_isa_1"
 import { mtow_pc2dle_isa_2_data } from "../../curves/mtow_pc2dle_isa_2"
 import { mtow_pc2dle_isa20_1_data } from "../../curves/mtow_pc2dle_isa+20_1"
 import { useSelector } from "react-redux"
+import { mtow_pc2dle_isa20_2_data } from "../../curves/mtow_pc2dle_isa+20_2"
 
 const Home = () => {
   // REDUX store
@@ -43,7 +44,7 @@ const Home = () => {
               data={[mtow_pc2dle_isa_1_data, mtow_pc2dle_isa_2_data]}
             />
           ) : (
-            <CanvasPc2Dle data={[mtow_pc2dle_isa20_1_data]} />
+            <CanvasPc2Dle data={[mtow_pc2dle_isa20_1_data,mtow_pc2dle_isa20_2_data]} />
           )}
 
           <Canvas {...mlw_elevated_heliport_data} />

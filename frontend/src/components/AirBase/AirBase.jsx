@@ -52,6 +52,11 @@ const AirBase = () => {
             Factored Head Wind: {performancesData.factoredHeadWind} kt
           </div>
         </div>
+
+        {/** Separator */}
+        <div className="container-tab__body-separator" />
+
+        {/** PC1 */}
         <div className="container-tab__body-group">
           <div className="container-tab__body-category pc1">PC1</div>
           <div className="container-tab__body-allItems">
@@ -95,6 +100,8 @@ const AirBase = () => {
                 </tbody>
               </table>
             </div>
+
+            {/** Other items */}
             {items.map((item) => (
               <div key={item.name} className="container-tab__body-item">
                 <div className="performanceCell_header">{item.name}</div>

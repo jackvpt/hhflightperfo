@@ -109,6 +109,15 @@ export const drawPerformances = (
         toCanvasY
       )
       break
+    case "mtow_pc2dle_isa+20_2":
+      drawTtet_Pc2Dle_ISA(
+        ctx,
+        weatherData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
     default:
       break
   }

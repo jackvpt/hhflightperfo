@@ -128,7 +128,7 @@ export const chartsData = [
     height: 1182,
     xMin: [121, 121],
     xMax: [673, 673],
-    yMin: [83, 474],
+    yMin: [83, 475],
     yMax: [428, 820],
   },
 ]
