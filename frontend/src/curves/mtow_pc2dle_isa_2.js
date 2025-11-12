@@ -620,7 +620,7 @@ export const mtow_pc2dle_isa_2_data = {
   gridSpacingThickY: 500, // Y axis thick grid spacing (value)
   labelSpacingX: 1, // X axis label spacing (value)
   labelSpacingY: 500, // Y axis label spacing (value)
-  xLabel: "TTET (s)",
+  xLabel: "TTET (s) at ISA=0, Hp=0ft, without wind",
   yLabel: "WEIGHT (kg)",
   scatterPlot: scatterPlot(data),
   curves: curves(),

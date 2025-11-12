@@ -184,7 +184,7 @@ const CanvasPc2Dle = ({ data }) => {
         }
 
         // Areas
-        if (isCheckedAreas) {
+        if (isCheckedAreas && areas) {
           areas.forEach((area) => {
             const { color, points } = area
             ctx.fillStyle = color
@@ -207,40 +207,52 @@ const CanvasPc2Dle = ({ data }) => {
           ctx.strokeStyle = gridColor
           ctx.lineWidth = 1
 
-          for (let x = xmin; x <= xmax; x += gridSpacingX) {
-            const cx = toCanvasX(x)
-            ctx.beginPath()
-            ctx.moveTo(cx, marginTop)
-            ctx.lineTo(cx, height - marginBottom)
-            ctx.stroke()
+          // Check if gridSpacing is not null
+          if (gridSpacingX) {
+            for (let x = xmin; x <= xmax; x += gridSpacingX) {
+              const cx = toCanvasX(x)
+              ctx.beginPath()
+              ctx.moveTo(cx, marginTop)
+              ctx.lineTo(cx, height - marginBottom)
+              ctx.stroke()
+            }
           }
 
           // Horizontal grid lines
-          for (let y = ymin; y <= ymax; y += gridSpacingY) {
-            const cy = toCanvasY(y)
-            ctx.beginPath()
-            ctx.moveTo(marginLeft, cy)
-            ctx.lineTo(width - marginRight, cy)
-            ctx.stroke()
+          // Check if gridSpacing is not null
+          if (gridSpacingY) {
+            for (let y = ymin; y <= ymax; y += gridSpacingY) {
+              const cy = toCanvasY(y)
+              ctx.beginPath()
+              ctx.moveTo(marginLeft, cy)
+              ctx.lineTo(width - marginRight, cy)
+              ctx.stroke()
+            }
           }
 
           // Vertical thick grid lines
           ctx.lineWidth = 2
-          for (let x = x0; x <= xmax; x += gridSpacingThickX) {
-            const cx = toCanvasX(x)
-            ctx.beginPath()
-            ctx.moveTo(cx, marginTop)
-            ctx.lineTo(cx, height - marginBottom)
-            ctx.stroke()
+          // Check if gridSpacingThick is not null
+          if (gridSpacingThickX) {
+            for (let x = x0; x <= xmax; x += gridSpacingThickX) {
+              const cx = toCanvasX(x)
+              ctx.beginPath()
+              ctx.moveTo(cx, marginTop)
+              ctx.lineTo(cx, height - marginBottom)
+              ctx.stroke()
+            }
           }
 
           // Horizontal thick grid lines
-          for (let y = y0; y <= ymax; y += gridSpacingThickY) {
-            const cy = toCanvasY(y)
-            ctx.beginPath()
-            ctx.moveTo(marginLeft, cy)
-            ctx.lineTo(width - marginRight, cy)
-            ctx.stroke()
+          // Check if gridSpacingThick is not null
+          if (gridSpacingThickY) {
+            for (let y = y0; y <= ymax; y += gridSpacingThickY) {
+              const cy = toCanvasY(y)
+              ctx.beginPath()
+              ctx.moveTo(marginLeft, cy)
+              ctx.lineTo(width - marginRight, cy)
+              ctx.stroke()
+            }
           }
 
           // Axis
@@ -248,44 +260,61 @@ const CanvasPc2Dle = ({ data }) => {
           ctx.lineWidth = 2
 
           // Axis X
-          ctx.beginPath()
-          ctx.moveTo(marginLeft, height - marginBottom)
-          ctx.lineTo(width - marginRight, height - marginBottom)
-          ctx.stroke()
+          // Check if gridSpacing is not null
+          if (gridSpacingX || gridSpacingThickX) {
+            ctx.beginPath()
+            ctx.moveTo(marginLeft, height - marginBottom)
+            ctx.lineTo(width - marginRight, height - marginBottom)
+            ctx.stroke()
+          }
 
           // Axis Y
-          ctx.beginPath()
-          const xAxis = yAxisSide === "left" ? marginLeft : width - marginRight
-          ctx.moveTo(xAxis, height - marginBottom)
-          ctx.lineTo(xAxis, marginTop)
-          ctx.stroke()
+          // Check if gridSpacing is not null
+          if (gridSpacingY || gridSpacingThickX) {
+            ctx.beginPath()
+            const xAxis =
+              yAxisSide === "left" ? marginLeft : width - marginRight
+            ctx.moveTo(xAxis, height - marginBottom)
+            ctx.lineTo(xAxis, marginTop)
+            ctx.stroke()
+          }
 
           // X labels
-          ctx.font = fontLabels
-          ctx.fillStyle = textColor
-          ctx.textAlign = "center"
-          ctx.textBaseline = "top"
-          for (let x = x0; x <= xmax; x += labelSpacingX) {
-            const cx = toCanvasX(x)
-            const cy = height - marginBottom + 5
-            ctx.fillText(x.toString(), cx, cy)
+          // Check if labelSpacing is not null
+          if (labelSpacingX) {
+            ctx.font = fontLabels
+            ctx.fillStyle = textColor
+            ctx.textAlign = "center"
+            ctx.textBaseline = "top"
+            for (let x = x0; x <= xmax; x += labelSpacingX) {
+              const cx = toCanvasX(x)
+              const cy = height - marginBottom + 5
+              ctx.fillText(x.toString(), cx, cy)
+            }
           }
 
           // Y labels
-          ctx.textAlign = yAxisSide === "left" ? "right" : "left"
-          ctx.textBaseline = "middle"
-          for (let y = y0; y <= ymax; y += labelSpacingY) {
-            const cx =
-              yAxisSide === "left" ? marginLeft - 5 : width - marginRight + 8
-            const cy = toCanvasY(y)
-            ctx.fillText(y.toString(), cx, cy)
+          // Check if labelSpacing is not null
+          if (labelSpacingY) {
+            ctx.textAlign = yAxisSide === "left" ? "right" : "left"
+            ctx.textBaseline = "middle"
+            for (let y = y0; y <= ymax; y += labelSpacingY) {
+              const cx =
+                yAxisSide === "left" ? marginLeft - 5 : width - marginRight + 8
+              const cy = toCanvasY(y)
+              ctx.fillText(y.toString(), cx, cy)
+            }
           }
 
           // Axis X label (horizontal)
           ctx.font = fontUnits
           ctx.textAlign = "center"
           ctx.textBaseline = "bottom"
-          ctx.fillText(xLabel, marginLeft + plotWidth / 2,height - marginBottom+30)
+          ctx.fillText(
+            xLabel,
+            marginLeft + plotWidth / 2,
+            height - marginBottom + 30
+          )
 
           // Axis Y label (vertical)
           ctx.save()

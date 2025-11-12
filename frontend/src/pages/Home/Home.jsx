@@ -23,6 +23,9 @@ import { mtow_pc2dle_isa_2_data } from "../../curves/mtow_pc2dle_isa_2"
 import { mtow_pc2dle_isa20_1_data } from "../../curves/mtow_pc2dle_isa+20_1"
 import { useSelector } from "react-redux"
 import { mtow_pc2dle_isa20_2_data } from "../../curves/mtow_pc2dle_isa+20_2"
+import { mlw_pc2dle_isa_1_data } from "../../curves/mlw_pc2dle_isa_1"
+import { mlw_pc2dle_isa_2_data } from "../../curves/mlw_pc2dle_isa_2"
+import { mlw_pc2dle_isa_3_data } from "../../curves/mlw_pc2dle_isa_3"
 
 const Home = () => {
   // REDUX store
@@ -39,10 +42,13 @@ const Home = () => {
 
         <div className="home-page__content-curves">
           {/** PC2DLE curves in acordance with platform ISA */}
-          {weatherData.platformISA < 10 ? (
+          {weatherData.platformISA < 10 ? (<>
+            <CanvasPc2Dle
+              data={[mlw_pc2dle_isa_1_data, mlw_pc2dle_isa_2_data,mlw_pc2dle_isa_3_data]}
+            />
             <CanvasPc2Dle
               data={[mtow_pc2dle_isa_1_data, mtow_pc2dle_isa_2_data]}
-            />
+            /></>
           ) : (
             <CanvasPc2Dle data={[mtow_pc2dle_isa20_1_data,mtow_pc2dle_isa20_2_data]} />
           )}

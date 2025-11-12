@@ -2,6 +2,8 @@ import { d1_predictD1 } from "../curves/d1"
 import { mlw_ca_predictWeight } from "../curves/mlw_ca"
 import { mlw_elevated_heliport_predictWeight } from "../curves/mlw_elevated_heliport"
 import { mlw_helipad_predictWeight } from "../curves/mlw_helipad"
+import { mlw_pc2dle_isa_1_predictWeight } from "../curves/mlw_pc2dle_isa_1"
+import { mlw_pc2dle_isa_2_predictTtet } from "../curves/mlw_pc2dle_isa_2"
 import { mtow_ca_40_predictWeight } from "../curves/mtow_ca_40"
 import { mtow_ca_50_predictWeight } from "../curves/mtow_ca_50"
 import { mtow_ca_60_predictWeight } from "../curves/mtow_ca_60"
@@ -138,7 +140,7 @@ export const computeMtow_pc2dle = (platformISA, zp) => {
   return value
 }
 
-export const computeTtet_pc2dle = (platformISA, dropDown, weight) => {
+export const computeTakeOffTtet_pc2dle = (platformISA, dropDown, weight) => {
   let value
   let error
   let text
@@ -155,7 +157,7 @@ export const computeTtet_pc2dle = (platformISA, dropDown, weight) => {
   return value
 }
 
-export const computeTtet_pc2dle_corrected = (
+export const computeTakeOffTtet_pc2dle_corrected = (
   ttet,
   platformFactoredWind,
   platformZp,
@@ -176,6 +178,67 @@ export const computeTtet_pc2dle_corrected = (
     zpCorrection = platformZp > 0 ? (platformZp * 0.5) / 1000 : 0
     // ISA correction
     isaCorrection = platformISA > 0 ? platformISA * 0.1 : 0
+  }
+  const ttet_corrected = ttet - windCorrection + zpCorrection + isaCorrection
+  return Number(ttet_corrected.toFixed(1))
+}
+
+export const computeMlw_pc2dle = (platformISA, zp) => {
+  let value
+  let error
+  let text
+
+  if (platformISA >= 10) {
+    // ;({ value, error, text } = mlw_pc2dle_isa20_1_predictWeight(
+    //   platformISA,
+    //   zp
+    // ))
+  } else
+    ({ value, error, text } = mlw_pc2dle_isa_1_predictWeight(platformISA, zp))
+
+  if (error) return text
+  return value
+}
+
+export const computeLandingTtet_pc2dle = (platformISA, dropDown, weight) => {
+  let value
+  let error
+  let text
+
+  if (platformISA >= 10) {
+    // ;({ value, error, text } = mlw_pc2dle_isa20_2_predictTtet(
+    //   dropDown,
+    //   weight
+    // ))
+    return 2
+  } else
+    ({ value, error, text } = mlw_pc2dle_isa_2_predictTtet(dropDown, weight))
+
+  if (error) return text
+  return value
+}
+
+export const computeLandingTtet_pc2dle_corrected = (
+  ttet,
+  platformFactoredWind,
+  platformZp,
+  platformISA
+) => {
+  let zpCorrection, isaCorrection
+
+  // Factored wind correction
+  const windCorrection = platformFactoredWind * 0.4
+
+  if (platformISA >= 10) {
+    // Zp correction
+    zpCorrection = platformZp > 0 ? (platformZp * 2) / 1000 : -(platformZp * 1) / 1000
+    // ISA correction
+    isaCorrection = platformISA > 20 ? platformISA * 0.25 : -platformISA * 0.15
+  } else {
+    // Zp correction
+    zpCorrection = platformZp > 0 ? (platformZp * 1) / 1000 : 0
+    // ISA correction
+    isaCorrection = platformISA > 0 ? platformISA * 0.15 : 0
   }
   const ttet_corrected = ttet - windCorrection + zpCorrection + isaCorrection
   return Number(ttet_corrected.toFixed(1))

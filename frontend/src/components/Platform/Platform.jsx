@@ -30,19 +30,36 @@ const Platform = () => {
     },
   ]
   // PC2DLE items declaration
-  const deltaTtet =
-    performancesData.ttet_pc2dle_corrected - performancesData.ttet_pc2dle
+  const takeOffDeltaTtet =
+    performancesData.takeoff_ttet_pc2dle_corrected -
+    performancesData.takeoff_ttet_pc2dle
+
+  const landingDeltaTtet =
+    performancesData.landing_ttet_pc2dle_corrected -
+    performancesData.landing_ttet_pc2dle
+
   const itemsPC2DLE = [
     {
       name: "MTOW PC2DLE",
       calculation: performancesData.mtow_pc2dle,
     },
     {
-      name: "TTET PC2DLE",
-      calculation: performancesData.ttet_pc2dle_corrected.toFixed(1),
+      name: "TAKE-OFF TTET PC2DLE",
+      calculation: performancesData.ttet_pc2dle_corrected,
       info: `Corrections for factored wind, Zp and ISA are applied (${
-        deltaTtet > 0 ? "+" : ""
-      }${deltaTtet.toFixed(1)} s)`,
+        takeOffDeltaTtet > 0 ? "+" : ""
+      }${takeOffDeltaTtet.toFixed(1)} s)`,
+    },
+    {
+      name: "MLW PC2DLE",
+      calculation: performancesData.mlw_pc2dle,
+    },
+    {
+      name: "LANDING TTET PC2DLE",
+      calculation: performancesData.landing_ttet_pc2dle_corrected,
+      info: `Corrections for factored wind, Zp and ISA are applied (${
+        landingDeltaTtet > 0 ? "+" : ""
+      }${landingDeltaTtet.toFixed(1)} s)`,
     },
   ]
 
@@ -97,7 +114,9 @@ const Platform = () => {
               <div key={item.name} className="container-tab__body-item">
                 <div className="performanceCell_header">
                   {item.name}
-                  {item.info && <PerformanceToolTip text={item.info} />}
+                  {item.info && item.calculation !== "N/A" && (
+                    <PerformanceToolTip text={item.info} />
+                  )}
                 </div>
                 <div className="performanceCell_value">{item.calculation}</div>
               </div>

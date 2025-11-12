@@ -118,6 +118,15 @@ export const drawPerformances = (
         toCanvasY
       )
       break
+          case "mlw_pc2dle_isa_1":
+      drawMlw_Pc2Dle_ISA(
+        ctx,
+        weatherData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
     default:
       break
   }
@@ -422,6 +431,25 @@ const drawTtet_Pc2Dle_ISA = (
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(3000)
   const x = toCanvasX(ttet)
+  const y = toCanvasY(weight)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawPoint(ctx, x, y)
+}
+
+// Draw MLW PC2DLE performance points and lines
+const drawMlw_Pc2Dle_ISA = (
+  ctx,
+  weatherData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const weight = performancesData.mtow_pc2dle
+  const zp = weatherData.platformZp
+  const x0 = toCanvasX(-1000)
+  const y0 = toCanvasY(3000)
+  const x = toCanvasX(zp)
   const y = toCanvasY(weight)
 
   drawLines(ctx, x0, x, y0, y)

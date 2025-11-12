@@ -5,9 +5,11 @@ import {
   computeD1,
   computeFactoredHeadWind,
   computeHeadWind,
+  computeLandingTtet_pc2dle,
   computeMlw_ca,
   computeMlw_elevated_heliport,
   computeMlw_helipad,
+  computeMlw_pc2dle,
   computeMtow_ca_40,
   computeMtow_ca_50,
   computeMtow_ca_60,
@@ -17,8 +19,8 @@ import {
   computeMtow_elevated_heliport_2_3,
   computeMtow_helipad,
   computeMtow_pc2dle,
-  computeTtet_pc2dle,
-  computeTtet_pc2dle_corrected,
+  computeTakeOffTtet_pc2dle,
+  computeTakeOffTtet_pc2dle_corrected,
 } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
@@ -190,8 +192,8 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  // TTET PC2DLE
-  const ttet_pc2dle = computeTtet_pc2dle(
+  // TAKEOFF TTET PC2DLE
+  const takeoff_ttet_pc2dle = computeTakeOffTtet_pc2dle(
     platformISA,
     platformDropDown,
     mtow_pc2dle,
@@ -201,22 +203,61 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "ttet_pc2dle",
-      value: ttet_pc2dle,
+      field: "takeoff_ttet_pc2dle",
+      value: takeoff_ttet_pc2dle,
     })
   )
 
-  // CORRECTED TTET PC2DLE
-  const ttet_pc2dle_corrected = computeTtet_pc2dle_corrected(
-    ttet_pc2dle,
+  // CORRECTED TAKEOFF TTET PC2DLE
+  const takeoff_ttet_pc2dle_corrected = computeTakeOffTtet_pc2dle_corrected(
+    takeoff_ttet_pc2dle,
     platformFactoredHeadwind,
     platformZp,
     platformISA
   )
   dispatch(
     updatePerformanceField({
-      field: "ttet_pc2dle_corrected",
-      value: ttet_pc2dle_corrected,
+      field: "takeoff_ttet_pc2dle_corrected",
+      value: takeoff_ttet_pc2dle_corrected,
+    })
+  )
+
+  // MTOW PC2DLE
+  const mlw_pc2dle = computeMlw_pc2dle(platformISA, platformZp)
+  dispatch(
+    updatePerformanceField({
+      field: "mlw_pc2dle",
+      value: mlw_pc2dle,
+    })
+  )
+
+  // TAKEOFF TTET PC2DLE
+  const landing_ttet_pc2dle = computeLandingTtet_pc2dle(
+    platformISA,
+    platformDropDown,
+    mtow_pc2dle,
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
+  dispatch(
+    updatePerformanceField({
+      field: "landing_ttet_pc2dle",
+      value: landing_ttet_pc2dle,
+    })
+  )
+
+    // CORRECTED LANDING TTET PC2DLE
+  const landing_ttet_pc2dle_corrected = computeLandingTtet_pc2dle(
+    takeoff_ttet_pc2dle,
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
+  dispatch(
+    updatePerformanceField({
+      field: "landing_ttet_pc2dle_corrected",
+      value: landing_ttet_pc2dle_corrected,
     })
   )
 }
