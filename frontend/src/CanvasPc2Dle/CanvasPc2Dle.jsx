@@ -310,6 +310,8 @@ const CanvasPc2Dle = ({ data }) => {
           ctx.font = fontUnits
           ctx.textAlign = "center"
           ctx.textBaseline = "bottom"
+          ctx.fillStyle = textColor
+
           ctx.fillText(
             xLabel,
             marginLeft + plotWidth / 2,
@@ -349,7 +351,12 @@ const CanvasPc2Dle = ({ data }) => {
           // Draw border lines
           borderLines.forEach((line) => {
             ctx.beginPath()
-            line.forEach((point, index) => {
+            // Custom line color and thickness
+            if (line["color"] === "axisColor") ctx.strokeStyle = axisColor
+            else if (line["color"]) ctx.strokeStyle = line["color"]
+            ctx.lineWidth = line["thickness"] || 1.5
+
+            line["points"].forEach((point, index) => {
               const cx = toCanvasX(point.x)
               const cy = toCanvasY(point.y)
               if (index === 0) ctx.moveTo(cx, cy)
@@ -368,6 +375,7 @@ const CanvasPc2Dle = ({ data }) => {
             const cy = toCanvasY(label.y)
             ctx.translate(cx, cy)
             ctx.rotate((label.angle * Math.PI) / 180)
+            if (label.fontSize) ctx.font = `${label.fontSize}px ${fontName}`
             ctx.fillText(label.text, 0, 0)
             ctx.restore()
           })

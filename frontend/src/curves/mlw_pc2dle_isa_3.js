@@ -1,196 +1,47 @@
 import { extrapolation } from "../utils/calculations"
 
 // Labels for temperatures
-const labels = [
-  // {
-  //   text: "AVAILABLE DROP DOWN (ft)",
-  //   x: 4,
-  //   y: 4150,
-  //   angle: -16,
-  // },
-  // {
-  //   text: "0",
-  //   x: 4,
-  //   y: 4320,
-  //   angle: -15,
-  // },
-  // {
-  //   text: "50",
-  //   x: 3,
-  //   y: 4480,
-  //   angle: -12,
-  // },
-  // {
-  //   text: "100",
-  //   x: 2,
-  //   y: 4640,
-  //   angle: -12,
-  // },
-  // {
-  //   text: "150",
-  //   x: 1,
-  //   y: 4810,
-  //   angle: -14,
-  // },
-]
+const labels = Array.from({ length: 28 - 10 + 1 }, (_, i) => {
+  const x = 10 + i
+  return {
+    text: String(x),
+    x,
+    y: 4.4,
+    angle: 0,
+    fontSize: 11,
+  }
+})
 
-// Border lines (sides of flight envelope)
-const borderLines = [
-  
-    [
-      { x: 10, y: 0 },
-      { x: 28, y: 0 },
-    ],
-    [
-      { x: 10, y: 0 },
-      { x: 10, y: 2 },
-    ],
-    [
-      { x: 10.5, y: 0 },
-      { x: 10.5, y: 1 },
-    ],
-    [
-      { x: 11, y: 0 },
-      { x: 11, y: 2 },
-    ],
-    [
-      { x: 11.5, y: 0 },
-      { x: 11.5, y: 1 },
-    ],
-    [
-      { x: 12, y: 0 },
-      { x: 12, y: 2 },
-    ],
-    [
-      { x: 12.5, y: 0 },
-      { x: 12.5, y: 1 },
-    ],
-    [
-      { x: 13, y: 0 },
-      { x: 13, y: 2 },
-    ],
-    [
-      { x: 13.5, y: 0 },
-      { x: 13.5, y: 1 },
-    ],
-    [
-      { x: 14, y: 0 },
-      { x: 14, y: 2 },
-    ],
-    [
-      { x: 14.5, y: 0 },
-      { x: 14.5, y: 1 },
-    ],
-    [
-      { x: 15, y: 0 },
-      { x: 15, y: 2 },
-    ],
-    [
-      { x: 15.5, y: 0 },
-      { x: 15.5, y: 1 },
-    ],
-    [
-      { x: 16, y: 0 },
-      { x: 16, y: 2 },
-    ],
-    [
-      { x: 16.5, y: 0 },
-      { x: 16.5, y: 1 },
-    ],
-    [
-      { x: 17, y: 0 },
-      { x: 17, y: 2 },
-    ],
-    [
-      { x: 17.5, y: 0 },
-      { x: 17.5, y: 1 },
-    ],
-    [
-      { x: 18, y: 0 },
-      { x: 18, y: 2 },
-    ],
-    [
-      { x: 18.5, y: 0 },
-      { x: 18.5, y: 1 },
-    ],
-    [
-      { x: 19, y: 0 },
-      { x: 19, y: 2 },
-    ],
-    [
-      { x: 19.5, y: 0 },
-      { x: 19.5, y: 1 },
-    ],
-    [
-      { x: 20, y: 0 },
-      { x: 20, y: 2 },
-    ],
-    [
-      { x: 20.5, y: 0 },
-      { x: 20.5, y: 1 },
-    ],
-    [
-      { x: 21, y: 0 },
-      { x: 21, y: 2 },
-    ],
-    [
-      { x: 21.5, y: 0 },
-      { x: 21.5, y: 1 },
-    ],
-    [
-      { x: 22, y: 0 },
-      { x: 22, y: 2 },
-    ],
-    [
-      { x: 22.5, y: 0 },
-      { x: 22.5, y: 1 },
-    ],
-    [
-      { x: 23, y: 0 },
-      { x: 23, y: 2 },
-    ],
-    [
-      { x: 23.5, y: 0 },
-      { x: 23.5, y: 1 },
-    ],
-    [
-      { x: 24, y: 0 },
-      { x: 24, y: 2 },
-    ],
-    [
-      { x: 24.5, y: 0 },
-      { x: 24.5, y: 1 },
-    ],
-    [
-      { x: 25, y: 0 },
-      { x: 25, y: 2 },
-    ],
-    [
-      { x: 25.5, y: 0 },
-      { x: 25.5, y: 1 },
-    ],
-    [
-      { x: 26, y: 0 },
-      { x: 26, y: 2 },
-    ],
-    [
-      { x: 26.5, y: 0 },
-      { x: 26.5, y: 1 },
-    ],
-    [
-      { x: 27, y: 0 },
-      { x: 27, y: 2 },
-    ],
-    [
-      { x: 27.5, y: 0 },
-      { x: 27.5, y: 1 },
-    ],
-    [
-      { x: 28, y: 0 },
-      { x: 28, y: 2 },
-    ],
+// Border lines (VLSS scale)
+const generateBorderLines = (start = 10, end = 28) => {
+  const lines = [
+    {
+      color: "axisColor",
+      thickness: 1.5,
+      points: [
+        { x: 10, y: 0 },
+        { x: 28, y: 0 },
+      ],
+    },
   ]
 
+  for (let x = start; x <= end; x += 0.5) {
+    const isMajor = Number.isInteger(x)
+
+    lines.push({
+      color: "axisColor",
+      thickness: 1.5,
+      points: [
+        { x, y: 0 },
+        { x, y: isMajor ? 2 : 1 },
+      ],
+    })
+  }
+
+  return lines
+}
+
+const borderLines = generateBorderLines(10, 28)
 
 /**
  *
@@ -216,7 +67,7 @@ export const mlw_pc2dle_isa_3_predictVlss = (ttet) => {
   let vlssInLimits = vlss
   if (vlss < 0) vlssInLimits = 0
   if (vlss > 27.5) vlssInLimits = 27.5
-  return { value: Math.round(vlssInLimits), error: null, text: null }
+  return { value: Number(vlssInLimits.toFixed(1)), error: null, text: null }
 }
 
 /**
@@ -262,7 +113,7 @@ export const mlw_pc2dle_isa_3_data = {
   name: "mlw_pc2dle_isa_3",
   title: "MAXIMUM LANDING WEIGHT PC2DLE ISA",
   xmin: 10, // X axis minimum value
-  xmax: 28, // X axis reference 0
+  xmax: 27.5, // X axis reference 0
   x0: 10, // X axis maximum value
   ymin: 0, // Y axis minimum value
   ymax: 2, // Y axis maximum value

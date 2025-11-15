@@ -6,6 +6,7 @@ import {
   computeFactoredHeadWind,
   computeHeadWind,
   computeLandingTtet_pc2dle,
+  computeLandingTtet_pc2dle_corrected,
   computeMlw_ca,
   computeMlw_elevated_heliport,
   computeMlw_helipad,
@@ -21,6 +22,7 @@ import {
   computeMtow_pc2dle,
   computeTakeOffTtet_pc2dle,
   computeTakeOffTtet_pc2dle_corrected,
+  computeVlss_pc2dle,
 } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
@@ -247,8 +249,8 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-    // CORRECTED LANDING TTET PC2DLE
-  const landing_ttet_pc2dle_corrected = computeLandingTtet_pc2dle(
+  // CORRECTED LANDING TTET PC2DLE
+  const landing_ttet_pc2dle_corrected = computeLandingTtet_pc2dle_corrected(
     takeoff_ttet_pc2dle,
     platformFactoredHeadwind,
     platformZp,
@@ -258,6 +260,15 @@ export const calculatePerformances = () => (dispatch, getState) => {
     updatePerformanceField({
       field: "landing_ttet_pc2dle_corrected",
       value: landing_ttet_pc2dle_corrected,
+    })
+  )
+
+  // TAKEOFF VLSS PC2DLE
+  const landing_vlss_pc2dle = computeVlss_pc2dle(landing_ttet_pc2dle_corrected)
+  dispatch(
+    updatePerformanceField({
+      field: "landing_vlss_pc2dle",
+      value: landing_vlss_pc2dle,
     })
   )
 }

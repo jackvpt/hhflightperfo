@@ -64,22 +64,29 @@ const labels = [
     y: 300,
     angle: 40,
   },
-
 ]
 
 // Border lines (left and right side of flight envelope)
 const borderLines = [
-  [
-    { x: 4091, y: 5000 },
-    { x: 4082, y: 4543 },
-    { x: 4045, y: 3604 },
-    { x: 3976, y: 2703 },
-    { x: 3869, y: 1814 },
-  ],
-  [
-              { x: 4820, y: 4009 },
-{ x: 4820, y: -2000 },
-  ]
+  {
+    color: "",
+    thickness: 1.5,
+    points: [
+      { x: 4091, y: 5000 },
+      { x: 4082, y: 4543 },
+      { x: 4045, y: 3604 },
+      { x: 3976, y: 2703 },
+      { x: 3869, y: 1814 },
+    ],
+  },
+  {
+    color: "",
+    thickness: 1.5,
+    points: [
+      { x: 4820, y: 4009 },
+      { x: 4820, y: -2000 },
+    ],
+  },
 ]
 
 /**

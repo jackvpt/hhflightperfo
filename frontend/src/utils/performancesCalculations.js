@@ -4,6 +4,7 @@ import { mlw_elevated_heliport_predictWeight } from "../curves/mlw_elevated_heli
 import { mlw_helipad_predictWeight } from "../curves/mlw_helipad"
 import { mlw_pc2dle_isa_1_predictWeight } from "../curves/mlw_pc2dle_isa_1"
 import { mlw_pc2dle_isa_2_predictTtet } from "../curves/mlw_pc2dle_isa_2"
+import { mlw_pc2dle_isa_3_predictVlss } from "../curves/mlw_pc2dle_isa_3"
 import { mtow_ca_40_predictWeight } from "../curves/mtow_ca_40"
 import { mtow_ca_50_predictWeight } from "../curves/mtow_ca_50"
 import { mtow_ca_60_predictWeight } from "../curves/mtow_ca_60"
@@ -166,7 +167,7 @@ export const computeTakeOffTtet_pc2dle_corrected = (
   let zpCorrection, isaCorrection
 
   // Factored wind correction
-  const windCorrection = platformFactoredWind * 0.15
+  const windCorrection = -platformFactoredWind * 0.15
 
   if (platformISA >= 10) {
     // Zp correction
@@ -179,7 +180,7 @@ export const computeTakeOffTtet_pc2dle_corrected = (
     // ISA correction
     isaCorrection = platformISA > 0 ? platformISA * 0.1 : 0
   }
-  const ttet_corrected = ttet - windCorrection + zpCorrection + isaCorrection
+  const ttet_corrected = ttet + windCorrection + zpCorrection + isaCorrection
   return Number(ttet_corrected.toFixed(1))
 }
 
@@ -227,11 +228,12 @@ export const computeLandingTtet_pc2dle_corrected = (
   let zpCorrection, isaCorrection
 
   // Factored wind correction
-  const windCorrection = platformFactoredWind * 0.4
+  const windCorrection = -platformFactoredWind * 0.4
 
   if (platformISA >= 10) {
     // Zp correction
-    zpCorrection = platformZp > 0 ? (platformZp * 2) / 1000 : -(platformZp * 1) / 1000
+    zpCorrection =
+      platformZp > 0 ? (platformZp * 2) / 1000 : -(platformZp * 1) / 1000
     // ISA correction
     isaCorrection = platformISA > 20 ? platformISA * 0.25 : -platformISA * 0.15
   } else {
@@ -240,6 +242,13 @@ export const computeLandingTtet_pc2dle_corrected = (
     // ISA correction
     isaCorrection = platformISA > 0 ? platformISA * 0.15 : 0
   }
-  const ttet_corrected = ttet - windCorrection + zpCorrection + isaCorrection
+  const ttet_corrected = ttet + windCorrection + zpCorrection + isaCorrection
   return Number(ttet_corrected.toFixed(1))
+}
+
+export const computeVlss_pc2dle = (ttet) => {
+  const { value, error, text } = mlw_pc2dle_isa_3_predictVlss(ttet)
+
+  if (error) return text
+  return value
 }

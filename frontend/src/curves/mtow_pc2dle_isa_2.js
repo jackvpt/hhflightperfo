@@ -39,14 +39,23 @@ const labels = [
 
 // Border lines (sides of flight envelope)
 const borderLines = [
-  [
-    { x: 0.5, y: 3815 },
-    { x: 0.5, y: 4920 },
-  ],
-  [
+  {
+    color: "",
+    thickness: 1.5,
+    points: [
+      { x: 0.5, y: 3815 },
+      { x: 0.5, y: 4920 },
+    ],
+  },
+  {
+    color: "",
+    thickness: 1.5,
+    points: [
     { x: 0.5, y: 4920 },
     { x: 4.9, y: 4920 },
-  ],
+    ],
+  },
+
 ]
 
 /**

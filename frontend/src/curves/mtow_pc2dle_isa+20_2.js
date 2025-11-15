@@ -45,14 +45,22 @@ const labels = [
 
 // Border lines (sides of flight envelope)
 const borderLines = [
-  [
-    { x: 0.5, y: 3577 },
-    { x: 0.5, y: 4652 },
-  ],
-  [
-    { x: 2.1, y: 4920 },
-    { x: 6.4, y: 4920 },
-  ],
+  {
+    color: "",
+    thickness: 1.5,
+    points: [
+      { x: 0.5, y: 3577 },
+      { x: 0.5, y: 4652 },
+    ],
+  },
+  {
+    color: "",
+    thickness: 1.5,
+    points: [
+      { x: 2.1, y: 4920 },
+      { x: 6.4, y: 4920 },
+    ],
+  },
 ]
 
 /**
@@ -463,7 +471,7 @@ const data = {
     ranges: [
       {
         rangeX: [0, 1],
-        rangeY: [4550,4634],
+        rangeY: [4550, 4634],
         values: [
           { x: 0.5, y: 4550 },
           { x: 0.6, y: 4566 },
@@ -493,7 +501,7 @@ const data = {
     ranges: [
       {
         rangeX: [0, 1],
-        rangeY: [4602,4687],
+        rangeY: [4602, 4687],
         values: [
           { x: 0.5, y: 4602 },
           { x: 0.6, y: 4617 },
@@ -517,13 +525,13 @@ const data = {
   },
   150: {
     absoluteMinX: 0.5,
-    absoluteMaxX:2.1 ,
-    absoluteMinY:4652 ,
+    absoluteMaxX: 2.1,
+    absoluteMinY: 4652,
     absoluteMaxY: 4920,
     ranges: [
       {
         rangeX: [0, 1],
-        rangeY: [4652,],
+        rangeY: [4652],
         values: [
           { x: 0.5, y: 4652 },
           { x: 0.6, y: 4670 },

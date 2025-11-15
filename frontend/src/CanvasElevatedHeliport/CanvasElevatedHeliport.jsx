@@ -320,7 +320,12 @@ const CanvasElevatedHeliport = ({ data }) => {
           // Draw border lines
           borderLines.forEach((line) => {
             ctx.beginPath()
-            line.forEach((point, index) => {
+            // Custom line color and thickness
+            if (line["color"] === "axisColor") ctx.strokeStyle = axisColor
+            else if (line["color"]) ctx.strokeStyle = line["color"]
+            ctx.lineWidth = line["thickness"] || 1.5
+            
+            line["points"].forEach((point, index) => {
               const cx = toCanvasX(point.x)
               const cy = toCanvasY(point.y)
               if (index === 0) ctx.moveTo(cx, cy)

@@ -92,7 +92,7 @@ export const drawPerformances = (
       )
       break
     case "mtow_pc2dle_isa_2":
-      drawTtet_Pc2Dle_ISA(
+      drawTakeOffTtet_Pc2Dle_ISA(
         ctx,
         weatherData,
         performancesData,
@@ -110,7 +110,7 @@ export const drawPerformances = (
       )
       break
     case "mtow_pc2dle_isa+20_2":
-      drawTtet_Pc2Dle_ISA(
+      drawTakeOffTtet_Pc2Dle_ISA(
         ctx,
         weatherData,
         performancesData,
@@ -118,8 +118,26 @@ export const drawPerformances = (
         toCanvasY
       )
       break
-          case "mlw_pc2dle_isa_1":
+    case "mlw_pc2dle_isa_1":
       drawMlw_Pc2Dle_ISA(
+        ctx,
+        weatherData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
+    case "mlw_pc2dle_isa_2":
+      drawLandingTtet_Pc2Dle_ISA(
+        ctx,
+        weatherData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
+    case "mlw_pc2dle_isa_3":
+      drawLandingVlss_Pc2Dle_ISA(
         ctx,
         weatherData,
         performancesData,
@@ -138,13 +156,38 @@ const drawLines = (ctx, x0, x, y0, y) => {
   ctx.beginPath()
   ctx.moveTo(x0 - 5, y)
   ctx.lineTo(x, y)
-  ctx.lineTo(x, y0 + 5)
+  ctx.lineTo(x, y0 + 7)
   ctx.moveTo(x0 + 5, y)
   ctx.lineTo(x, y)
   ctx.lineTo(x, y0 - 5)
   ctx.strokeStyle = "orange"
   ctx.lineWidth = 2
   ctx.stroke()
+}
+
+// Helper functions to draw lines and points
+// Draw lines for corrected TTET from (xCorrected, y0) to (x, y0)
+const drawLines_corrected = (ctx, x, xCorrected, y0) => {
+  let arrowSize = 10
+  if (x < xCorrected) {
+    arrowSize = -arrowSize
+  }
+  ctx.beginPath()
+  ctx.moveTo(xCorrected, y0 + 7)
+  ctx.lineTo(xCorrected, y0)
+  ctx.lineTo(x, y0)
+
+  ctx.strokeStyle = "orange"
+  ctx.lineWidth = 2
+  ctx.stroke()
+
+  ctx.fillStyle = "orange"
+  ctx.beginPath()
+  ctx.moveTo(xCorrected, y0)
+  ctx.lineTo(xCorrected + arrowSize, y0 - arrowSize / 2)
+  ctx.lineTo(xCorrected + arrowSize, y0 + arrowSize / 2)
+  ctx.closePath()
+  ctx.fill()
 }
 
 // Draw a point at (x, y)
@@ -418,22 +461,26 @@ const drawMtow_Pc2Dle_ISA = (
   drawPoint(ctx, x, y)
 }
 
-// Draw MTOW PC2DLE performance points and lines
-const drawTtet_Pc2Dle_ISA = (
+// Draw TAKEOFF TTET PC2DLE performance points and lines
+const drawTakeOffTtet_Pc2Dle_ISA = (
   ctx,
   weatherData,
   performancesData,
   toCanvasX,
   toCanvasY
 ) => {
-  const ttet = performancesData.ttet_pc2dle
+  const ttet = performancesData.takeoff_ttet_pc2dle
+  const ttetCorrected = performancesData.takeoff_ttet_pc2dle_corrected
   const weight = performancesData.mtow_pc2dle
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(3000)
   const x = toCanvasX(ttet)
+  const xCorrected = toCanvasX(ttetCorrected)
   const y = toCanvasY(weight)
 
   drawLines(ctx, x0, x, y0, y)
+  drawLines_corrected(ctx, x, xCorrected, y0)
+
   drawPoint(ctx, x, y)
 }
 
@@ -454,4 +501,47 @@ const drawMlw_Pc2Dle_ISA = (
 
   drawLines(ctx, x0, x, y0, y)
   drawPoint(ctx, x, y)
+}
+
+// Draw LANDING TTET PC2DLE performance points and lines
+const drawLandingTtet_Pc2Dle_ISA = (
+  ctx,
+  weatherData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const ttet = performancesData.landing_ttet_pc2dle
+  const ttetCorrected = performancesData.landing_ttet_pc2dle_corrected
+  const weight = performancesData.mlw_pc2dle
+  const x0 = toCanvasX(0)
+  const y0 = toCanvasY(3000)
+  const x = toCanvasX(ttet)
+  const xCorrected = toCanvasX(ttetCorrected)
+  const y = toCanvasY(weight)
+
+  drawLines(ctx, x0, x, y0, y)
+  drawLines_corrected(ctx, x, xCorrected, y0)
+  drawPoint(ctx, x, y)
+}
+
+// Draw LANDING VLSS PC2DLE performance points and lines
+const drawLandingVlss_Pc2Dle_ISA = (
+  ctx,
+  weatherData,
+  performancesData,
+  toCanvasX,
+  toCanvasY
+) => {
+  const vlss = performancesData.landing_vlss_pc2dle
+  const x = toCanvasX(vlss)
+  const y0 = toCanvasY(0)
+  const y = toCanvasY(4.5)
+
+  ctx.beginPath()
+  ctx.moveTo(x, y0 + 7)
+  ctx.lineTo(x, y)
+  ctx.strokeStyle = "orange"
+  ctx.lineWidth = 2
+  ctx.stroke()
 }

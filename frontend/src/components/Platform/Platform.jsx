@@ -44,8 +44,8 @@ const Platform = () => {
       calculation: performancesData.mtow_pc2dle,
     },
     {
-      name: "TAKE-OFF TTET PC2DLE",
-      calculation: performancesData.ttet_pc2dle_corrected,
+      name: "TAKE-OFF TTET",
+      calculation: performancesData.takeoff_ttet_pc2dle_corrected,
       info: `Corrections for factored wind, Zp and ISA are applied (${
         takeOffDeltaTtet > 0 ? "+" : ""
       }${takeOffDeltaTtet.toFixed(1)} s)`,
@@ -55,11 +55,15 @@ const Platform = () => {
       calculation: performancesData.mlw_pc2dle,
     },
     {
-      name: "LANDING TTET PC2DLE",
+      name: "LANDING TTET",
       calculation: performancesData.landing_ttet_pc2dle_corrected,
       info: `Corrections for factored wind, Zp and ISA are applied (${
         landingDeltaTtet > 0 ? "+" : ""
       }${landingDeltaTtet.toFixed(1)} s)`,
+    },
+    {
+      name: "LANDING VLSS",
+      calculation: Math.round(performancesData.landing_vlss_pc2dle),
     },
   ]
 
