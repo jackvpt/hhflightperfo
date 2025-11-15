@@ -251,7 +251,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
 
   // CORRECTED LANDING TTET PC2DLE
   const landing_ttet_pc2dle_corrected = computeLandingTtet_pc2dle_corrected(
-    takeoff_ttet_pc2dle,
+    landing_ttet_pc2dle,
     platformFactoredHeadwind,
     platformZp,
     platformISA

@@ -45,37 +45,55 @@ export const computeD1 = (headWind) => {
 
 export const computeMtow_ca_40 = (temperature, zp) => {
   const { value, error, text } = mtow_ca_40_predictWeight(temperature, zp)
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
 export const computeMtow_ca_50 = (temperature, zp) => {
   const { value, error, text } = mtow_ca_50_predictWeight(temperature, zp)
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
 export const computeMtow_ca_60 = (temperature, zp) => {
   const { value, error, text } = mtow_ca_60_predictWeight(temperature, zp)
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
 export const computeMlw_ca = (temperature, zp) => {
   const { value, error, text } = mlw_ca_predictWeight(temperature, zp)
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
 export const computeMtow_helipad = (temperature, zp) => {
   const { value, error, text } = mtow_helipad_predictWeight(temperature, zp)
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
 export const computeMlw_helipad = (temperature, zp) => {
   const { value, error, text } = mlw_helipad_predictWeight(temperature, zp)
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -84,7 +102,10 @@ export const computeMtow_elevated_heliport_1 = (wind, dropDown) => {
     wind,
     dropDown
   )
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -93,7 +114,10 @@ export const computeMtow_elevated_heliport_2_1 = (temperature, zp) => {
     temperature,
     zp
   )
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -102,7 +126,11 @@ export const computeMtow_elevated_heliport_2_2 = (weight, coef) => {
     weight,
     coef
   )
-  if (error) return text
+
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -111,7 +139,10 @@ export const computeMtow_elevated_heliport_2_3 = (temperature, zp) => {
     temperature,
     zp
   )
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -120,7 +151,10 @@ export const computeMlw_elevated_heliport = (temperature, zp) => {
     temperature,
     zp
   )
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -137,7 +171,10 @@ export const computeMtow_pc2dle = (platformISA, zp) => {
   } else
     ({ value, error, text } = mtow_pc2dle_isa_1_predictWeight(platformISA, zp))
 
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -154,7 +191,10 @@ export const computeTakeOffTtet_pc2dle = (platformISA, dropDown, weight) => {
   } else
     ({ value, error, text } = mtow_pc2dle_isa_2_predictTtet(dropDown, weight))
 
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -180,7 +220,10 @@ export const computeTakeOffTtet_pc2dle_corrected = (
     // ISA correction
     isaCorrection = platformISA > 0 ? platformISA * 0.1 : 0
   }
-  const ttet_corrected = ttet + windCorrection + zpCorrection + isaCorrection
+  let ttet_corrected = ttet + windCorrection + zpCorrection + isaCorrection
+
+  if (ttet_corrected < 0) ttet_corrected = 0
+
   return Number(ttet_corrected.toFixed(1))
 }
 
@@ -197,7 +240,10 @@ export const computeMlw_pc2dle = (platformISA, zp) => {
   } else
     ({ value, error, text } = mlw_pc2dle_isa_1_predictWeight(platformISA, zp))
 
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -215,7 +261,10 @@ export const computeLandingTtet_pc2dle = (platformISA, dropDown, weight) => {
   } else
     ({ value, error, text } = mlw_pc2dle_isa_2_predictTtet(dropDown, weight))
 
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }
 
@@ -242,13 +291,19 @@ export const computeLandingTtet_pc2dle_corrected = (
     // ISA correction
     isaCorrection = platformISA > 0 ? platformISA * 0.15 : 0
   }
-  const ttet_corrected = ttet + windCorrection + zpCorrection + isaCorrection
+  let ttet_corrected = ttet + windCorrection + zpCorrection + isaCorrection
+
+  if (ttet_corrected < 0) ttet_corrected = 0
+
   return Number(ttet_corrected.toFixed(1))
 }
 
 export const computeVlss_pc2dle = (ttet) => {
   const { value, error, text } = mlw_pc2dle_isa_3_predictVlss(ttet)
 
-  if (error) return text
+  if (error) {
+    console.warn(error)
+    return text
+  }
   return value
 }

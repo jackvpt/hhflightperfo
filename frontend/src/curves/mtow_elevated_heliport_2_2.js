@@ -95,7 +95,7 @@ const data = {
   3300: {
     absoluteMinX: 3300,
     absoluteMaxX: 4820,
-    absoluteMinY: 0.12,
+    absoluteMinY: 0,
     absoluteMaxY: 10,
     ranges: [
       {
@@ -109,6 +109,7 @@ const data = {
           { x: 4500, y: 1.85 },
           { x: 4600, y: 1.31 },
           { x: 4820, y: 0.12 },
+          { x: 4840, y: 0 },
         ],
       },
     ],
@@ -116,7 +117,7 @@ const data = {
   3400: {
     absoluteMinX: 3400,
     absoluteMaxX: 4820,
-    absoluteMinY: 0.91,
+    absoluteMinY: 0.02,
     absoluteMaxY: 10,
     ranges: [
       {
@@ -130,6 +131,7 @@ const data = {
           { x: 4500, y: 2.65 },
           { x: 4700, y: 1.56 },
           { x: 4820, y: 0.91 },
+          { x: 5000, y: 0.02 },
         ],
       },
     ],
@@ -151,6 +153,7 @@ const data = {
           { x: 4500, y: 3.41 },
           { x: 4700, y: 2.35 },
           { x: 4820, y: 1.7 },
+          { x: 5000, y: 0.81 },
         ],
       },
     ],
@@ -158,7 +161,7 @@ const data = {
   3600: {
     absoluteMinX: 3600,
     absoluteMaxX: 4820,
-    absoluteMinY: 2.46,
+    absoluteMinY: 1.58,
     absoluteMaxY: 10,
     ranges: [
       {
@@ -171,6 +174,7 @@ const data = {
           { x: 4500, y: 4.16 },
           { x: 4700, y: 3.1 },
           { x: 4820, y: 2.46 },
+          { x: 5000, y: 1.58 },
         ],
       },
     ],
@@ -178,7 +182,7 @@ const data = {
   3700: {
     absoluteMinX: 3700,
     absoluteMaxX: 4820,
-    absoluteMinY: 3.69,
+    absoluteMinY: 2.91,
     absoluteMaxY: 10,
     ranges: [
       {
@@ -191,6 +195,7 @@ const data = {
           { x: 4500, y: 5.28 },
           { x: 4700, y: 4.28 },
           { x: 4820, y: 3.69 },
+          { x: 5000, y: 2.91 },
         ],
       },
     ],
