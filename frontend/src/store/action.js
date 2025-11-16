@@ -263,7 +263,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  // TAKEOFF VLSS PC2DLE
+  // LANDING VLSS PC2DLE
   const landing_vlss_pc2dle = computeVlss_pc2dle(landing_ttet_pc2dle_corrected)
   dispatch(
     updatePerformanceField({

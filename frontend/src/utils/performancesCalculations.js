@@ -2,6 +2,7 @@ import { d1_predictD1 } from "../curves/d1"
 import { mlw_ca_predictWeight } from "../curves/mlw_ca"
 import { mlw_elevated_heliport_predictWeight } from "../curves/mlw_elevated_heliport"
 import { mlw_helipad_predictWeight } from "../curves/mlw_helipad"
+import { mlw_pc2dle_isa20_1_predictWeight } from "../curves/mlw_pc2dle_isa+20_1"
 import { mlw_pc2dle_isa_1_predictWeight } from "../curves/mlw_pc2dle_isa_1"
 import { mlw_pc2dle_isa_2_predictTtet } from "../curves/mlw_pc2dle_isa_2"
 import { mlw_pc2dle_isa_3_predictVlss } from "../curves/mlw_pc2dle_isa_3"
@@ -233,10 +234,10 @@ export const computeMlw_pc2dle = (platformISA, zp) => {
   let text
 
   if (platformISA >= 10) {
-    // ;({ value, error, text } = mlw_pc2dle_isa20_1_predictWeight(
-    //   platformISA,
-    //   zp
-    // ))
+    ;({ value, error, text } = mlw_pc2dle_isa20_1_predictWeight(
+      platformISA,
+      zp
+    ))
   } else
     ({ value, error, text } = mlw_pc2dle_isa_1_predictWeight(platformISA, zp))
 

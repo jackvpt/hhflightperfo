@@ -145,6 +145,15 @@ export const drawPerformances = (
         toCanvasY
       )
       break
+          case "mlw_pc2dle_isa+20_1":
+      drawMlw_Pc2Dle_ISA(
+        ctx,
+        weatherData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
     default:
       break
   }
@@ -492,7 +501,7 @@ const drawMlw_Pc2Dle_ISA = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_pc2dle
+  const weight = performancesData.mlw_pc2dle
   const zp = weatherData.platformZp
   const x0 = toCanvasX(-1000)
   const y0 = toCanvasY(3000)

@@ -11,23 +11,24 @@ import {
 // Labels for ISA
 const labels = [
   {
-    text: "ISA -3",
-    x: 900,
-    y: 4980,
-    angle: 8,
-  },
-  {
-    text: "ISA",
-    x: 700,
+    text: "ISA +10",
+    x: 880,
     y: 4980,
     angle: 6,
   },
   {
-    text: "ISA +10",
-    x: 500,
-    y: 4810,
+    text: "ISA +20",
+    x: 680,
+    y: 4700,
     angle: 4,
   },
+  {
+    text: "ISA +30",
+    x: 480,
+    y: 4390,
+    angle: 4,
+  },
+
 ]
 
 // Border lines (left side of flight envelope and bottom)
@@ -41,69 +42,69 @@ const borderLines = []
  * The data is used to create a flight envelope for the aircraft.
  */
 const data = {
-  "-3": {
-    absoluteMinX: 293,
-    absoluteMaxX: 1000,
-    absoluteMinY: 4920,
-    absoluteMaxY: 5000,
-    ranges: [
-      {
-        rangeX: [-1000, 1000],
-        rangeY: [3000, 5000],
-        values: [
-          { x: 293, y: 5000 },
-          { x: 500, y: 4977 },
-          { x: 800, y: 4944 },
-          { x: 1000, y: 4920 },
-        ],
-      },
-    ],
-  },
-  0: {
+  10: {
     absoluteMinX: -1000,
     absoluteMaxX: 1000,
-    absoluteMinY: 4863,
+    absoluteMinY: 4872,
     absoluteMaxY: 4920,
     ranges: [
       {
-        rangeX: [-1000, 500],
-        rangeY: [4920, 4921],
+        rangeX: [-1000, 600],
+        rangeY: [4920, 5000],
         values: [
           { x: -1000, y: 4920 },
           { x: -500, y: 4920 },
           { x: 0, y: 4920 },
-          { x: 500, y: 4920 },
+          { x: 600, y: 4920 },
         ],
       },
       {
-        rangeX: [501, 1000],
-        rangeY: [4863, 4919],
+        rangeX: [601, 1000],
+        rangeY: [4000, 4919],
         values: [
-          { x: 500, y: 4920 },
-          { x: 600, y: 4908 },
-          { x: 700, y: 4896 },
-          { x: 800, y: 4884 },
-          { x: 900, y: 4874 },
-          { x: 1000, y: 4863 },
+          { x: 600, y: 4920 },
+          { x: 700, y: 4908 },
+          { x: 800, y: 4899 },
+          { x: 900, y: 4885 },
+          { x: 1000, y: 4872 },
         ],
       },
     ],
   },
-  10: {
+  20: {
     absoluteMinX: -1000,
     absoluteMaxX: 1000,
-    absoluteMinY: 4676,
-    absoluteMaxY: 4870,
+    absoluteMinY: 4572,
+    absoluteMaxY: 4811,
     ranges: [
       {
         rangeX: [-1000, 1000],
-        rangeY: [3000, 5000],
+        rangeY: [4000, 5000],
         values: [
-          { x: -1000, y: 4870 },
-          { x: -500, y: 4824 },
-          { x: 0, y: 4779 },
-          { x: 500, y: 4726 },
-          { x: 1000, y: 4676 },
+          { x: -1000, y: 4811 },
+          { x: -500, y: 4750 },
+          { x: 0, y: 4692 },
+          { x: 500, y: 4632 },
+          { x: 1000, y: 4572 },
+        ],
+      },
+    ],
+  },
+  30: {
+    absoluteMinX: -1000,
+    absoluteMaxX: 1000,
+    absoluteMinY: 4245,
+    absoluteMaxY: 4454,
+    ranges: [
+      {
+        rangeX: [-1000, 1000],
+        rangeY: [4000, 5000],
+        values: [
+          { x: -1000, y: 4454 },
+          { x: -500, y: 4398 },
+          { x: 0, y: 4346 },
+          { x: 500, y: 4297 },
+          { x: 1000, y: 4245 },
         ],
       },
     ],
@@ -117,9 +118,7 @@ const data = {
  * @returns {Number} predicted weight
  * @description Predict weight given temperature and Zp using the reverse polynomial regressions.
  */
-export const mlw_pc2dle_isa_1_predictWeight = (platformISA, zp) => {
-  if (platformISA <= -3) return { value: 4920, error: null, text: null }
-
+export const mlw_pc2dle_isa20_1_predictWeight = (platformISA, zp) => {
   // Check flight enveloppe with temperature
   if (!checkValueInSubrange(data, platformISA)) {
     return {
@@ -133,11 +132,8 @@ export const mlw_pc2dle_isa_1_predictWeight = (platformISA, zp) => {
   let { lowValue: isaLow, highValue: isaHigh } = getLowHighValues(
     platformISA,
     10,
-    10
+    30
   )
-
-  // Set limits for ISA (no curve below ISA -3)
-  if (isaLow < -3) isaLow = -3
 
   // Check flight enveloppe with Zp
   if (!checkValueInLimits(data, isaLow, isaHigh, zp, "xAxis")) {
@@ -161,11 +157,6 @@ export const mlw_pc2dle_isa_1_predictWeight = (platformISA, zp) => {
     isaHigh,
     weightHigh
   )
-
-  // Max weight limit (in case of ISA < 0)
-  if (weight > 4920) {
-    weight = 4920
-  }
 
   // Check flight enveloppe with Weight
   const weightInLimits = setValueInsideLimits(
@@ -270,9 +261,9 @@ const areas = []
  * the **MLW PC2DLE ISA** performance chart, including axis settings,
  * grid spacing, labels, scatter plot points, regression curves, borders, and shaded areas.
  */
-export const mlw_pc2dle_isa_1_data = {
-  name: "mlw_pc2dle_isa_1",
-  title: "MAXIMUM LANDING WEIGHT PC2DLE ISA",
+export const mlw_pc2dle_isa20_1_data = {
+  name: "mlw_pc2dle_isa+20_1",
+  title: "MAXIMUM LANDING WEIGHT PC2DLE ISA+20",
   xmin: -1000, // X axis minimum value
   xmax: 1000, // X axis reference 0
   x0: -1000, // X axis maximum value
