@@ -44,7 +44,7 @@ const Platform = () => {
       calculation: performancesData.mtow_pc2dle,
     },
     {
-      name: "TAKE-OFF TTET",
+      name: "TAKE-OFF TTET at MTOW",
       calculation: performancesData.takeoff_ttet_pc2dle_corrected,
       info: `Corrections for factored wind, Zp and ISA are applied (${
         takeOffDeltaTtet > 0 ? "+" : ""

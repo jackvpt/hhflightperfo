@@ -95,6 +95,36 @@ const PlatformParameters = () => {
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
+
+              {/* Maximum TTET */}
+              <InputNumber
+                name="platformMaxTtet"
+                label="Maximum TTET"
+                value={flightData.platformMaxTtet}
+                format="seconds"
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+              />
+
+              {/* Estimated Landing weight */}
+              <InputNumber
+                name="platformLandingWeight"
+                label="Landing Weight"
+                value={flightData.platformLandingWeight}
+                format="weight"
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+              />
+
+              {/* Estimated TakeOff weight */}
+              <InputNumber
+                name="platformTakeoffWeight"
+                label="TakeOff Weight"
+                value={flightData.platformTakeoffWeight}
+                format="weight"
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+              />
             </div>
           </div>
         </div>

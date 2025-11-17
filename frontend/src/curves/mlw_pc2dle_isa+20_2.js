@@ -426,6 +426,187 @@ const data = {
       },
     ],
   },
+  100: {
+    absoluteMinX: 0,
+    absoluteMaxX: 9,
+    absoluteMinY: 4179,
+    absoluteMaxY: 4656,
+    ranges: [
+      {
+        rangeX: [0, 5],
+        rangeY: [4179, 4581],
+        values: [
+          { x: 0.0, y: 4179 },
+          { x: 1, y: 4252 },
+          { x: 2, y: 4331 },
+          { x: 3, y: 4409 },
+          { x: 4, y: 4494 },
+          { x: 5, y: 4581 },
+        ],
+      },
+      {
+        rangeX: [5.001, 9],
+        rangeY: [4582, 5000],
+        values: [
+          { x: 5, y: 4581 },
+          { x: 6, y: 4600 },
+          { x: 7, y: 4615 },
+          { x: 8, y: 4633 },
+          { x: 9, y: 4656 },
+        ],
+      },
+    ],
+  },
+  110: {
+    absoluteMinX: 0,
+    absoluteMaxX: 9,
+    absoluteMinY: 4222,
+    absoluteMaxY: 4666,
+    ranges: [
+      {
+        rangeX: [0, 4.4],
+        rangeY: [4222, 4581],
+        values: [
+          { x: 0.0, y: 4222 },
+          { x: 1, y: 4297 },
+          { x: 2, y: 4378 },
+          { x: 3, y: 4457 },
+          { x: 4.4, y: 4581 },
+        ],
+      },
+      {
+        rangeX: [4.4001, 9],
+        rangeY: [4582, 5000],
+        values: [
+          { x: 4.4, y: 4581 },
+          { x: 6, y: 4610 },
+          { x: 7, y: 4626 },
+          { x: 8, y: 4645 },
+          { x: 9, y: 4666 },
+        ],
+      },
+    ],
+  },
+  120: {
+    absoluteMinX: 0,
+    absoluteMaxX: 9,
+    absoluteMinY: 4267,
+    absoluteMaxY: 4678,
+    ranges: [
+      {
+        rangeX: [0, 3.8],
+        rangeY: [4267, 4578],
+        values: [
+          { x: 0.0, y: 4267 },
+          { x: 1, y: 4343 },
+          { x: 2, y: 4425 },
+          { x: 3, y: 4506 },
+          { x: 3.8, y: 4578 },
+        ],
+      },
+      {
+        rangeX: [3.8001, 9],
+        rangeY: [4579, 5000],
+        values: [
+          { x: 3.8, y: 4578 },
+          { x: 5, y: 4602 },
+          { x: 6, y: 4617 },
+          { x: 7, y: 4635 },
+          { x: 8, y: 4657 },
+          { x: 9, y: 4678 },
+        ],
+      },
+    ],
+  },
+  130: {
+    absoluteMinX: 0,
+    absoluteMaxX: 9,
+    absoluteMinY: 4312,
+    absoluteMaxY: 4691,
+    ranges: [
+      {
+        rangeX: [0, 3.3],
+        rangeY: [4312, 4583],
+        values: [
+          { x: 0.0, y: 4312 },
+          { x: 1, y: 4390 },
+          { x: 2, y: 4475 },
+          { x: 3.3, y: 4583 },
+        ],
+      },
+      {
+        rangeX: [3.3001, 9],
+        rangeY: [4584, 5000],
+        values: [
+          { x: 3.3, y: 4583 },
+          { x: 5, y: 4612 },
+          { x: 6, y: 4628 },
+          { x: 7, y: 4647 },
+          { x: 8, y: 4667 },
+          { x: 9, y: 4691 },
+        ],
+      },
+    ],
+  },
+  140: {
+    absoluteMinX: 0,
+    absoluteMaxX: 9,
+    absoluteMinY: 4359,
+    absoluteMaxY: 4705,
+    ranges: [
+      {
+        rangeX: [0, 2.7],
+        rangeY: [4359, 4583],
+        values: [
+          { x: 0.0, y: 4359 },
+          { x: 1, y: 4438 },
+          { x: 2, y: 4524 },
+          { x: 2.7, y: 4583 },
+        ],
+      },
+      {
+        rangeX: [2.7001, 9],
+        rangeY: [4584, 5000],
+        values: [
+          { x: 2.7, y: 4583 },
+          { x: 4, y: 4604 },
+          { x: 5, y: 4620 },
+          { x: 7, y: 4659 },
+          { x: 9, y: 4705 },
+        ],
+      },
+    ],
+  },
+  150: {
+    absoluteMinX: 0,
+    absoluteMaxX: 9,
+    absoluteMinY: 4407,
+    absoluteMaxY: 4719,
+    ranges: [
+      {
+        rangeX: [0, 2.1],
+        rangeY: [4407],
+        values: [
+          { x: 0.0, y: 4407 },
+          { x: 0.5, y: 4447 },
+          { x: 1, y: 4487 },
+          { x: 1.5, y: 4530 },
+          { x: 2.1, y: 4585 },
+        ],
+      },
+      {
+        rangeX: [2.1001, 9],
+        rangeY: [4586, 5000],
+        values: [
+          { x: 2.1, y: 4585 },
+          { x: 4, y: 4614 },
+          { x: 6, y: 4650 },
+          { x: 8, y: 4693 },
+          { x: 9, y: 4719 },
+        ],
+      },
+    ],
+  },
 }
 
 /**

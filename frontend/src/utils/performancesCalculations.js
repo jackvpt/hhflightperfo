@@ -3,6 +3,7 @@ import { mlw_ca_predictWeight } from "../curves/mlw_ca"
 import { mlw_elevated_heliport_predictWeight } from "../curves/mlw_elevated_heliport"
 import { mlw_helipad_predictWeight } from "../curves/mlw_helipad"
 import { mlw_pc2dle_isa20_1_predictWeight } from "../curves/mlw_pc2dle_isa+20_1"
+import { mlw_pc2dle_isa20_2_predictTtet } from "../curves/mlw_pc2dle_isa+20_2"
 import { mlw_pc2dle_isa_1_predictWeight } from "../curves/mlw_pc2dle_isa_1"
 import { mlw_pc2dle_isa_2_predictTtet } from "../curves/mlw_pc2dle_isa_2"
 import { mlw_pc2dle_isa_3_predictVlss } from "../curves/mlw_pc2dle_isa_3"
@@ -205,6 +206,8 @@ export const computeTakeOffTtet_pc2dle_corrected = (
   platformZp,
   platformISA
 ) => {
+  if (ttet === "N/A") return "N/A"
+  
   let zpCorrection, isaCorrection
 
   // Factored wind correction
@@ -254,11 +257,11 @@ export const computeLandingTtet_pc2dle = (platformISA, dropDown, weight) => {
   let text
 
   if (platformISA >= 10) {
-    // ;({ value, error, text } = mlw_pc2dle_isa20_2_predictTtet(
-    //   dropDown,
-    //   weight
-    // ))
-    return 2
+    ;({ value, error, text } = mlw_pc2dle_isa20_2_predictTtet(
+      dropDown,
+      weight
+    ))
+
   } else
     ({ value, error, text } = mlw_pc2dle_isa_2_predictTtet(dropDown, weight))
 

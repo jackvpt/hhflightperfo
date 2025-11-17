@@ -42,7 +42,7 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
     "platformAltitude",
     "platformTemperature",
   ])
-  const flightFields = new Set(["runwayHeading", "platformDropDown"])
+  const flightFields = new Set(["runwayHeading", "platformDropDown","platformMaxTtet", "platformLandingWeight", "platformTakeoffWeight"])
 
   if (weatherFields.has(name)) {
     dispatch(updateWeatherField({ field: name, value }))
@@ -65,7 +65,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     platformZp,
     platformISA,
   } = state.weatherData
-  const { runwayHeading, platformDropDown } = state.flightData
+  const { runwayHeading, platformDropDown, platformMaxTtet, platformLandingWeight, platformTakeoffWeight } = state.flightData
 
   // Takeoff Headwind & Factored headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
@@ -224,7 +224,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  // MTOW PC2DLE
+  // MLW PC2DLE
   const mlw_pc2dle = computeMlw_pc2dle(platformISA, platformZp)
   dispatch(
     updatePerformanceField({

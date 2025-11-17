@@ -5,6 +5,7 @@ export const initialState = {
   runwayHeading: 20,
   takeOffWeight: 4800,
   platformDropDown: 60,
+  platformMaxTtet: 3,
 }
 
 const flightDataSlice = createSlice({

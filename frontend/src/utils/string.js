@@ -5,6 +5,8 @@
     if (unit === "speed") return "kt"
     if (unit === "altitude") return "ft"
     if (unit === "pressure") return "hPa"
+    if (unit === "seconds") return "s"
+    if (unit === "weight") return "kg"
     return ""
   }
 
@@ -15,6 +17,8 @@
     if (unit === "speed") return 70
     if (unit === "altitude") return 90
     if (unit === "pressure") return 90
+    if (unit === "seconds") return 70
+    if (unit === "weight") return 90
     return 90
   }
 
