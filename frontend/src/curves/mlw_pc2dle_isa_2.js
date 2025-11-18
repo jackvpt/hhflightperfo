@@ -44,9 +44,7 @@ const labels = [
 ]
 
 // Border lines (sides of flight envelope)
-const borderLines = [
-
-]
+const borderLines = []
 
 /**
  * Data structure
@@ -626,9 +624,67 @@ const data = {
 
 /**
  *
+ * @param {Number} dropDown
+ * @param {Number} ttet
+ * @returns {Number} predicted weight
+ * @description Predict weight given dropdown and ttet using the polynomial regressions.
+ */
+export const mlw_pc2dle_isa_2_predictWeight = (dropDown, ttet) => {
+  // Check flight enveloppe with dropdown
+  if (!checkValueInSubrange(data, dropDown)) {
+    return {
+      value: null,
+      error: "Outside defined dropdown range",
+      text: "N/A",
+    }
+  }
+
+  // Get low and high dropdown surrounding values
+  const { lowValue: dropDownLow, highValue: dropDownHigh } = getLowHighValues(
+    dropDown,
+    10,
+    150
+  )
+
+  // Check flight enveloppe with TTET
+  if (!checkValueInLimits(data, dropDownLow, dropDownHigh, ttet, "xAxis")) {
+    return {
+      value: null,
+      error: "Outside defined ttet range",
+      text: "N/A",
+    }
+  }
+
+  // Get  regressions for low and high dropdowns
+  const regressions = getRegressions(data, ttet, 4)
+  const weightLow = regressions[dropDownLow].predict(ttet)
+  const weightHigh = regressions[dropDownHigh].predict(ttet)
+
+  // Extrapolate weight for given dropdown
+  const weight = extrapolation(
+    dropDown,
+    dropDownLow,
+    weightLow,
+    dropDownHigh,
+    weightHigh
+  )
+
+  // Check flight enveloppe with weight
+  const weightInLimits = setValueInsideLimits(
+    data,
+    dropDownLow,
+    dropDownHigh,
+    weight,
+    "yAxis"
+  )
+  return { value: Math.round(weightInLimits), error: null, text: null }
+}
+
+/**
+ *
  * @param {Number} temperature
  * @param {Number} zp
- * @returns {Number} predicted weight
+ * @returns {Number} predicted ttet
  * @description Predict TTET given dropdown and weight using the reverse polynomial regressions.
  */
 export const mlw_pc2dle_isa_2_predictTtet = (dropDown, weight) => {

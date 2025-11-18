@@ -6,11 +6,11 @@ import {
   computeFactoredHeadWind,
   computeHeadWind,
   computeLandingTtet_pc2dle,
-  computeLandingTtet_pc2dle_corrected,
   computeMlw_ca,
   computeMlw_elevated_heliport,
   computeMlw_helipad,
   computeMlw_pc2dle,
+  computeMlw_pc2dle_weight,
   computeMtow_ca_40,
   computeMtow_ca_50,
   computeMtow_ca_60,
@@ -23,6 +23,7 @@ import {
   computeTakeOffTtet_pc2dle,
   computeTakeOffTtet_pc2dle_corrected,
   computeVlss_pc2dle,
+  landingTTetCorection,
 } from "../utils/performancesCalculations.js"
 
 // Centralized action to update any field in the Redux store
@@ -42,7 +43,13 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
     "platformAltitude",
     "platformTemperature",
   ])
-  const flightFields = new Set(["runwayHeading", "platformDropDown","platformMaxTtet", "platformLandingWeight", "platformTakeoffWeight"])
+  const flightFields = new Set([
+    "runwayHeading",
+    "platformDropDown",
+    "platformMaxTtet",
+    "platformLandingWeight",
+    "platformTakeoffWeight",
+  ])
 
   if (weatherFields.has(name)) {
     dispatch(updateWeatherField({ field: name, value }))
@@ -65,8 +72,13 @@ export const calculatePerformances = () => (dispatch, getState) => {
     platformZp,
     platformISA,
   } = state.weatherData
-  const { runwayHeading, platformDropDown, platformMaxTtet, platformLandingWeight, platformTakeoffWeight } = state.flightData
-
+  const {
+    runwayHeading,
+    platformDropDown,
+    platformMaxTtet,
+    platformLandingWeight,
+    platformTakeoffWeight,
+  } = state.flightData
   // Takeoff Headwind & Factored headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
   dispatch(updatePerformanceField({ field: "headWind", value: headWind }))
@@ -233,7 +245,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  // TAKEOFF TTET PC2DLE
+  // LANDING TTET PC2DLE
   const landing_ttet_pc2dle = computeLandingTtet_pc2dle(
     platformISA,
     platformDropDown,
@@ -250,12 +262,9 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // CORRECTED LANDING TTET PC2DLE
-  const landing_ttet_pc2dle_corrected = computeLandingTtet_pc2dle_corrected(
-    landing_ttet_pc2dle,
-    platformFactoredHeadwind,
-    platformZp,
-    platformISA
-  )
+  const landing_ttet_pc2dle_corrected =
+    landing_ttet_pc2dle +
+    landingTTetCorection(platformFactoredHeadwind, platformZp, platformISA)
   dispatch(
     updatePerformanceField({
       field: "landing_ttet_pc2dle_corrected",
@@ -269,6 +278,43 @@ export const calculatePerformances = () => (dispatch, getState) => {
     updatePerformanceField({
       field: "landing_vlss_pc2dle",
       value: landing_vlss_pc2dle,
+    })
+  )
+
+  // MLW PC2DLE ACCORDING TO GIVEN TTET
+  const landing_ttet_pc2dle_beforeCorrection =platformMaxTtet - landingTTetCorection(
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
+    dispatch(
+    updatePerformanceField({
+      field: "landing_ttet_pc2dle_beforeCorrection",
+      value: landing_ttet_pc2dle_beforeCorrection,
+    })
+  )
+
+  // MLW PC2DLE TTET CORRECTION
+  const mlw_pc2dle_givenTtet_weight = computeMlw_pc2dle_weight(
+    platformDropDown,
+    landing_ttet_pc2dle_beforeCorrection,
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
+  dispatch(
+    updatePerformanceField({
+      field: "mlw_pc2dle_givenTtet_weight",
+      value: mlw_pc2dle_givenTtet_weight,
+    })
+  )
+
+  // LANDING VLSS PC2DLE ACCORDING TO GIVEN TTET
+  const landing_vlss_pc2dle_givenTtet = computeVlss_pc2dle(platformMaxTtet)
+  dispatch(
+    updatePerformanceField({
+      field: "landing_vlss_pc2dle_givenTtet",
+      value: landing_vlss_pc2dle_givenTtet,
     })
   )
 }
