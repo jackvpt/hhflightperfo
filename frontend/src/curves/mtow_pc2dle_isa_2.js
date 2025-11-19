@@ -486,7 +486,7 @@ export const mtow_pc2dle_isa_2_predictTtet = (dropDown, weight) => {
   )
 
   // Check flight enveloppe with weight
-  if (!checkValueInLimits(data, dropDownLow, dropDownHigh, weight, "yAxis")) {
+  if (!checkValueInLimits(data, dropDownLow, dropDownHigh, weight, "yAxis").inLimits) {
     return {
       value: null,
       error: "Outside defined weight range",

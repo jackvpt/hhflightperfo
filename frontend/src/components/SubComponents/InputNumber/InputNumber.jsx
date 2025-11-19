@@ -2,14 +2,14 @@ import { useState, useEffect } from "react"
 import "./InputNumber.scss"
 import { Box, InputAdornment, TextField } from "@mui/material"
 import { abbreviateUnit, getInputWidth } from "../../../utils/string"
+import { useSelector } from "react-redux"
 
 const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
-  const [inputValue, setInputValue] = useState("")
+  // REDUX store
+  const flightData = useSelector((state) => state.flightData)
 
-  // 🧭 Keep local value in sync with the store value
-  useEffect(() => {
-    setInputValue(formatValue(value))
-  }, [value])
+  // State
+  const [inputValue, setInputValue] = useState("")
 
   // 🧭 Format displayed value (e.g., pad heading values with zeros)
   const formatValue = (val) => {
@@ -20,10 +20,14 @@ const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
     return String(num)
   }
 
+  // 🧭 Keep local value in sync with the store value
+  useEffect(() => {
+    setInputValue(formatValue(value))
+  }, [value, flightData])
+
   // 🧼 Handle user input: keep raw text locally and update store only when valid
   const handleChange = (e) => {
     setInputValue(e.target.value)
-
   }
 
   // 🧭 Clean / normalize value and update the store only on blur
@@ -72,7 +76,7 @@ const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
         id={name}
         name={name}
         type="text"
-        inputMode="numeric"
+        inputMode="decimal"
         pattern="-?[0-9]+"
         value={inputValue}
         aria-describedby={name}

@@ -312,7 +312,7 @@ export const mtow_elevated_heliport_2_3_predictWeight = (temperature, zp) => {
   )
 
   // Check flight enveloppe with Zp
-  if (!checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis")) {
+  if (!checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis").inLimits) {
     return {
       value: null,
       error: "Outside defined pressure altitude range",

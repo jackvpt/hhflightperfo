@@ -109,7 +109,7 @@ export const checkValueInSubrange = (data, value) => {
  * @returns {Boolean}
  */
 export const checkValueInLimits = (data, low, high, value, axis) => {
-  if (value === "N/A") return false
+  if (value === "N/A") return {inLimits:false, reason:"value is N/A"}
 
   // Determine which properties to use based on the axis
   const minKey = axis === "yAxis" ? "absoluteMinY" : "absoluteMinX"
@@ -120,7 +120,10 @@ export const checkValueInLimits = (data, low, high, value, axis) => {
   const max = Math.max(data[high][maxKey], data[low][maxKey])
 
   // Check if the value is within limits
-  return value >= min && value <= max
+  let reason = ""
+  if (value < min) reason = {code:"belowLimits",text:`value ${value} below min ${min}`}
+  if (value > max) reason = {code:"aboveLimits",text:`value ${value} above max ${max}`}
+  return {inLimits: value >= min && value <= max, reason}
 }
 
 /**

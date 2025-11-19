@@ -349,7 +349,7 @@ export const mlw_helipad_predictWeight = (temperature, zp) => {
   )
 
   // Check flight enveloppe with Zp
-  if (!checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis")) {
+  if (!checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis").inLimits) {
     return {
       value: null,
       error: "Outside defined pressure altitude range",

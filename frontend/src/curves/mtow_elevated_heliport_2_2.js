@@ -227,7 +227,7 @@ export const mtow_elevated_heliport_2_2_predictWeight = (weight, coef) => {
   )
 
   // Check flight enveloppe with Zp
-  if (!checkValueInLimits(data, weightLow, weightHigh, coef, "yAxis")) {
+  if (!checkValueInLimits(data, weightLow, weightHigh, coef, "yAxis").inLimits) {
     return {
       value: null,
       error: "Outside defined weight range",

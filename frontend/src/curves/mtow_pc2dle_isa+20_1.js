@@ -135,7 +135,7 @@ export const mtow_pc2dle_isa20_1_predictWeight = (platformISA, zp) => {
   )
 
   // Check flight enveloppe with Zp
-  if (!checkValueInLimits(data, isaLow, isaHigh, zp, "xAxis")) {
+  if (!checkValueInLimits(data, isaLow, isaHigh, zp, "xAxis").inLimits) {
     return {
       value: null,
       error: "Outside defined pressure altitude range",

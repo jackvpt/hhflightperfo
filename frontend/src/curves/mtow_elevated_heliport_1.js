@@ -203,7 +203,7 @@ export const mtow_elevated_heliport_1_predictCoef = (wind, dropDown) => {
   )
 
   // Check flight enveloppe with drop down
-  if (!checkValueInLimits(data, windLow, windHigh, dropDown, "xAxis")) {
+  if (!checkValueInLimits(data, windLow, windHigh, dropDown, "xAxis").inLimits) {
     return {
       value: null,
       error: "Outside defined drop down range",
