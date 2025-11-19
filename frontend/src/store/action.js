@@ -283,19 +283,22 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // MLW PC2DLE ACCORDING TO GIVEN TTET
-  const ttetCorrection= landingTTetCorection(platformFactoredHeadwind, platformZp, platformISA)
+  const landingTtetCorrection = landingTTetCorection(
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
   let landing_ttet_pc2dle_beforeCorrection =
-    platformMaxTtet -ttetCorrection
-   
+    platformMaxTtet - landingTtetCorrection
 
   if (landing_ttet_pc2dle_beforeCorrection < 0) {
     dispatch(
       updateFlightField({
         field: "platformMaxTtet",
-        value: roundValue(ttetCorrection,1),
+        value: roundValue(landingTtetCorrection, 1),
       })
     )
-    platformMaxTtet= roundValue(ttetCorrection,1)
+    platformMaxTtet = roundValue(landingTtetCorrection, 1)
     landing_ttet_pc2dle_beforeCorrection = 0
   }
 
@@ -322,7 +325,6 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // LANDING VLSS PC2DLE ACCORDING TO GIVEN TTET
-  console.log('ttetCorrection :>> ', ttetCorrection);
   const landing_vlss_pc2dle_givenTtet = computeVlss_pc2dle(platformMaxTtet)
   dispatch(
     updatePerformanceField({
@@ -332,14 +334,39 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // LANDING TTET PC2DLE AT GIVEN WEIGHT
-  const landing_ttet_pc2dle_givenWeight = computeLandingTtet_pc2dle(
-    platformISA,
+  // Get MLW for TTET=0
+  const ttet0Corrected = Math.max(0, -landingTtetCorrection)
+  const mlw_pc2dle_ttet0 = computeMlw_pc2dle_weight(
     platformDropDown,
-    platformLandingWeight,
+    ttet0Corrected,
     platformFactoredHeadwind,
     platformZp,
     platformISA
   )
+  dispatch(
+    updatePerformanceField({
+      field: "landing_ttet0_pc2dle_weight",
+      value: mlw_pc2dle_ttet0,
+    })
+  )
+
+  // Check if given weight > weight at TTET=0
+  let landing_ttet_pc2dle_givenWeight_corrected,
+    landing_ttet_pc2dle_givenWeight = 0
+  if (platformLandingWeight > mlw_pc2dle_ttet0) {
+    landing_ttet_pc2dle_givenWeight = computeLandingTtet_pc2dle(
+      platformISA,
+      platformDropDown,
+      platformLandingWeight,
+      platformFactoredHeadwind,
+      platformZp,
+      platformISA
+    )
+
+    // CORRECTED LANDING TTET PC2DLE AT GIVEN WEIGHT
+    landing_ttet_pc2dle_givenWeight_corrected =
+      landing_ttet_pc2dle_givenWeight + landingTtetCorrection
+  }
 
   dispatch(
     updatePerformanceField({
@@ -348,6 +375,19 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  // CORRECTED LANDING TTET PC2DLE AT GIVEN WEIGHT
-  // Get MLW for TTET=0
+  dispatch(
+    updatePerformanceField({
+      field: "landing_ttet_pc2dle_givenWeight_corrected",
+      value: roundValue(landing_ttet_pc2dle_givenWeight_corrected, 1),
+    })
+  )
+
+  // LANDING VLSS PC2DLE ACCORDING TO GIVEN WEIGHT
+  const landing_vlss_pc2dle_givenWeight = computeVlss_pc2dle(landing_ttet_pc2dle_givenWeight_corrected)
+  dispatch(
+    updatePerformanceField({
+      field: "landing_vlss_pc2dle_givenWeight",
+      value: landing_vlss_pc2dle_givenWeight,
+    })
+  )
 }

@@ -67,11 +67,21 @@ const Platform = () => {
     },
     {
       name: "MLW TTET=" + flightData.platformMaxTtet + " s",
-      calculation:performancesData.mlw_pc2dle_givenTtet_weight,
+      calculation: performancesData.mlw_pc2dle_givenTtet_weight,
+      info: `Corrections for factored wind, Zp and ISA are applied (${
+        landingDeltaTtet > 0 ? "+" : ""
+      }${landingDeltaTtet.toFixed(1)} s)`,
     },
     {
       name: "VLSS TTET=" + flightData.platformMaxTtet + " s",
       calculation: Math.round(performancesData.landing_vlss_pc2dle_givenTtet),
+    },
+        {
+      name: "LANDING TTET at WEIGHT=" + flightData.platformLandingWeight + " kg",
+      calculation: performancesData.landing_ttet_pc2dle_givenWeight_corrected.toFixed(1),
+      info: `Corrections for factored wind, Zp and ISA are applied (${
+        landingDeltaTtet > 0 ? "+" : ""
+      }${landingDeltaTtet.toFixed(1)} s)`,
     },
   ]
 

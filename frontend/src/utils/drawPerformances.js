@@ -550,6 +550,19 @@ const drawLandingTtet_Pc2Dle_ISA = (
   drawLines(ctx, x0, x_givenTtet_corrected, y0, y_givenTtet)
   drawLines_corrected(ctx, x_givenTtet_corrected, x_givenTtet, y0)
   drawPoint(ctx, x_givenTtet_corrected, y_givenTtet)
+
+  // TTET BASED ON GIVEN WEIGHT
+  const ttet_givenWeight = performancesData.landing_ttet_pc2dle_givenWeight
+  const ttet_givenWeight_corrected = performancesData.landing_ttet_pc2dle_givenWeight_corrected
+  const givenWeight = flightData.platformLandingWeight
+
+  const x_givenWeight = toCanvasX(ttet_givenWeight)
+  const x_givenWeightCorrected = toCanvasX(ttet_givenWeight_corrected)
+  const y_givenWeight = toCanvasY(givenWeight)
+
+  drawLines(ctx, x0, x_givenWeight, y0, y_givenWeight)
+  drawLines_corrected(ctx, x_givenWeight, x_givenWeightCorrected, y0)
+  drawPoint(ctx, x_givenWeight, y_givenWeight)
 }
 
 // Draw LANDING VLSS PC2DLE performance points and lines
@@ -580,6 +593,17 @@ const drawLandingVlss_Pc2Dle_ISA = (
   ctx.beginPath()
   ctx.moveTo(x_givenTtet, y0 + 7)
   ctx.lineTo(x_givenTtet, y)
+  ctx.strokeStyle = "orange"
+  ctx.lineWidth = 2
+  ctx.stroke()
+
+  // VLSS BASED ON GIVEN WEIGHT
+    const vlss_givenWeight = performancesData.landing_vlss_pc2dle_givenWeight
+  const x_vlssGivenWeight = toCanvasX(vlss_givenWeight)
+
+  ctx.beginPath()
+  ctx.moveTo(x_vlssGivenWeight, y0 + 7)
+  ctx.lineTo(x_vlssGivenWeight, y)
   ctx.strokeStyle = "orange"
   ctx.lineWidth = 2
   ctx.stroke()
