@@ -109,6 +109,8 @@ export const checkValueInSubrange = (data, value) => {
  * @returns {Boolean}
  */
 export const checkValueInLimits = (data, low, high, value, axis) => {
+  if (value === "N/A") return false
+
   // Determine which properties to use based on the axis
   const minKey = axis === "yAxis" ? "absoluteMinY" : "absoluteMinX"
   const maxKey = axis === "yAxis" ? "absoluteMaxY" : "absoluteMaxX"

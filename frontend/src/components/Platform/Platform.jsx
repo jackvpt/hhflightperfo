@@ -67,7 +67,7 @@ const Platform = () => {
     },
     {
       name: "MLW TTET=" + flightData.platformMaxTtet + " s",
-      calculation: Math.round(performancesData.mlw_pc2dle_givenTtet_weight),
+      calculation:performancesData.mlw_pc2dle_givenTtet_weight,
     },
     {
       name: "VLSS TTET=" + flightData.platformMaxTtet + " s",

@@ -282,12 +282,14 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // MLW PC2DLE ACCORDING TO GIVEN TTET
-  const landing_ttet_pc2dle_beforeCorrection =platformMaxTtet - landingTTetCorection(
-    platformFactoredHeadwind,
-    platformZp,
-    platformISA
-  )
-    dispatch(
+  let landing_ttet_pc2dle_beforeCorrection =
+    platformMaxTtet -
+    landingTTetCorection(platformFactoredHeadwind, platformZp, platformISA)
+  if (landing_ttet_pc2dle_beforeCorrection < 0) {
+    landing_ttet_pc2dle_beforeCorrection = "N/A"
+  }
+
+  dispatch(
     updatePerformanceField({
       field: "landing_ttet_pc2dle_beforeCorrection",
       value: landing_ttet_pc2dle_beforeCorrection,

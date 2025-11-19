@@ -306,19 +306,8 @@ export const computeVlss_pc2dle = (ttet) => {
   return value
 }
 
-export const computeMlw_pc2dle_weight = (
-  dropDown,
-  ttet,
-  platformFactoredWind,
-  platformZp,
-  platformISA
-) => {
-  let ttet_corrected =
-  ttet - landingTTetCorection(platformFactoredWind, platformZp, platformISA)
-
-  if (ttet_corrected < 0) ttet_corrected = 0
-
-  const { value, error, text } = mlw_pc2dle_isa_2_predictWeight(dropDown, ttet_corrected)
+export const computeMlw_pc2dle_weight = (dropDown, ttet) => {
+  const { value, error, text } = mlw_pc2dle_isa_2_predictWeight(dropDown, ttet)
 
   if (error) {
     console.warn(error)

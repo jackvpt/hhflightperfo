@@ -560,6 +560,7 @@ const drawLandingVlss_Pc2Dle_ISA = (
   toCanvasX,
   toCanvasY
 ) => {
+  // VLSS BASED ON MLW
   const vlss = performancesData.landing_vlss_pc2dle
   const x = toCanvasX(vlss)
   const y0 = toCanvasY(0)
@@ -568,6 +569,17 @@ const drawLandingVlss_Pc2Dle_ISA = (
   ctx.beginPath()
   ctx.moveTo(x, y0 + 7)
   ctx.lineTo(x, y)
+  ctx.strokeStyle = "orange"
+  ctx.lineWidth = 2
+  ctx.stroke()
+
+  // VLSS BASED ON GIVEN TTET
+  const vlss_givenTtet = performancesData.landing_vlss_pc2dle_givenTtet
+  const x_givenTtet = toCanvasX(vlss_givenTtet)
+
+  ctx.beginPath()
+  ctx.moveTo(x_givenTtet, y0 + 7)
+  ctx.lineTo(x_givenTtet, y)
   ctx.strokeStyle = "orange"
   ctx.lineWidth = 2
   ctx.stroke()
