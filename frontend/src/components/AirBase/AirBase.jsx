@@ -19,19 +19,19 @@ const AirBase = () => {
   const items = [
     {
       name: "MTOW Clear Area VTOSS = 40kt",
-      calculation: performancesData.mtow_ca_40,
+      calculation: performancesData.pc1.clearArea.takeoff.mtow_vtoss40,
     },
     {
       name: "MTOW Clear Area VTOSS = 50kt",
-      calculation: performancesData.mtow_ca_50,
+      calculation: performancesData.pc1.clearArea.takeoff.mtow_vtoss50,
     },
     {
       name: "MTOW Clear Area VTOSS ≥ 60kt",
-      calculation: performancesData.mtow_ca_60,
+      calculation: performancesData.pc1.clearArea.takeoff.mtow_vtoss60,
     },
-    { name: "MLW Clear Area", calculation: performancesData.mlw_ca },
-    { name: "MTOW Ground Helipad", calculation: performancesData.mtow_helipad },
-    { name: "MLW Ground Helipad", calculation: performancesData.mlw_helipad },
+    { name: "MLW Clear Area", calculation: performancesData.pc1.clearArea.landing.mlw },
+    { name: "MTOW Ground Helipad", calculation: performancesData.pc1.helipad.takeoff.mtow },
+    { name: "MLW Ground Helipad", calculation: performancesData.pc1.helipad.landing.mlw },
   ]
 
   return (
@@ -49,7 +49,7 @@ const AirBase = () => {
             Temperature: {weatherData.takeoffTemperature} °C
           </div>
           <div className="weatherElement">
-            Factored Head Wind: {performancesData.factoredHeadWind} kt
+            Factored Head Wind: {performancesData.pc1.clearArea.takeoff.factoredHeadWind} kt
           </div>
         </div>
 
@@ -83,7 +83,7 @@ const AirBase = () => {
                   </tr>
                   <tr>
                     {[40, 50, 60, 70, 80].map((vtoss) => {
-                      const match = performancesData.d1.find(
+                      const match = performancesData.pc1.clearArea.takeoff.d1.find(
                         (d) => d.vtoss === vtoss
                       )
                       return (

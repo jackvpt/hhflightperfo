@@ -82,50 +82,80 @@ export const calculatePerformances = () => (dispatch, getState) => {
   } = state.flightData
   // Takeoff Headwind & Factored headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
-  dispatch(updatePerformanceField({ field: "headWind", value: headWind }))
+  dispatch(
+    updatePerformanceField({
+      path: "pc1.clearArea.takeoff.headWind",
+      value: headWind,
+    })
+  )
   const factoredHeadWind = computeFactoredHeadWind(headWind)
   dispatch(
     updatePerformanceField({
-      field: "factoredHeadWind",
+      path: "pc1.clearArea.takeoff.factoredHeadWind",
       value: factoredHeadWind,
     })
   )
 
   // D1 calculation
   const d1 = computeD1(factoredHeadWind)
-  dispatch(updatePerformanceField({ field: "d1", value: d1 }))
+  dispatch(
+    updatePerformanceField({ path: "pc1.clearArea.takeoff.d1", value: d1 })
+  )
 
   // MTOW Clear area VTOSS=40kt
   const mtow_ca_40 = computeMtow_ca_40(takeoffTemperature, takeoffZp)
-  dispatch(updatePerformanceField({ field: "mtow_ca_40", value: mtow_ca_40 }))
-
+  dispatch(
+    updatePerformanceField({
+      path: "pc1.clearArea.takeoff.mtow_vtoss40",
+      value: mtow_ca_40,
+    })
+  )
   // MTOW Clear area VTOSS=50kt
   const mtow_ca_50 = computeMtow_ca_50(takeoffTemperature, takeoffZp)
-  dispatch(updatePerformanceField({ field: "mtow_ca_50", value: mtow_ca_50 }))
+  dispatch(
+    updatePerformanceField({
+      path: "pc1.clearArea.takeoff.mtow_vtoss50",
+      value: mtow_ca_50,
+    })
+  )
 
   // MTOW Clear area VTOSS>=60kt
   const mtow_ca_60 = computeMtow_ca_60(takeoffTemperature, takeoffZp)
-  dispatch(updatePerformanceField({ field: "mtow_ca_60", value: mtow_ca_60 }))
-
+  dispatch(
+    updatePerformanceField({
+      path: "pc1.clearArea.takeoff.mtow_vtoss60",
+      value: mtow_ca_60,
+    })
+  )
   // MLW Clear area
   const mlw_ca = computeMlw_ca(takeoffTemperature, takeoffZp)
-  dispatch(updatePerformanceField({ field: "mlw_ca", value: mlw_ca }))
+  dispatch(
+    updatePerformanceField({ path: "pc1.clearArea.landing.mlw", value: mlw_ca })
+  )
 
   // MTOW Helipad
   const mtow_helipad = computeMtow_helipad(takeoffTemperature, takeoffZp)
   dispatch(
-    updatePerformanceField({ field: "mtow_helipad", value: mtow_helipad })
+    updatePerformanceField({
+      path: "pc1.helipad.takeoff.mtow",
+      value: mtow_helipad,
+    })
   )
 
   // MLW Helipad
   const mlw_helipad = computeMlw_helipad(takeoffTemperature, takeoffZp)
-  dispatch(updatePerformanceField({ field: "mlw_helipad", value: mlw_helipad }))
+  dispatch(
+    updatePerformanceField({
+      path: "pc1.helipad.landing.mlw",
+      value: mlw_helipad,
+    })
+  )
 
   // Platform Factored headwind calculation
   const platformFactoredHeadwind = computeFactoredHeadWind(platformWindSpeed)
   dispatch(
     updatePerformanceField({
-      field: "platformFactoredWind",
+      path: "miscellaneous.platformFactoredWind",
       value: platformFactoredHeadwind,
     })
   )
@@ -138,7 +168,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "mtow_elevated_heliport_1",
+      path: "pc1.elevatedHeliport.takeoff.mtow_1_coeff",
       value: mtow_elevated_heliport_1,
     })
   )
@@ -150,7 +180,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "mtow_elevated_heliport_2_1",
+      path: "pc1.elevatedHeliport.takeoff.mtow_2_1_weight",
       value: mtow_elevated_heliport_2_1,
     })
   )
@@ -162,7 +192,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "mtow_elevated_heliport_2_2",
+      path: "pc1.elevatedHeliport.takeoff.mtow_2_2_weight",
       value: mtow_elevated_heliport_2_2,
     })
   )
@@ -174,14 +204,14 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "mtow_elevated_heliport_2_3",
+      path: "pc1.elevatedHeliport.takeoff.mtow_2_3_weight",
       value: mtow_elevated_heliport_2_3,
     })
   )
   // Final MTOW Elevated Heliport is the minimum of Weight A and Weight B
   dispatch(
     updatePerformanceField({
-      field: "mtow_elevated_heliport",
+      path: "pc1.elevatedHeliport.takeoff.mtow",
       value: Math.min(mtow_elevated_heliport_2_2, mtow_elevated_heliport_2_3),
     })
   )
@@ -193,7 +223,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "mlw_elevated_heliport",
+      path: "pc1.elevatedHeliport.landing.mlw",
       value: mlw_elevated_heliport,
     })
   )
@@ -202,7 +232,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   const mtow_pc2dle = computeMtow_pc2dle(platformISA, platformZp)
   dispatch(
     updatePerformanceField({
-      field: "mtow_pc2dle",
+      path: "pc2dle.takeoff.mtow",
       value: mtow_pc2dle,
     })
   )
@@ -218,7 +248,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "takeoff_ttet_pc2dle",
+      path: "pc2dle.takeoff.ttet",
       value: takeoff_ttet_pc2dle,
     })
   )
@@ -232,7 +262,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "takeoff_ttet_pc2dle_corrected",
+      path: "pc2dle.takeoff.ttetCorrected",
       value: takeoff_ttet_pc2dle_corrected,
     })
   )
@@ -241,7 +271,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   const mlw_pc2dle = computeMlw_pc2dle(platformISA, platformZp)
   dispatch(
     updatePerformanceField({
-      field: "mlw_pc2dle",
+      path: "pc2dle.landing.mlw",
       value: mlw_pc2dle,
     })
   )
@@ -257,27 +287,34 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "landing_ttet_pc2dle",
+      path: "pc2dle.landing.ttet",
       value: landing_ttet_pc2dle,
     })
   )
 
   // CORRECTED LANDING TTET PC2DLE AT MLW
-  const landing_ttet_pc2dle_corrected =
-    landing_ttet_pc2dle +
-    landingTTetCorection(platformFactoredHeadwind, platformZp, platformISA)
+  let landing_ttet_pc2dle_corrected = "N/A"
+
+  if (landing_ttet_pc2dle !== "N/A")
+    landing_ttet_pc2dle_corrected =
+      landing_ttet_pc2dle +
+      landingTTetCorection(platformFactoredHeadwind, platformZp, platformISA)
+
   dispatch(
     updatePerformanceField({
-      field: "landing_ttet_pc2dle_corrected",
-      value: landing_ttet_pc2dle_corrected,
+      path: "pc2dle.landing.ttetCorrected",
+      value: roundValue(landing_ttet_pc2dle_corrected, 1),
     })
   )
 
   // LANDING VLSS PC2DLE AT MLW
-  const landing_vlss_pc2dle = computeVlss_pc2dle(landing_ttet_pc2dle_corrected)
+  const landing_vlss_pc2dle = roundValue(
+    computeVlss_pc2dle(landing_ttet_pc2dle_corrected),
+    0
+  )
   dispatch(
     updatePerformanceField({
-      field: "landing_vlss_pc2dle",
+      path: "pc2dle.landing.vlss",
       value: landing_vlss_pc2dle,
     })
   )
@@ -304,7 +341,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
 
   dispatch(
     updatePerformanceField({
-      field: "landing_ttet_pc2dle_beforeCorrection",
+      path: "pc2dle.landing.givenTtetBeforeCorrection",
       value: landing_ttet_pc2dle_beforeCorrection,
     })
   )
@@ -319,7 +356,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "mlw_pc2dle_givenTtet_weight",
+      path: "pc2dle.landing.mlw_givenTtet",
       value: mlw_pc2dle_givenTtet_weight,
     })
   )
@@ -328,7 +365,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   const landing_vlss_pc2dle_givenTtet = computeVlss_pc2dle(platformMaxTtet)
   dispatch(
     updatePerformanceField({
-      field: "landing_vlss_pc2dle_givenTtet",
+      path: "pc2dle.landing.vlss_givenTtet",
       value: landing_vlss_pc2dle_givenTtet,
     })
   )
@@ -345,7 +382,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
   dispatch(
     updatePerformanceField({
-      field: "landing_ttet0_pc2dle_weight",
+      path: "pc2dle.landing.mlw_ttet0",
       value: mlw_pc2dle_ttet0,
     })
   )
@@ -364,29 +401,37 @@ export const calculatePerformances = () => (dispatch, getState) => {
     )
 
     // CORRECTED LANDING TTET PC2DLE AT GIVEN WEIGHT
-    landing_ttet_pc2dle_givenWeight_corrected =
-      landing_ttet_pc2dle_givenWeight + landingTtetCorrection
+    if (landing_ttet_pc2dle_givenWeight !== "N/A")
+      landing_ttet_pc2dle_givenWeight_corrected =
+        landing_ttet_pc2dle_givenWeight + landingTtetCorrection
+    else landing_ttet_pc2dle_givenWeight_corrected = "N/A"
   }
 
   dispatch(
     updatePerformanceField({
-      field: "landing_ttet_pc2dle_givenWeight",
+      path: "pc2dle.landing.ttet_givenWeight",
       value: landing_ttet_pc2dle_givenWeight,
     })
   )
 
   dispatch(
     updatePerformanceField({
-      field: "landing_ttet_pc2dle_givenWeight_corrected",
+      path: "pc2dle.landing.ttet_givenWeightCorrected",
       value: roundValue(landing_ttet_pc2dle_givenWeight_corrected, 1),
     })
   )
 
   // LANDING VLSS PC2DLE ACCORDING TO GIVEN WEIGHT
-  const landing_vlss_pc2dle_givenWeight = computeVlss_pc2dle(landing_ttet_pc2dle_givenWeight_corrected)
+  let landing_vlss_pc2dle_givenWeight = "N/A"
+
+  if (landing_ttet_pc2dle_givenWeight_corrected !== "N/A")
+    landing_vlss_pc2dle_givenWeight = computeVlss_pc2dle(
+      landing_ttet_pc2dle_givenWeight_corrected
+    )
+
   dispatch(
     updatePerformanceField({
-      field: "landing_vlss_pc2dle_givenWeight",
+      path: "pc2dle.landing.vlss_givenWeight",
       value: landing_vlss_pc2dle_givenWeight,
     })
   )

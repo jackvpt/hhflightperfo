@@ -7,6 +7,7 @@ import {
   scatterPlot,
   setValueInsideLimits,
 } from "../utils/calculations"
+import { limitErrorObject } from "../utils/string"
 
 // Labels for temperatures
 const labels = [
@@ -70,7 +71,6 @@ const labels = [
     y: -1200,
     angle: 48,
   },
-
 ]
 
 // Border lines (left side of flight envelope and bottom)
@@ -315,13 +315,9 @@ export const mlw_elevated_heliport_predictWeight = (temperature, zp) => {
   )
 
   // Check flight enveloppe with Zp
-  if (!checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis").inLimits) {
-    return {
-      value: null,
-      error: "Outside defined pressure altitude range",
-      text: "N/A",
-    }
-  }
+  const valueInLimits = checkValueInLimits(data, tempLow, tempHigh, zp, "yAxis")
+  if (!valueInLimits.inLimits)
+    return limitErrorObject(valueInLimits, "pressure altitude")
 
   // Get regressions for low and high temperature
   const regressions = getRegressionsReverse(data, zp)

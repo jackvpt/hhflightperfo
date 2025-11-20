@@ -8,6 +8,7 @@ import {
   scatterPlot,
   setValueInsideLimits,
 } from "../utils/calculations"
+import { limitErrorObject } from "../utils/string"
 
 // Labels for temperatures
 const labels = [
@@ -647,13 +648,14 @@ export const mlw_pc2dle_isa_2_predictWeight = (dropDown, ttet) => {
   )
 
   // Check flight enveloppe with TTET
-  if (!checkValueInLimits(data, dropDownLow, dropDownHigh, ttet, "xAxis")) {
-    return {
-      value: null,
-      error: "Outside defined ttet range",
-      text: "N/A",
-    }
-  }
+  const valueInLimits = checkValueInLimits(
+    data,
+    dropDownLow,
+    dropDownHigh,
+    ttet,
+    "xAxis"
+  )
+  if (!valueInLimits.inLimits) return limitErrorObject(valueInLimits, "TTET")
 
   // Get  regressions for low and high dropdowns
   const regressions = getRegressions(data, ttet, 4)
@@ -713,8 +715,6 @@ export const mlw_pc2dle_isa_2_predictTtet = (dropDown, weight) => {
     "yAxis"
   )
   if (!checkLimits.inLimits) {
-
-
     return {
       value: null,
       error: "Outside defined weight range",

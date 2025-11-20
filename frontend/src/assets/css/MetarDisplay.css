@@ -12,6 +12,27 @@
   font-weight: 600;
   color: #00b894;
 }
+.bodyTakeoffParameters-metar .metar-weatherCategory {
+  font-size: 0.65rem;
+  font-weight: 400;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 4px 6px;
+  border-radius: 0.3rem;
+  width: 2.5rem;
+}
+.bodyTakeoffParameters-metar .metar-weatherCategory.VFR {
+  background-color: #00b894;
+}
+.bodyTakeoffParameters-metar .metar-weatherCategory.MVFR {
+  background-color: #0984e3;
+}
+.bodyTakeoffParameters-metar .metar-weatherCategory.IFR {
+  background-color: #d63031;
+}
+.bodyTakeoffParameters-metar .metar-weatherCategory.LIFR {
+  background-color: #6c5ce7;
+}
 .bodyTakeoffParameters-metar .metar-text {
   font-family: "Share Tech Mono", "Courier New", monospace;
   font-size: 0.8rem;

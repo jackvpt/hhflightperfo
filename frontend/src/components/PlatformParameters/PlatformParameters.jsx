@@ -44,7 +44,7 @@ const PlatformParameters = () => {
               <DisplayValue
                 name="platformFactoredWind"
                 label="Factored Wind"
-                value={performancesData.platformFactoredWind}
+                value={performancesData.miscellaneous.platformFactoredWind}
                 format="speed"
               />
 

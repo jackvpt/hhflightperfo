@@ -69,7 +69,7 @@ const TakeoffParameters = () => {
               <DisplayValue
                 name="headWind"
                 label="Head Wind"
-                value={performancesData.headWind}
+                value={performancesData.pc1.clearArea.takeoff.headWind}
                 format="speed"
               />
 
@@ -77,7 +77,7 @@ const TakeoffParameters = () => {
               <DisplayValue
                 name="factoredHeadWind"
                 label="Factored Head Wind"
-                value={performancesData.factoredHeadWind}
+                value={performancesData.pc1.clearArea.takeoff.factoredHeadWind}
                 format="speed"
               />
 

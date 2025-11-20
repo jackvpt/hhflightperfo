@@ -499,6 +499,7 @@ const drawTakeOffTtet_Pc2Dle_ISA = (
 const drawMlw_Pc2Dle_ISA = (
   ctx,
   weatherData,
+  flightData,
   performancesData,
   toCanvasX,
   toCanvasY
@@ -553,7 +554,8 @@ const drawLandingTtet_Pc2Dle_ISA = (
 
   // TTET BASED ON GIVEN WEIGHT
   const ttet_givenWeight = performancesData.landing_ttet_pc2dle_givenWeight
-  const ttet_givenWeight_corrected = performancesData.landing_ttet_pc2dle_givenWeight_corrected
+  const ttet_givenWeight_corrected =
+    performancesData.landing_ttet_pc2dle_givenWeight_corrected
   const givenWeight = flightData.platformLandingWeight
 
   const x_givenWeight = toCanvasX(ttet_givenWeight)
@@ -598,7 +600,7 @@ const drawLandingVlss_Pc2Dle_ISA = (
   ctx.stroke()
 
   // VLSS BASED ON GIVEN WEIGHT
-    const vlss_givenWeight = performancesData.landing_vlss_pc2dle_givenWeight
+  const vlss_givenWeight = performancesData.landing_vlss_pc2dle_givenWeight
   const x_vlssGivenWeight = toCanvasX(vlss_givenWeight)
 
   ctx.beginPath()

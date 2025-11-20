@@ -41,6 +41,17 @@ export const formatDateTimeDDMMHHMM = (dateString) => {
 }
 
 export const roundValue = (value, decimals) => {
+  // Return raw value if not a finite number
+  if (!Number.isFinite(value)) return value
+
   const factor = Math.pow(10, decimals)
   return Number(Math.round(value * factor) / factor)
+}
+
+export const limitErrorObject = ( valueInLimits,domain) => {
+  return {
+    value: null,
+    error: `Outside defined ${domain} range: ${valueInLimits?.reason.text}`,
+    text: "N/A",
+  }
 }

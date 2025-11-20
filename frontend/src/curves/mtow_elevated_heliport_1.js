@@ -7,6 +7,7 @@ import {
   scatterPlot,
   setValueInsideLimits,
 } from "../utils/calculations"
+import { limitErrorObject } from "../utils/string"
 
 // Labels for winds
 const labels = [
@@ -203,13 +204,15 @@ export const mtow_elevated_heliport_1_predictCoef = (wind, dropDown) => {
   )
 
   // Check flight enveloppe with drop down
-  if (!checkValueInLimits(data, windLow, windHigh, dropDown, "xAxis").inLimits) {
-    return {
-      value: null,
-      error: "Outside defined drop down range",
-      text: "N/A",
-    }
-  }
+  const valueInLimits = checkValueInLimits(
+    data,
+    windLow,
+    windHigh,
+    dropDown,
+    "xAxis"
+  )
+  if (!valueInLimits.inLimits)
+    return limitErrorObject(valueInLimits, "drop down")
 
   // Get regressions for low and high temperature
   const regressions = getRegressions(data, dropDown)
@@ -257,7 +260,7 @@ const curves = () => {
       dropDown <= data[wind].absoluteMaxX;
       dropDown += 2
     ) {
-      const regressions = getRegressions(data, dropDown,4 )
+      const regressions = getRegressions(data, dropDown, 4)
       const coef = regressions[wind].predict(dropDown)
       const absoluteMinY = data[wind].absoluteMinY
       const absoluteMaxY = data[wind].absoluteMaxY

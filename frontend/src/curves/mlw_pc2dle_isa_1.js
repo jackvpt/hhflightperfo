@@ -7,6 +7,7 @@ import {
   scatterPlot,
   setValueInsideLimits,
 } from "../utils/calculations"
+import { limitErrorObject } from "../utils/string"
 
 // Labels for ISA
 const labels = [
@@ -140,13 +141,9 @@ export const mlw_pc2dle_isa_1_predictWeight = (platformISA, zp) => {
   if (isaLow < -3) isaLow = -3
 
   // Check flight enveloppe with Zp
-  if (!checkValueInLimits(data, isaLow, isaHigh, zp, "xAxis").inLimits) {
-    return {
-      value: null,
-      error: "Outside defined pressure altitude range",
-      text: "N/A",
-    }
-  }
+  const valueInLimits = checkValueInLimits(data, isaLow, isaHigh, zp, "xAxis")
+  if (!valueInLimits.inLimits)
+    return limitErrorObject(valueInLimits, "pressure altitude")
 
   // Get regressions for low and high ISA
   const regressions = getRegressions(data, zp)

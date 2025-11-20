@@ -120,9 +120,10 @@ export const checkValueInLimits = (data, low, high, value, axis) => {
   const max = Math.max(data[high][maxKey], data[low][maxKey])
 
   // Check if the value is within limits
+  const reasonText = "for subrange between " + low + " and " + high
   let reason = ""
-  if (value < min) reason = {code:"belowLimits",text:`value ${value} below min ${min}`}
-  if (value > max) reason = {code:"aboveLimits",text:`value ${value} above max ${max}`}
+  if (value < min) reason = {code:"belowLimits",text:`${reasonText} | value ${value} is below minimum ${min}`}
+  if (value > max) reason = {code:"aboveLimits",text:`${reasonText} | value ${value} is above maximum ${max}`}
   return {inLimits: value >= min && value <= max, reason}
 }
 

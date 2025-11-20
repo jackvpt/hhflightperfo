@@ -1,55 +1,21 @@
 // 📦 Redux Toolkit imports
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
-import { persistStore, persistReducer, createTransform } from "redux-persist"
+import { persistStore, persistReducer } from "redux-persist"
 import storage from "redux-persist/lib/storage"
 
 // 🗃️ Feature slices
-import parametersSlice, {
-  initialState as parametersInitialState,
-} from "../features/parametersSlice"
 import weatherDataSlice from "../features/weatherDataSlice" // import weatherData slice
 import flightDataSlice from "../features/flightDataSlice" // import flightData slice
 import performancesSlice from "../features/performancesSlice" // import performances slice
 import { calculatePerformances } from "../store/action.js"
 
 /**
- * 🎯 Transform for the 'parameters' slice.
- *
- * Only selected keys will be persisted.
- * Non-persisted fields (like temporary UI state) will be reset
- * to their initialState after a refresh.
- */
-const parametersTransform = createTransform(
-  // ➡️ Transform before saving to storage
-  (inboundState) => ({
-    bankAccount: inboundState.bankAccount,
-    isTransactionEditWindowVisible: inboundState.isTransactionEditWindowVisible,
-    isRecurringEditWindowVisible: inboundState.isRecurringEditWindowVisible,
-    isCheckTransactionsEditWindowVisible:
-      inboundState.isCheckTransactionsEditWindowVisible,
-    transactionsTableScrollPosition:
-      inboundState.transactionsTableScrollPosition,
-  }),
-
-  // ⬅️ Transform after rehydration
-  (outboundState) => ({
-    ...parametersInitialState, // restore all non-persisted fields
-    ...outboundState, // overwrite persisted fields
-  }),
-
-  // Apply this transform only to the 'parameters' slice
-  { whitelist: ["parameters"] }
-)
-
-/**
  * 🧱 Root reducer combining all slices.
  */
 const rootReducer = combineReducers({
-  parameters: parametersSlice, // partial persistence controlled via transform
   weatherData: weatherDataSlice,
   flightData: flightDataSlice,
   performancesData: performancesSlice,
-  // add weatherData slice
 })
 
 /**
@@ -60,8 +26,7 @@ const rootReducer = combineReducers({
 const rootPersistConfig = {
   key: "root",
   storage,
-  whitelist: ["weatherData", "flightData", "performancesData", "parameters"], // only these slices are persisted
-  transforms: [parametersTransform], // apply selective transform
+  whitelist: ["weatherData", "flightData", "performancesData"], // only these slices are persisted
 }
 
 /**

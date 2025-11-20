@@ -7,6 +7,7 @@ import {
   scatterPlot,
   setValueInsideLimits,
 } from "../utils/calculations"
+import { limitErrorObject } from "../utils/string"
 
 // Labels for temperatures
 const labels = []
@@ -227,13 +228,14 @@ export const mtow_elevated_heliport_2_2_predictWeight = (weight, coef) => {
   )
 
   // Check flight enveloppe with Zp
-  if (!checkValueInLimits(data, weightLow, weightHigh, coef, "yAxis").inLimits) {
-    return {
-      value: null,
-      error: "Outside defined weight range",
-      text: "N/A",
-    }
-  }
+  const valueInLimits = checkValueInLimits(
+    data,
+    weightLow,
+    weightHigh,
+    coef,
+    "yAxis"
+  )
+  if (!valueInLimits.inLimits) return limitErrorObject(valueInLimits, "weight")
 
   // Get regressions for low and high weight
   const regressions = getRegressionsReverse(data, coef, 3)
