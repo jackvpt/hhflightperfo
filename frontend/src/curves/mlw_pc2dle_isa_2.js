@@ -707,20 +707,14 @@ export const mlw_pc2dle_isa_2_predictTtet = (dropDown, weight) => {
   )
 
   // Check flight enveloppe with weight
-  const checkLimits = checkValueInLimits(
+  const valueInLimits = checkValueInLimits(
     data,
     dropDownLow,
     dropDownHigh,
     weight,
     "yAxis"
   )
-  if (!checkLimits.inLimits) {
-    return {
-      value: null,
-      error: "Outside defined weight range",
-      text: "N/A",
-    }
-  }
+  if (!valueInLimits.inLimits) return limitErrorObject(valueInLimits, "weight")
 
   // Get reverse regressions for low and high dropdowns
   const regressions = getRegressionsReverse(data, weight, 4)

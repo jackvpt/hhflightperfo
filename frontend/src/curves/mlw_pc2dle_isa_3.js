@@ -51,15 +51,25 @@ const borderLines = generateBorderLines(10, 28)
  * @description Predict TTET given dropdown and weight using the reverse polynomial regressions.
  */
 export const mlw_pc2dle_isa_3_predictVlss = (ttet) => {
-
   // Check flight enveloppe with ttet
-  if (ttet < 0 || ttet > 9 || ttet==="N/A") {
+  if (ttet < 0)
     return {
       value: null,
-      error: "Outside defined TTET range.",
+      error: "Outside defined TTET range: TTET is below 0",
       text: "N/A",
     }
-  }
+  if (ttet > 9)
+    return {
+      value: null,
+      error: "Outside defined TTET range: TTET is above 9",
+      text: "N/A",
+    }
+  if (ttet === "N/A")
+    return {
+      value: null,
+      error: "Outside defined TTET range: TTET is N/A",
+      text: "N/A",
+    }
 
   // Extrapolate TTET for given dropdown
   const vlss = extrapolation(ttet, 0, 10, 9, 27.4)

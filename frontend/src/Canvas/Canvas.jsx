@@ -321,8 +321,8 @@ const Canvas = ({
           name,
           ctx,
           weatherData,
-          performancesData,
           flightData,
+          performancesData,
           toCanvasX,
           toCanvasY,
           yAxisSide

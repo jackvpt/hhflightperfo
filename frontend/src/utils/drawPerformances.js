@@ -5,8 +5,8 @@ export const drawPerformances = (
   name,
   ctx,
   weatherData,
-  performancesData,
   flightData,
+  performancesData,
   toCanvasX,
   toCanvasY
 ) => {
@@ -130,7 +130,6 @@ export const drawPerformances = (
     case "mlw_pc2dle_isa_2":
       drawLandingTtet_Pc2Dle_ISA(
         ctx,
-        weatherData,
         flightData,
         performancesData,
         toCanvasX,
@@ -211,12 +210,13 @@ const drawPoint = (ctx, x, y) => {
 
 // Draw D1 performance points and lines
 const drawD1 = (ctx, performancesData, toCanvasX, toCanvasY) => {
-  for (let data in performancesData.d1) {
-    const d1 = performancesData.d1[data]
+  const d1 = performancesData.pc1.clearArea.takeoff.d1
+  for (let data in d1) {
+    const distance = d1[data]
     const x0 = toCanvasX(40)
     const y0 = toCanvasY(0)
-    const x = toCanvasX(d1.vtoss)
-    const y = toCanvasY(d1.distance.value)
+    const x = toCanvasX(distance.vtoss)
+    const y = toCanvasY(distance.distance.value)
 
     drawLines(ctx, x0, x, y0, y)
     drawPoint(ctx, x, y)
@@ -231,7 +231,7 @@ const drawMtow_CA_40 = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_ca_40
+  const weight = performancesData.pc1.clearArea.takeoff.mtow_vtoss40
   const zp = weatherData.takeoffZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)
@@ -250,7 +250,7 @@ const drawMtow_CA_50 = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_ca_50
+  const weight = performancesData.pc1.clearArea.takeoff.mtow_vtoss50
   const zp = weatherData.takeoffZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)
@@ -269,7 +269,7 @@ const drawMtow_CA_60 = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_ca_60
+  const weight = performancesData.pc1.clearArea.takeoff.mtow_vtoss60
   const zp = weatherData.takeoffZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)
@@ -288,7 +288,7 @@ const drawMlw_CA = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_ca_60
+  const weight = performancesData.pc1.clearArea.landing.mlw
   const zp = weatherData.takeoffZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)
@@ -307,7 +307,7 @@ const drawMtow_Helipad = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_helipad
+  const weight = performancesData.pc1.helipad.takeoff.mtow
   const zp = weatherData.takeoffZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)
@@ -326,7 +326,7 @@ const drawMlw_Helipad = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mlw_helipad
+  const weight = performancesData.pc1.helipad.landing.mlw
   const zp = weatherData.takeoffZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)
@@ -346,7 +346,7 @@ const drawMtow_Elevated_Heliport_1 = (
   toCanvasY
 ) => {
   const dropDown = flightData.platformDropDown
-  const coef = performancesData.mtow_elevated_heliport_1
+  const coef = performancesData.pc1.elevatedHeliport.takeoff.mtow_1_coeff
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(0)
   const x = toCanvasX(dropDown)
@@ -365,7 +365,7 @@ const drawMtow_Elevated_Heliport_2_1 = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_elevated_heliport_2_1
+  const weight = performancesData.pc1.elevatedHeliport.takeoff.mtow_2_1_weight
   const zp = weatherData.platformZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)
@@ -385,8 +385,8 @@ const drawMtow_Elevated_Heliport_2_2 = (
   toCanvasX,
   toCanvasY
 ) => {
-  const coef = performancesData.mtow_elevated_heliport_1
-  const weightA = performancesData.mtow_elevated_heliport_2_1
+  const coef = performancesData.pc1.elevatedHeliport.takeoff.mtow_1_coeff
+  const weightA = performancesData.pc1.elevatedHeliport.takeoff.mtow_2_1_weight
 
   ctx.beginPath()
   ctx.moveTo(toCanvasX(weightA), toCanvasY(10) - 5)
@@ -404,7 +404,7 @@ const drawMtow_Elevated_Heliport_2_2 = (
   ctx.lineWidth = 2
   ctx.stroke()
 
-  const weight = performancesData.mtow_elevated_heliport_2_2
+  const weight = performancesData.pc1.elevatedHeliport.takeoff.mtow_2_2_weight
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(0)
   const x = toCanvasX(weight)
@@ -423,7 +423,7 @@ const drawMtow_Elevated_Heliport_2_3 = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_elevated_heliport_2_3
+  const weight = performancesData.pc1.elevatedHeliport.takeoff.mtow_2_3_weight
   const zp = weatherData.platformZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(5000)
@@ -442,7 +442,7 @@ const drawMlw_Elevated_Heliport = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mlw_elevated_heliport
+  const weight = performancesData.pc1.elevatedHeliport.landing.mlw
   const zp = weatherData.platformZp
   const x0 = toCanvasX(3000)
   const y0 = toCanvasY(-2000)
@@ -461,7 +461,7 @@ const drawMtow_Pc2Dle_ISA = (
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mtow_pc2dle
+  const weight = performancesData.pc2dle.takeoff.mtow
   const zp = weatherData.platformZp
   const x0 = toCanvasX(-1000)
   const y0 = toCanvasY(3000)
@@ -480,9 +480,9 @@ const drawTakeOffTtet_Pc2Dle_ISA = (
   toCanvasX,
   toCanvasY
 ) => {
-  const ttet = performancesData.takeoff_ttet_pc2dle
-  const ttetCorrected = performancesData.takeoff_ttet_pc2dle_corrected
-  const weight = performancesData.mtow_pc2dle
+  const ttet = performancesData.pc2dle.takeoff.ttet
+  const ttetCorrected = performancesData.pc2dle.takeoff.ttet_corrected
+  const weight = performancesData.pc2dle.takeoff.mtow
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(3000)
   const x = toCanvasX(ttet)
@@ -499,12 +499,11 @@ const drawTakeOffTtet_Pc2Dle_ISA = (
 const drawMlw_Pc2Dle_ISA = (
   ctx,
   weatherData,
-  flightData,
   performancesData,
   toCanvasX,
   toCanvasY
 ) => {
-  const weight = performancesData.mlw_pc2dle
+  const weight = performancesData.pc2dle.landing.mlw
   const zp = weatherData.platformZp
   const x0 = toCanvasX(-1000)
   const y0 = toCanvasY(3000)
@@ -518,16 +517,15 @@ const drawMlw_Pc2Dle_ISA = (
 // Draw LANDING TTET PC2DLE performance points and lines
 const drawLandingTtet_Pc2Dle_ISA = (
   ctx,
-  weatherData,
   flightData,
   performancesData,
   toCanvasX,
   toCanvasY
 ) => {
   // TTET BASED ON MLW
-  const ttet = performancesData.landing_ttet_pc2dle
-  const ttetCorrected = performancesData.landing_ttet_pc2dle_corrected
-  const weight = performancesData.mlw_pc2dle
+  const ttet = performancesData.pc2dle.landing.ttet
+  const ttetCorrected = performancesData.pc2dle.landing.ttet_corrected
+  const weight = performancesData.pc2dle.landing.mlw
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(3000)
   const x = toCanvasX(ttet)
@@ -541,8 +539,8 @@ const drawLandingTtet_Pc2Dle_ISA = (
   // MLW BASED ON GIVEN TTET
   const givenTtet = flightData.platformMaxTtet
   const givenTtet_corrected =
-    performancesData.landing_ttet_pc2dle_beforeCorrection
-  const mlw_givenTtet_weight = performancesData.mlw_pc2dle_givenTtet_weight
+    performancesData.pc2dle.landing.givenTtetBeforeCorrection
+  const mlw_givenTtet_weight = performancesData.pc2dle.landing.mlw_givenTtet
 
   const x_givenTtet = toCanvasX(givenTtet)
   const x_givenTtet_corrected = toCanvasX(givenTtet_corrected)
@@ -553,9 +551,9 @@ const drawLandingTtet_Pc2Dle_ISA = (
   drawPoint(ctx, x_givenTtet_corrected, y_givenTtet)
 
   // TTET BASED ON GIVEN WEIGHT
-  const ttet_givenWeight = performancesData.landing_ttet_pc2dle_givenWeight
+  const ttet_givenWeight = performancesData.pc2dle.landing.ttet_givenWeight
   const ttet_givenWeight_corrected =
-    performancesData.landing_ttet_pc2dle_givenWeight_corrected
+    performancesData.pc2dle.landing.ttet_givenWeightCorrected
   const givenWeight = flightData.platformLandingWeight
 
   const x_givenWeight = toCanvasX(ttet_givenWeight)
@@ -576,7 +574,7 @@ const drawLandingVlss_Pc2Dle_ISA = (
   toCanvasY
 ) => {
   // VLSS BASED ON MLW
-  const vlss = performancesData.landing_vlss_pc2dle
+  const vlss = performancesData.pc2dle.landing.vlss
   const x = toCanvasX(vlss)
   const y0 = toCanvasY(0)
   const y = toCanvasY(4.5)
@@ -589,7 +587,7 @@ const drawLandingVlss_Pc2Dle_ISA = (
   ctx.stroke()
 
   // VLSS BASED ON GIVEN TTET
-  const vlss_givenTtet = performancesData.landing_vlss_pc2dle_givenTtet
+  const vlss_givenTtet = performancesData.pc2dle.landing.vlss_givenTtet
   const x_givenTtet = toCanvasX(vlss_givenTtet)
 
   ctx.beginPath()
@@ -600,7 +598,7 @@ const drawLandingVlss_Pc2Dle_ISA = (
   ctx.stroke()
 
   // VLSS BASED ON GIVEN WEIGHT
-  const vlss_givenWeight = performancesData.landing_vlss_pc2dle_givenWeight
+  const vlss_givenWeight = performancesData.pc2dle.landing.vlss_givenWeight
   const x_vlssGivenWeight = toCanvasX(vlss_givenWeight)
 
   ctx.beginPath()

@@ -399,8 +399,8 @@ const CanvasPc2Dle = ({ data }) => {
             name,
             ctx,
             weatherData,
-            performancesData,
             flightData,
+            performancesData,
             toCanvasX,
             toCanvasY,
             yAxisSide
