@@ -10,6 +10,7 @@ import HelicopterRunway from "../../assets/images/helicopter-runway.svg?react"
 // FONTAWESOME
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCloudSunRain } from "@fortawesome/free-solid-svg-icons"
+import { formatPerfo } from "../../utils/string"
 
 const AirBase = () => {
   // REDUX store
@@ -19,19 +20,28 @@ const AirBase = () => {
   const items = [
     {
       name: "MTOW Clear Area VTOSS = 40kt",
-      calculation: performancesData.pc1.clearArea.takeoff.mtow_vtoss40,
+      calculation: formatPerfo(performancesData.pc1.clearArea.takeoff.mtow_vtoss40),
     },
     {
       name: "MTOW Clear Area VTOSS = 50kt",
-      calculation: performancesData.pc1.clearArea.takeoff.mtow_vtoss50,
+      calculation: formatPerfo(performancesData.pc1.clearArea.takeoff.mtow_vtoss50),
     },
     {
       name: "MTOW Clear Area VTOSS ≥ 60kt",
-      calculation: performancesData.pc1.clearArea.takeoff.mtow_vtoss60,
+      calculation: formatPerfo(performancesData.pc1.clearArea.takeoff.mtow_vtoss60),
     },
-    { name: "MLW Clear Area", calculation: performancesData.pc1.clearArea.landing.mlw },
-    { name: "MTOW Ground Helipad", calculation: performancesData.pc1.helipad.takeoff.mtow },
-    { name: "MLW Ground Helipad", calculation: performancesData.pc1.helipad.landing.mlw },
+    {
+      name: "MLW Clear Area",
+      calculation: formatPerfo(performancesData.pc1.clearArea.landing.mlw),
+    },
+    {
+      name: "MTOW Ground Helipad",
+      calculation: formatPerfo(performancesData.pc1.helipad.takeoff.mtow),
+    },
+    {
+      name: "MLW Ground Helipad",
+      calculation: formatPerfo(performancesData.pc1.helipad.landing.mlw),
+    },
   ]
 
   return (
@@ -49,7 +59,8 @@ const AirBase = () => {
             Temperature: {weatherData.takeoffTemperature} °C
           </div>
           <div className="weatherElement">
-            Factored Head Wind: {performancesData.pc1.clearArea.takeoff.factoredHeadWind} kt
+            Factored Head Wind:{" "}
+            {performancesData.pc1.clearArea.takeoff.factoredHeadWind} kt
           </div>
         </div>
 
@@ -83,9 +94,10 @@ const AirBase = () => {
                   </tr>
                   <tr>
                     {[40, 50, 60, 70, 80].map((vtoss) => {
-                      const match = performancesData.pc1.clearArea.takeoff.d1.find(
-                        (d) => d.vtoss === vtoss
-                      )
+                      const match =
+                        performancesData.pc1.clearArea.takeoff.d1.find(
+                          (d) => d.vtoss === vtoss
+                        )
                       return (
                         <td key={vtoss} className="right">
                           {match

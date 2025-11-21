@@ -40,15 +40,14 @@ export const formatDateTimeDDMMHHMM = (dateString) => {
   return `${dayMonth} ${time}`
 }
 
-export const roundValue = (value, decimals) => {
-  // Return raw value if not a finite number
-  if (!Number.isFinite(value)) return value
+export const formatPerfo = (value, decimals = 0) => {
+  // Return raw value as string if not a finite number
+  if (!Number.isFinite(value)) return String(value)
 
-  const factor = Math.pow(10, decimals)
-  return Number(Math.round(value * factor) / factor)
+  return Number(value).toFixed(decimals)
 }
 
-export const limitErrorObject = ( valueInLimits,domain) => {
+export const limitErrorObject = (valueInLimits, domain) => {
   return {
     value: null,
     error: `Outside defined ${domain} range: ${valueInLimits?.reason.text}`,

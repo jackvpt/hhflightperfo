@@ -14,7 +14,7 @@ import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons"
 import { faPlaneArrival } from "@fortawesome/free-solid-svg-icons"
 
 import PerformanceToolTip from "../SubComponents/PerformanceToolTip/PerformanceToolTip"
-import { roundValue } from "../../utils/string"
+import { formatPerfo } from "../../utils/string"
 
 const Platform = () => {
   // REDUX store
@@ -26,11 +26,11 @@ const Platform = () => {
   const itemsPC1 = [
     {
       name: "MTOW Elevated Heliport",
-      calculation: performancesData.pc1.elevatedHeliport.takeoff.mtow,
+      calculation: formatPerfo(performancesData.pc1.elevatedHeliport.takeoff.mtow),
     },
     {
       name: "MLW Elevated Heliport",
-      calculation: performancesData.pc1.elevatedHeliport.landing.mlw,
+      calculation: formatPerfo(performancesData.pc1.elevatedHeliport.landing.mlw),
     },
   ]
   // PC2DLE items declaration
@@ -45,57 +45,59 @@ const Platform = () => {
   const itemsPC2DLE_takeOff = [
     {
       name: "MTOW PC2DLE",
-      calculation: performancesData.pc2dle.takeoff.mtow,
+      calculation: formatPerfo(performancesData.pc2dle.takeoff.mtow),
     },
     {
       name: "TAKE-OFF TTET at MTOW",
-      calculation: performancesData.pc2dle.takeoff.ttetCorrected,
+      calculation: formatPerfo(performancesData.pc2dle.takeoff.ttetCorrected,1),
       info: `Corrections for factored wind, Zp and ISA are applied (${
         takeOffDeltaTtet > 0 ? "+" : ""
-      }${takeOffDeltaTtet.toFixed(1)} s)`,
+      }${formatPerfo(takeOffDeltaTtet, 1)} s)`,
     },
   ]
 
   const itemsPC2DLE_landing = [
     {
       name: "MLW",
-      calculation: performancesData.pc2dle.landing.mlw,
+      calculation: formatPerfo(performancesData.pc2dle.landing.mlw),
     },
     {
       name: "LANDING TTET at MLW",
-      calculation: performancesData.pc2dle.landing.ttetCorrected,
+      calculation: formatPerfo(performancesData.pc2dle.landing.ttetCorrected,1),
       info: `Corrections for factored wind, Zp and ISA are applied (${
         landingDeltaTtet > 0 ? "+" : ""
-      }${landingDeltaTtet.toFixed(1)} s)`,
+      }${formatPerfo(landingDeltaTtet, 1)} s)`,
     },
     {
       name: "LANDING VLSS at MLW",
-      calculation: performancesData.pc2dle.landing.vlss,
+      calculation: formatPerfo(performancesData.pc2dle.landing.vlss),
     },
     {
       name: "MLW TTET=" + flightData.platformMaxTtet + " s",
-      calculation: performancesData.pc2dle.landing.mlw_givenTtet,
+      calculation: formatPerfo(performancesData.pc2dle.landing.mlw_givenTtet),
       info: `Corrections for factored wind, Zp and ISA are applied (${
         landingDeltaTtet > 0 ? "+" : ""
-      }${landingDeltaTtet.toFixed(1)} s)`,
+      }${formatPerfo(landingDeltaTtet, 1)} s)`,
     },
     {
       name: "VLSS TTET=" + flightData.platformMaxTtet + " s",
-      calculation: Math.round(performancesData.pc2dle.landing.vlss_givenTtet),
+      calculation: formatPerfo(performancesData.pc2dle.landing.vlss_givenTtet),
     },
     {
       name:
         "LANDING TTET at WEIGHT=" + flightData.platformLandingWeight + " kg",
-      calculation: performancesData.pc2dle.landing.ttet_givenWeightCorrected,
+      calculation: formatPerfo(
+        performancesData.pc2dle.landing.ttet_givenWeightCorrected,
+        1
+      ),
       info: `Corrections for factored wind, Zp and ISA are applied (${
         landingDeltaTtet > 0 ? "+" : ""
-      }${landingDeltaTtet.toFixed(1)} s)`,
+      }${formatPerfo(landingDeltaTtet, 1)} s)`,
     },
     {
       name: "VLSS WEIGHT=" + flightData.platformLandingWeight + " kg",
-      calculation: roundValue(
-        performancesData.pc2dle.landing.vlss_givenWeight,
-        0
+      calculation: formatPerfo(
+        performancesData.pc2dle.landing.vlss_givenWeight
       ),
     },
   ]
@@ -120,7 +122,8 @@ const Platform = () => {
             Dropdown: {flightData.platformDropDown} ft
           </div>
           <div className="weatherElement">
-            Factored Wind: {performancesData.miscellaneous.platformFactoredWind} kt
+            Factored Wind: {performancesData.miscellaneous.platformFactoredWind}{" "}
+            kt
           </div>
         </div>
 

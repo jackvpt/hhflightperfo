@@ -25,7 +25,6 @@ import {
   computeVlss_pc2dle,
   landingTTetCorection,
 } from "../utils/performancesCalculations.js"
-import { roundValue } from "../utils/string.js"
 
 // Centralized action to update any field in the Redux store
 export const updateAnyField = (name, rawValue) => (dispatch) => {
@@ -303,15 +302,14 @@ export const calculatePerformances = () => (dispatch, getState) => {
   dispatch(
     updatePerformanceField({
       path: "pc2dle.landing.ttetCorrected",
-      value: roundValue(landing_ttet_pc2dle_corrected, 1),
+      value: landing_ttet_pc2dle_corrected, 
     })
   )
 
   // LANDING VLSS PC2DLE AT MLW
-  const landing_vlss_pc2dle = roundValue(
-    computeVlss_pc2dle(landing_ttet_pc2dle_corrected),
-    0
-  )
+  const landing_vlss_pc2dle = 
+    computeVlss_pc2dle(landing_ttet_pc2dle_corrected)
+    
   dispatch(
     updatePerformanceField({
       path: "pc2dle.landing.vlss",
@@ -332,10 +330,10 @@ export const calculatePerformances = () => (dispatch, getState) => {
     dispatch(
       updateFlightField({
         field: "platformMaxTtet",
-        value: roundValue(landingTtetCorrection, 1),
+        value: landingTtetCorrection, 
       })
     )
-    platformMaxTtet = roundValue(landingTtetCorrection, 1)
+    platformMaxTtet = landingTtetCorrection
     landing_ttet_pc2dle_beforeCorrection = 0
   }
 
@@ -410,14 +408,14 @@ export const calculatePerformances = () => (dispatch, getState) => {
   dispatch(
     updatePerformanceField({
       path: "pc2dle.landing.ttet_givenWeight",
-      value: landing_ttet_pc2dle_givenWeight,
+      value: landing_ttet_pc2dle_givenWeight, 
     })
   )
 
   dispatch(
     updatePerformanceField({
       path: "pc2dle.landing.ttet_givenWeightCorrected",
-      value: roundValue(landing_ttet_pc2dle_givenWeight_corrected, 1),
+      value: landing_ttet_pc2dle_givenWeight_corrected, 
     })
   )
 
