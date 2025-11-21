@@ -10,6 +10,9 @@ import HelicopterRunway from "../../assets/images/helicopter-runway.svg?react"
 // FONTAWESOME
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCloudSunRain } from "@fortawesome/free-solid-svg-icons"
+import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons"
+import { faPlaneArrival } from "@fortawesome/free-solid-svg-icons"
+
 import { formatPerfo } from "../../utils/string"
 
 const AirBase = () => {
@@ -17,26 +20,36 @@ const AirBase = () => {
   const weatherData = useSelector((state) => state.weatherData)
   const performancesData = useSelector((state) => state.performancesData)
 
-  const items = [
+  const itemsPC1_takeOff = [
     {
       name: "MTOW Clear Area VTOSS = 40kt",
-      calculation: formatPerfo(performancesData.pc1.clearArea.takeoff.mtow_vtoss40),
+      calculation: formatPerfo(
+        performancesData.pc1.clearArea.takeoff.mtow_vtoss40
+      ),
     },
     {
       name: "MTOW Clear Area VTOSS = 50kt",
-      calculation: formatPerfo(performancesData.pc1.clearArea.takeoff.mtow_vtoss50),
+      calculation: formatPerfo(
+        performancesData.pc1.clearArea.takeoff.mtow_vtoss50
+      ),
     },
     {
       name: "MTOW Clear Area VTOSS ≥ 60kt",
-      calculation: formatPerfo(performancesData.pc1.clearArea.takeoff.mtow_vtoss60),
+      calculation: formatPerfo(
+        performancesData.pc1.clearArea.takeoff.mtow_vtoss60
+      ),
     },
-    {
-      name: "MLW Clear Area",
-      calculation: formatPerfo(performancesData.pc1.clearArea.landing.mlw),
-    },
+
     {
       name: "MTOW Ground Helipad",
       calculation: formatPerfo(performancesData.pc1.helipad.takeoff.mtow),
+    },
+  ]
+
+  const itemsPC1_landing = [
+    {
+      name: "MLW Clear Area",
+      calculation: formatPerfo(performancesData.pc1.clearArea.landing.mlw),
     },
     {
       name: "MLW Ground Helipad",
@@ -71,55 +84,90 @@ const AirBase = () => {
         <div className="container-tab__body-group">
           <div className="container-tab__body-category pc1">PC1</div>
           <div className="container-tab__body-allItems">
-            {/** D1 */}
-            <div className="container-tab__body-item d1">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>VTOSS</td>
-                  </tr>
-                  <tr>
-                    <td>D1</td>
-                  </tr>
-                </tbody>
-              </table>
-              <table className="d1-values">
-                <tbody>
-                  <tr>
-                    {[40, 50, 60, 70, 80].map((vtoss) => (
-                      <td key={vtoss} className="right">
-                        {vtoss}
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    {[40, 50, 60, 70, 80].map((vtoss) => {
-                      const match =
-                        performancesData.pc1.clearArea.takeoff.d1.find(
-                          (d) => d.vtoss === vtoss
-                        )
-                      return (
-                        <td key={vtoss} className="right">
-                          {match
-                            ? match.distance.value
-                              ? match.distance.value
-                              : match.distance.text
-                            : "-"}
-                        </td>
-                      )
-                    })}
-                  </tr>
-                </tbody>
-              </table>
+            {/** Take off performances */}
+            <div className="allItems-phase">
+              <div className="allItems-phase__icon">
+                <FontAwesomeIcon icon={faPlaneDeparture} />
+              </div>
+              <div className="allItems-phase__performances">
+                {/** D1 */}
+                <div className="container-tab__body-item d1">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>VTOSS</td>
+                      </tr>
+                      <tr>
+                        <td>D1</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table className="d1-values">
+                    <tbody>
+                      <tr>
+                        {[40, 50, 60, 70, 80].map((vtoss) => (
+                          <td key={vtoss} className="right">
+                            {vtoss}
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        {[40, 50, 60, 70, 80].map((vtoss) => {
+                          const match =
+                            performancesData.pc1.clearArea.takeoff.d1.find(
+                              (d) => d.vtoss === vtoss
+                            )
+                          return (
+                            <td key={vtoss} className="right">
+                              {match
+                                ? match.distance.value
+                                  ? match.distance.value
+                                  : match.distance.text
+                                : "-"}
+                            </td>
+                          )
+                        })}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/** Other items */}
+                {itemsPC1_takeOff.map((item) => (
+                  <div key={item.name} className="container-tab__body-item">
+                    <div className="performanceCell_header">{item.name}</div>
+                    <div className="performanceCell_value">
+                      {item.calculation}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/** Other items */}
-            {items.map((item) => (
-              <div key={item.name} className="container-tab__body-item">
-                <div className="performanceCell_header">{item.name}</div>
-                <div className="performanceCell_value">{item.calculation}</div>
+            {/** Separator */}
+            <div className="container-tab__body-separator" />
+
+            {/** Landing performances */}
+            <div className="allItems-phase">
+              <div className="allItems-phase__icon">
+                <FontAwesomeIcon icon={faPlaneArrival} />
               </div>
-            ))}
+              <div className="allItems-phase__performances">
+                {itemsPC1_landing.map((item) => (
+                  <div key={item.name} className="container-tab__body-item">
+                    <div className="performanceCell_header">
+                      {item.name}
+                      {item.info && item.calculation !== "N/A" && (
+                        <PerformanceToolTip text={item.info} />
+                      )}
+                    </div>
+                    <div className="performanceCell_value">
+                      {item.calculation}
+                    </div>
+                  </div>
+                ))}{" "}
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -23,14 +23,20 @@ const Platform = () => {
   const flightData = useSelector((state) => state.flightData)
 
   // PC1 items declaration
-  const itemsPC1 = [
+  const itemsPC1_takeOff = [
     {
       name: "MTOW Elevated Heliport",
-      calculation: formatPerfo(performancesData.pc1.elevatedHeliport.takeoff.mtow),
+      calculation: formatPerfo(
+        performancesData.pc1.elevatedHeliport.takeoff.mtow
+      ),
     },
+  ]
+  const itemsPC1_landing = [
     {
       name: "MLW Elevated Heliport",
-      calculation: formatPerfo(performancesData.pc1.elevatedHeliport.landing.mlw),
+      calculation: formatPerfo(
+        performancesData.pc1.elevatedHeliport.landing.mlw
+      ),
     },
   ]
   // PC2DLE items declaration
@@ -49,7 +55,10 @@ const Platform = () => {
     },
     {
       name: "TAKE-OFF TTET at MTOW",
-      calculation: formatPerfo(performancesData.pc2dle.takeoff.ttetCorrected,1),
+      calculation: formatPerfo(
+        performancesData.pc2dle.takeoff.ttetCorrected,
+        1
+      ),
       info: `Corrections for factored wind, Zp and ISA are applied (${
         takeOffDeltaTtet > 0 ? "+" : ""
       }${formatPerfo(takeOffDeltaTtet, 1)} s)`,
@@ -63,7 +72,10 @@ const Platform = () => {
     },
     {
       name: "LANDING TTET at MLW",
-      calculation: formatPerfo(performancesData.pc2dle.landing.ttetCorrected,1),
+      calculation: formatPerfo(
+        performancesData.pc2dle.landing.ttetCorrected,
+        1
+      ),
       info: `Corrections for factored wind, Zp and ISA are applied (${
         landingDeltaTtet > 0 ? "+" : ""
       }${formatPerfo(landingDeltaTtet, 1)} s)`,
@@ -134,12 +146,52 @@ const Platform = () => {
         <div className="container-tab__body-group">
           <div className="container-tab__body-category pc1">PC1</div>
           <div className="container-tab__body-allItems">
-            {itemsPC1.map((item) => (
-              <div key={item.name} className="container-tab__body-item">
-                <div className="performanceCell_header">{item.name}</div>
-                <div className="performanceCell_value">{item.calculation}</div>
+            {/** Take off performances */}
+            <div className="allItems-phase">
+              <div className="allItems-phase__icon">
+                <FontAwesomeIcon icon={faPlaneDeparture} />
               </div>
-            ))}
+              <div className="allItems-phase__performances">
+                {itemsPC1_takeOff.map((item) => (
+                  <div key={item.name} className="container-tab__body-item">
+                    <div className="performanceCell_header">
+                      {item.name}
+                      {item.info && item.calculation !== "N/A" && (
+                        <PerformanceToolTip text={item.info} />
+                      )}
+                    </div>
+                    <div className="performanceCell_value">
+                      {item.calculation}
+                    </div>
+                  </div>
+                ))}{" "}
+              </div>
+            </div>
+
+            {/** Separator */}
+            <div className="container-tab__body-separator" />
+
+            {/** Landing performances */}
+            <div className="allItems-phase">
+              <div className="allItems-phase__icon">
+                <FontAwesomeIcon icon={faPlaneArrival} />
+              </div>
+              <div className="allItems-phase__performances">
+                {itemsPC1_landing.map((item) => (
+                  <div key={item.name} className="container-tab__body-item">
+                    <div className="performanceCell_header">
+                      {item.name}
+                      {item.info && item.calculation !== "N/A" && (
+                        <PerformanceToolTip text={item.info} />
+                      )}
+                    </div>
+                    <div className="performanceCell_value">
+                      {item.calculation}
+                    </div>
+                  </div>
+                ))}{" "}
+              </div>
+            </div>
           </div>
         </div>
 
