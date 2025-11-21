@@ -37,12 +37,15 @@ const Home = () => {
     <div className="home-page">
       <h1>EC155 Flight Performances</h1>
       <div className="home-page__content">
-        <TakeoffParameters />
-        <PlatformParameters />
-        <AirBase />
-        <Platform />
-
-        <div className="home-page__content-curves">
+        <section className="home-page__content-parameters">
+          <TakeoffParameters />
+          <PlatformParameters />
+        </section>
+        <section className="home-page__content-performances">
+          <AirBase />
+          <Platform />
+        </section>
+        <section className="home-page__content-curves">
           {/** PC2DLE curves in acordance with platform ISA */}
           {weatherData.platformISA < 10 ? (
             <>
@@ -82,7 +85,7 @@ const Home = () => {
           <Canvas {...mlw_ca_data} />
           <Canvas {...mtow_helipad_data} />
           <Canvas {...mlw_helipad_data} />
-        </div>
+        </section>
       </div>
     </div>
   )

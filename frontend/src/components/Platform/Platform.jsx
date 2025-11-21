@@ -115,7 +115,7 @@ const Platform = () => {
   ]
 
   return (
-    <section className="container-tab">
+    <section className="container-tab performances">
       <div className="container-tab__header headerPlatform">
         <PlatformIcon className="header-icon" />
         Platform
@@ -123,19 +123,25 @@ const Platform = () => {
       <div className="container-tab__body bodyPlatform">
         {/** Weather data */}
         <div className="container-tab__body-weatherData">
-          <FontAwesomeIcon icon={faCloudSunRain} className="weatherIcon" />
-          <div className="weatherElement">Zp: {weatherData.platformZp} ft</div>
-          <div className="weatherElement">
-            Temperature: {weatherData.platformTemperature} °C (ISA
-            {weatherData.platformISA >= 0 ? " +" : " "}
-            {weatherData.platformISA})
+          <div className="weatherIconWrapper">
+            <FontAwesomeIcon icon={faCloudSunRain} className="weatherIcon" />
           </div>
-          <div className="weatherElement">
-            Dropdown: {flightData.platformDropDown} ft
-          </div>
-          <div className="weatherElement">
-            Factored Wind: {performancesData.miscellaneous.platformFactoredWind}{" "}
-            kt
+          <div className="weatherBody">
+            <div className="weatherElement">
+              Zp: {weatherData.platformZp} ft
+            </div>
+            <div className="weatherElement">
+              Temperature: {weatherData.platformTemperature} °C (ISA
+              {weatherData.platformISA >= 0 ? " +" : " "}
+              {weatherData.platformISA})
+            </div>
+            <div className="weatherElement">
+              Dropdown: {flightData.platformDropDown} ft
+            </div>
+            <div className="weatherElement">
+              Factored Wind:{" "}
+              {performancesData.miscellaneous.platformFactoredWind} kt
+            </div>
           </div>
         </div>
 
@@ -160,7 +166,7 @@ const Platform = () => {
                         <PerformanceToolTip text={item.info} />
                       )}
                     </div>
-                    <div className="performanceCell_value">
+                    <div className={`performanceCell_value ${item.calculation === "N/A" ? "nonApplicable" : ""}`}>
                       {item.calculation}
                     </div>
                   </div>
@@ -185,7 +191,7 @@ const Platform = () => {
                         <PerformanceToolTip text={item.info} />
                       )}
                     </div>
-                    <div className="performanceCell_value">
+                    <div className={`performanceCell_value ${item.calculation === "N/A" ? "nonApplicable" : ""}`}>
                       {item.calculation}
                     </div>
                   </div>
@@ -216,7 +222,7 @@ const Platform = () => {
                         <PerformanceToolTip text={item.info} />
                       )}
                     </div>
-                    <div className="performanceCell_value">
+                    <div className={`performanceCell_value ${item.calculation === "N/A" ? "nonApplicable" : ""}`}>
                       {item.calculation}
                     </div>
                   </div>
@@ -241,7 +247,7 @@ const Platform = () => {
                         <PerformanceToolTip text={item.info} />
                       )}
                     </div>
-                    <div className="performanceCell_value">
+                    <div className={`performanceCell_value ${item.calculation === "N/A" ? "nonApplicable" : ""}`}>
                       {item.calculation}
                     </div>
                   </div>

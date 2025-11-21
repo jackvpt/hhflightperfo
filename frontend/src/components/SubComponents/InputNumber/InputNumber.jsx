@@ -4,12 +4,22 @@ import { Box, InputAdornment, TextField } from "@mui/material"
 import { abbreviateUnit, getInputWidth } from "../../../utils/string"
 import { useSelector } from "react-redux"
 
-const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
+const InputNumber = ({
+  name,
+  label,
+  value,
+  onChange,
+  onBlur,
+  format,
+  range = [-Infinity, Infinity],
+}) => {
   // REDUX store
   const flightData = useSelector((state) => state.flightData)
 
   // State
   const [inputValue, setInputValue] = useState("")
+
+  let hasError = range && (value < range[0] || value > range[1])
 
   // 🧭 Format displayed value (e.g., pad heading values with zeros)
   const formatValue = (val) => {
@@ -65,6 +75,11 @@ const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
     // Update local display with formatted value
     setInputValue(formatValue(numericValue))
 
+    // Check range if applicable
+    if (range) {
+      hasError = numericValue < range[0] || numericValue > range[1]
+    }
+
     if (onBlur) onBlur()
   }
 
@@ -81,6 +96,7 @@ const InputNumber = ({ name, label, value, onChange, onBlur, format }) => {
         value={inputValue}
         aria-describedby={name}
         onFocus={(e) => e.target.select()}
+        error={hasError}
         onChange={handleChange}
         onBlur={handleBlur}
         fullWidth

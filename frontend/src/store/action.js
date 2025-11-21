@@ -208,10 +208,20 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
   // Final MTOW Elevated Heliport is the minimum of Weight A and Weight B
+  let mtow_elevated_heliport = "N/A"
+  if (
+    mtow_elevated_heliport_2_2 !== "N/A" &&
+    mtow_elevated_heliport_2_3 !== "N/A"
+  ) {
+    mtow_elevated_heliport = Math.min(
+      mtow_elevated_heliport_2_2,
+      mtow_elevated_heliport_2_3
+    )
+  }
   dispatch(
     updatePerformanceField({
       path: "pc1.elevatedHeliport.takeoff.mtow",
-      value: Math.min(mtow_elevated_heliport_2_2, mtow_elevated_heliport_2_3),
+      value: mtow_elevated_heliport,
     })
   )
 
@@ -302,14 +312,13 @@ export const calculatePerformances = () => (dispatch, getState) => {
   dispatch(
     updatePerformanceField({
       path: "pc2dle.landing.ttetCorrected",
-      value: landing_ttet_pc2dle_corrected, 
+      value: landing_ttet_pc2dle_corrected,
     })
   )
 
   // LANDING VLSS PC2DLE AT MLW
-  const landing_vlss_pc2dle = 
-    computeVlss_pc2dle(landing_ttet_pc2dle_corrected)
-    
+  const landing_vlss_pc2dle = computeVlss_pc2dle(landing_ttet_pc2dle_corrected)
+
   dispatch(
     updatePerformanceField({
       path: "pc2dle.landing.vlss",
@@ -330,7 +339,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     dispatch(
       updateFlightField({
         field: "platformMaxTtet",
-        value: landingTtetCorrection, 
+        value: landingTtetCorrection,
       })
     )
     platformMaxTtet = landingTtetCorrection
@@ -388,7 +397,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   // Check if given weight > weight at TTET=0
   let landing_ttet_pc2dle_givenWeight_corrected,
     landing_ttet_pc2dle_givenWeight = 0
-  if (platformLandingWeight > mlw_pc2dle_ttet0) {
+  if (platformLandingWeight > mlw_pc2dle_ttet0 || mlw_pc2dle_ttet0 === "N/A") {
     landing_ttet_pc2dle_givenWeight = computeLandingTtet_pc2dle(
       platformISA,
       platformDropDown,
@@ -408,14 +417,14 @@ export const calculatePerformances = () => (dispatch, getState) => {
   dispatch(
     updatePerformanceField({
       path: "pc2dle.landing.ttet_givenWeight",
-      value: landing_ttet_pc2dle_givenWeight, 
+      value: landing_ttet_pc2dle_givenWeight,
     })
   )
 
   dispatch(
     updatePerformanceField({
       path: "pc2dle.landing.ttet_givenWeightCorrected",
-      value: landing_ttet_pc2dle_givenWeight_corrected, 
+      value: landing_ttet_pc2dle_givenWeight_corrected,
     })
   )
 

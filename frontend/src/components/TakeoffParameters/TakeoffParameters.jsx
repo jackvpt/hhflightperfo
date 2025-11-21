@@ -51,6 +51,7 @@ const TakeoffParameters = () => {
                 label="Wind Speed"
                 value={weatherData.windSpeed}
                 format="speed"
+                range={[0, 60]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -87,6 +88,7 @@ const TakeoffParameters = () => {
                 label="QNH"
                 value={weatherData.qnh}
                 format="pressure"
+                range={[950, 1050]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -97,6 +99,7 @@ const TakeoffParameters = () => {
                 label="Altitude"
                 value={weatherData.takeoffAltitude}
                 format="altitude"
+                range={[-2000, 20000]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -115,6 +118,7 @@ const TakeoffParameters = () => {
                 label="Temperature"
                 value={weatherData.takeoffTemperature}
                 format="temperature"
+                range={[-50, 50]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />

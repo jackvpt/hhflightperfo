@@ -36,6 +36,7 @@ const PlatformParameters = () => {
                 label="Wind Speed"
                 value={weatherData.platformWindSpeed}
                 format="speed"
+                range={[0, 60]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -54,6 +55,7 @@ const PlatformParameters = () => {
                 label="QNH"
                 value={weatherData.platformQnh}
                 format="pressure"
+                range={[950, 1050]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -64,6 +66,7 @@ const PlatformParameters = () => {
                 label="Altitude"
                 value={weatherData.platformAltitude}
                 format="altitude"
+                range={[-1000, 1000]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -82,6 +85,7 @@ const PlatformParameters = () => {
                 label="Temperature"
                 value={weatherData.platformTemperature}
                 format="temperature"
+                range={[-50, 50]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -92,6 +96,7 @@ const PlatformParameters = () => {
                 label="Drop down"
                 value={flightData.platformDropDown}
                 format="altitude"
+                range={[0, 150]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -102,6 +107,7 @@ const PlatformParameters = () => {
                 label="Maximum TTET"
                 value={flightData.platformMaxTtet}
                 format="seconds"
+                range={[0, 9]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -112,6 +118,7 @@ const PlatformParameters = () => {
                 label="Landing Weight"
                 value={flightData.platformLandingWeight}
                 format="weight"
+                range={[3000, 4920]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
@@ -122,6 +129,7 @@ const PlatformParameters = () => {
                 label="TakeOff Weight"
                 value={flightData.platformTakeoffWeight}
                 format="weight"
+                range={[3000, 4920]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />

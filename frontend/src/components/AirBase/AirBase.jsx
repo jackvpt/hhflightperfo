@@ -58,7 +58,7 @@ const AirBase = () => {
   ]
 
   return (
-    <section className="container-tab">
+    <section className="container-tab performances">
       <div className="container-tab__header headerAirbase">
         <HelicopterRunway className="header-icon" />
         Air Base

@@ -1,21 +1,28 @@
 .home-page {
-    &__content{
-        display: flex;
-        flex-direction: column;
+  &__content {
+    display: flex;
+    flex-direction: column;
 
-
-        canvas{
-            border: 1px solid black;
-        }
-
-        &-curves{
-            display: flex;
-            flex-direction: row;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
+    &-parameters {
+      display: flex;
+      flex-direction: column;
     }
 
+    &-performances {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+    }
 
+    canvas {
+      border: 1px solid black;
+    }
 
+    &-curves {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+  }
 }
