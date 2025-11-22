@@ -120,7 +120,14 @@ const AirBase = () => {
                               (d) => d.vtoss === vtoss
                             )
                           return (
-                            <td key={vtoss} className="right">
+                            <td
+                              key={vtoss}
+                              className={`right ${
+                                match.distance.text === "N/A"
+                                  ? "nonApplicable"
+                                  : ""
+                              }`}
+                            >
                               {match
                                 ? match.distance.value
                                   ? match.distance.value

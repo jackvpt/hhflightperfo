@@ -168,11 +168,11 @@
 }
 
 .nonApplicable {
-  background-color: $non-applicable-color;
+  background-color: $non-applicable-color !important;
 }
 
 .icon_takeoff_landing {
-  height: 30px;
+  height: 18px;
   width: auto;
   color: $text-color-2;
 }

@@ -107,8 +107,8 @@ const data = {
     absoluteMaxY: 15561,
     ranges: [
       {
-        rangeX: [3000, 5000],
-        rangeY: [-2000, 20000],
+        rangeX: [3000, 4819],
+        rangeY: [4000, 20000],
         values: [
           { x: 3000, y: 15561 },
           { x: 3400, y: 12632 },
@@ -116,7 +116,18 @@ const data = {
           { x: 4110, y: 8079 },
           { x: 4300, y: 6913 },
           { x: 4500, y: 5790 },
-          { x: 4750, y: 4448 },
+          { x: 4750, y: 4438 },
+          { x: 4819, y: 4000 },
+        ],
+      },
+      {
+        rangeX: [4820, 5048],
+        rangeY: [-2000, 3999],
+        values: [
+          { x: 4819, y: 4000 },
+          { x: 4918, y: 2000 },
+          { x: 4988, y: 0 },
+          { x: 5048, y: -2000 },
         ],
       },
     ],
@@ -124,12 +135,12 @@ const data = {
   "-20": {
     absoluteMinX: 4106,
     absoluteMaxX: 4750,
-    absoluteMinY: 3853,
+    absoluteMinY: 3484,
     absoluteMaxY: 15068,
     ranges: [
       {
-        rangeX: [3000, 5000],
-        rangeY: [-2000, 20000],
+        rangeX: [3000, 4811],
+        rangeY: [3484, 20000],
         values: [
           { x: 3000, y: 15068 },
           { x: 3400, y: 12125 },
@@ -137,7 +148,28 @@ const data = {
           { x: 4106, y: 7514 },
           { x: 4300, y: 6335 },
           { x: 4500, y: 5231 },
-          { x: 4750, y: 3853 },
+          { x: 4750, y: 3836 },
+          { x: 4811, y: 3484 },
+        ],
+      },
+      {
+        rangeX: [4812, 4854],
+        rangeY: [2963, 3483],
+        values: [
+          { x: 4811, y: 3484 },
+          { x: 4824, y: 3351 },
+          { x: 4836, y: 3182 },
+          { x: 4854, y: 2963 },
+        ],
+      },
+      {
+        rangeX: [4855, 5033],
+        rangeY: [-2000, 2962],
+        values: [
+          { x: 4854, y: 2963 },
+          { x: 4935, y: 1000 },
+          { x: 4971, y: 0 },
+          { x: 5033, y: -2000 },
         ],
       },
     ],
@@ -170,8 +202,8 @@ const data = {
     absoluteMaxY: 14155,
     ranges: [
       {
-        rangeX: [3000, 5000],
-        rangeY: [-2000, 20000],
+        rangeX: [3000, 4800],
+        rangeY: [2478, 20000],
         values: [
           { x: 3000, y: 14155 },
           { x: 3400, y: 11278 },
@@ -179,7 +211,28 @@ const data = {
           { x: 4116, y: 6446 },
           { x: 4300, y: 5343 },
           { x: 4500, y: 4187 },
-          { x: 4750, y: 2771 },
+          { x: 4750, y: 2761 },
+          { x: 4800, y: 2478 },
+        ],
+      },
+      {
+        rangeX: [4801, 4848],
+        rangeY: [2000, 2477],
+        values: [
+          { x: 4800, y: 2478 },
+          { x: 4815, y: 2344 },
+          { x: 4835, y: 2126 },
+          { x: 4848, y: 2000 },
+        ],
+      },
+      {
+        rangeX: [4849, 5017],
+        rangeY: [-2000, 1999],
+        values: [
+          { x: 4848, y: 2000 },
+          { x: 4893, y: 1000 },
+          { x: 4953, y: 0 },
+          { x: 5017, y: -2000 },
         ],
       },
     ],
@@ -191,8 +244,8 @@ const data = {
     absoluteMaxY: 13071,
     ranges: [
       {
-        rangeX: [3000, 5000],
-        rangeY: [-2000, 20000],
+        rangeX: [3000, 4800],
+        rangeY: [1476, 20000],
         values: [
           { x: 3000, y: 13071 },
           { x: 3400, y: 10178 },
@@ -201,6 +254,27 @@ const data = {
           { x: 4300, y: 4349 },
           { x: 4500, y: 3182 },
           { x: 4750, y: 1766 },
+          { x: 4800, y: 1476 },
+        ],
+      },
+      {
+        rangeX: [4801, 4847],
+        rangeY: [994, 1475],
+        values: [
+          { x: 4800, y: 1476 },
+          { x: 4811, y: 1356 },
+          { x: 4837, y: 1106 },
+          { x: 4847, y: 994 },
+        ],
+      },
+      {
+        rangeX: [4848, 5000],
+        rangeY: [-2000, 993],
+        values: [
+          { x: 4847, y: 994 },
+          { x: 4892, y: 0 },
+          { x: 4931, y: -1000 },
+          { x: 4967, y: -2000 },
         ],
       },
     ],
@@ -212,8 +286,8 @@ const data = {
     absoluteMaxY: 11978,
     ranges: [
       {
-        rangeX: [3000, 5000],
-        rangeY: [-2000, 20000],
+        rangeX: [3000, 4750],
+        rangeY: [635, 20000],
         values: [
           { x: 3000, y: 11978 },
           { x: 3400, y: 9092 },
@@ -221,7 +295,27 @@ const data = {
           { x: 4088, y: 4525 },
           { x: 4300, y: 3235 },
           { x: 4500, y: 2046 },
-          { x: 4750, y: 649 },
+          { x: 4750, y: 635 },
+        ],
+      },
+      {
+        rangeX: [4751, 4847],
+        rangeY: [0, 634],
+        values: [
+          { x: 4750, y: 635 },
+          { x: 4780, y: 440 },
+          { x: 4816, y: 193 },
+          { x: 4847, y: 0 },
+        ],
+      },
+      {
+        rangeX: [4848, 5000],
+        rangeY: [-2000, -1],
+        values: [
+          { x: 4847, y: 0 },
+          { x: 4876, y: -652 },
+          { x: 4900, y: -1160 },
+          { x: 4931, y: -2000 },
         ],
       },
     ],
@@ -233,8 +327,8 @@ const data = {
     absoluteMaxY: 10725,
     ranges: [
       {
-        rangeX: [3000, 5000],
-        rangeY: [-2000, 20000],
+        rangeX: [3000, 4827],
+        rangeY: [-1000, 20000],
         values: [
           { x: 3000, y: 10725 },
           { x: 3400, y: 7858 },
@@ -243,6 +337,20 @@ const data = {
           { x: 4300, y: 2056 },
           { x: 4500, y: 891 },
           { x: 4750, y: -528 },
+          { x: 4827, y: -1000 },
+        ],
+      },
+      {
+        rangeX: [4828, 5000],
+        rangeY: [-2000, -1001],
+        values: [
+          { x: 4827, y: -1000 },
+          { x: 4841, y: -1137 },
+          { x: 4859, y: -1346 },
+          { x: 4870, y: -1490 },
+          { x: 4876, y: -1613 },
+          { x: 4886, y: -1842 },
+          { x: 4892, y: -2000 },
         ],
       },
     ],
@@ -371,7 +479,7 @@ const curves = () => {
       zp <= data[temperature].absoluteMaxY;
       zp += 50
     ) {
-      const regressions = getRegressionsReverse(data, zp)
+      const regressions = getRegressionsReverse(data, zp, 4)
       const weight = regressions[temperature].predict(zp)
       const absoluteMinX = data[temperature].absoluteMinX
       const absoluteMaxX = data[temperature].absoluteMaxX
@@ -449,6 +557,8 @@ const areas = [
 export const mlw_elevated_heliport_data = {
   name: "mlw_elevated_heliport",
   title: "MAXIMUM LANDING WEIGHT ELEVATED HELIPORT",
+  width: 1500,
+  height: 2100,
   xmin: 3000, // X axis minimum value
   xmax: 5300, // X axis reference 0
   x0: 0, // X axis maximum value
