@@ -6,6 +6,8 @@ import { useSelector } from "react-redux"
 
 // SVG
 import HelicopterRunway from "../../assets/images/helicopter-runway.svg?react"
+import TakeOffIcon from "../../assets/images/takeoff.svg?react"
+import LandingIcon from "../../assets/images/landing.svg?react"
 
 // FONTAWESOME
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -87,7 +89,7 @@ const AirBase = () => {
             {/** Take off performances */}
             <div className="allItems-phase">
               <div className="allItems-phase__icon">
-                <FontAwesomeIcon icon={faPlaneDeparture} />
+                <TakeOffIcon className="icon_takeoff_landing" />
               </div>
               <div className="allItems-phase__performances">
                 {/** D1 */}
@@ -150,7 +152,7 @@ const AirBase = () => {
             {/** Landing performances */}
             <div className="allItems-phase">
               <div className="allItems-phase__icon">
-                <FontAwesomeIcon icon={faPlaneArrival} />
+                <LandingIcon className="icon_takeoff_landing" />
               </div>
               <div className="allItems-phase__performances">
                 {itemsPC1_landing.map((item) => (

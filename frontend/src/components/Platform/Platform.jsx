@@ -6,12 +6,12 @@ import { useSelector } from "react-redux"
 
 // SVG
 import PlatformIcon from "../../assets/images/platform.svg?react"
+import TakeOffIcon from "../../assets/images/takeoff.svg?react"
+import LandingIcon from "../../assets/images/landing.svg?react"
 
 // FONTAWESOME
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCloudSunRain } from "@fortawesome/free-solid-svg-icons"
-import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons"
-import { faPlaneArrival } from "@fortawesome/free-solid-svg-icons"
 
 import PerformanceToolTip from "../SubComponents/PerformanceToolTip/PerformanceToolTip"
 import { formatPerfo } from "../../utils/string"
@@ -155,7 +155,8 @@ const Platform = () => {
             {/** Take off performances */}
             <div className="allItems-phase">
               <div className="allItems-phase__icon">
-                <FontAwesomeIcon icon={faPlaneDeparture} />
+                {" "}
+                <TakeOffIcon className="icon_takeoff_landing" />
               </div>
               <div className="allItems-phase__performances">
                 {itemsPC1_takeOff.map((item) => (
@@ -166,7 +167,11 @@ const Platform = () => {
                         <PerformanceToolTip text={item.info} />
                       )}
                     </div>
-                    <div className={`performanceCell_value ${item.calculation === "N/A" ? "nonApplicable" : ""}`}>
+                    <div
+                      className={`performanceCell_value ${
+                        item.calculation === "N/A" ? "nonApplicable" : ""
+                      }`}
+                    >
                       {item.calculation}
                     </div>
                   </div>
@@ -180,7 +185,7 @@ const Platform = () => {
             {/** Landing performances */}
             <div className="allItems-phase">
               <div className="allItems-phase__icon">
-                <FontAwesomeIcon icon={faPlaneArrival} />
+                <LandingIcon className="icon_takeoff_landing" />
               </div>
               <div className="allItems-phase__performances">
                 {itemsPC1_landing.map((item) => (
@@ -191,7 +196,11 @@ const Platform = () => {
                         <PerformanceToolTip text={item.info} />
                       )}
                     </div>
-                    <div className={`performanceCell_value ${item.calculation === "N/A" ? "nonApplicable" : ""}`}>
+                    <div
+                      className={`performanceCell_value ${
+                        item.calculation === "N/A" ? "nonApplicable" : ""
+                      }`}
+                    >
                       {item.calculation}
                     </div>
                   </div>
@@ -211,7 +220,7 @@ const Platform = () => {
             {/** Take off performances */}
             <div className="allItems-phase">
               <div className="allItems-phase__icon">
-                <FontAwesomeIcon icon={faPlaneDeparture} />
+                <TakeOffIcon className="icon_takeoff_landing" />
               </div>
               <div className="allItems-phase__performances">
                 {itemsPC2DLE_takeOff.map((item) => (
@@ -222,7 +231,11 @@ const Platform = () => {
                         <PerformanceToolTip text={item.info} />
                       )}
                     </div>
-                    <div className={`performanceCell_value ${item.calculation === "N/A" ? "nonApplicable" : ""}`}>
+                    <div
+                      className={`performanceCell_value ${
+                        item.calculation === "N/A" ? "nonApplicable" : ""
+                      }`}
+                    >
                       {item.calculation}
                     </div>
                   </div>
@@ -236,7 +249,7 @@ const Platform = () => {
             {/** Landing performances */}
             <div className="allItems-phase">
               <div className="allItems-phase__icon">
-                <FontAwesomeIcon icon={faPlaneArrival} />
+                <LandingIcon className="icon_takeoff_landing" />
               </div>
               <div className="allItems-phase__performances">
                 {itemsPC2DLE_landing.map((item) => (
@@ -247,7 +260,11 @@ const Platform = () => {
                         <PerformanceToolTip text={item.info} />
                       )}
                     </div>
-                    <div className={`performanceCell_value ${item.calculation === "N/A" ? "nonApplicable" : ""}`}>
+                    <div
+                      className={`performanceCell_value ${
+                        item.calculation === "N/A" ? "nonApplicable" : ""
+                      }`}
+                    >
                       {item.calculation}
                     </div>
                   </div>
