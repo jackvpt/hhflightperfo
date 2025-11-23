@@ -103,7 +103,7 @@ const data = {
   "-25": {
     absoluteMinX: 4110,
     absoluteMaxX: 4750,
-    absoluteMinY: 4448,
+    absoluteMinY: -2000,
     absoluteMaxY: 15561,
     ranges: [
       {
@@ -135,7 +135,7 @@ const data = {
   "-20": {
     absoluteMinX: 4106,
     absoluteMaxX: 4750,
-    absoluteMinY: 3484,
+    absoluteMinY: -2000,
     absoluteMaxY: 15068,
     ranges: [
       {
@@ -198,7 +198,7 @@ const data = {
   "-10": {
     absoluteMinX: 4116,
     absoluteMaxX: 4750,
-    absoluteMinY: 2771,
+    absoluteMinY: -2000,
     absoluteMaxY: 14155,
     ranges: [
       {
@@ -240,7 +240,7 @@ const data = {
   0: {
     absoluteMinX: 4108,
     absoluteMaxX: 4750,
-    absoluteMinY: 1766,
+    absoluteMinY: -2000,
     absoluteMaxY: 13071,
     ranges: [
       {
@@ -282,7 +282,7 @@ const data = {
   10: {
     absoluteMinX: 4088,
     absoluteMaxX: 4750,
-    absoluteMinY: 649,
+    absoluteMinY: -2000,
     absoluteMaxY: 11978,
     ranges: [
       {
@@ -323,7 +323,7 @@ const data = {
   20: {
     absoluteMinX: 4052,
     absoluteMaxX: 4750,
-    absoluteMinY: -528,
+    absoluteMinY: -2000,
     absoluteMaxY: 10725,
     ranges: [
       {
@@ -479,7 +479,7 @@ const curves = () => {
       zp <= data[temperature].absoluteMaxY;
       zp += 50
     ) {
-      const regressions = getRegressionsReverse(data, zp, 4)
+      const regressions = getRegressionsReverse(data, zp, 3)
       const weight = regressions[temperature].predict(zp)
       const absoluteMinX = data[temperature].absoluteMinX
       const absoluteMaxX = data[temperature].absoluteMaxX
@@ -557,8 +557,6 @@ const areas = [
 export const mlw_elevated_heliport_data = {
   name: "mlw_elevated_heliport",
   title: "MAXIMUM LANDING WEIGHT ELEVATED HELIPORT",
-  width: 1500,
-  height: 2100,
   xmin: 3000, // X axis minimum value
   xmax: 5300, // X axis reference 0
   x0: 0, // X axis maximum value
