@@ -62,7 +62,13 @@ const Home = () => {
             </>
           ) : (
             <>
-              <CanvasPc2Dle data={[mlw_pc2dle_isa20_1_data]} />
+              <CanvasPc2Dle
+                data={[
+                  mlw_pc2dle_isa20_1_data,
+                  mlw_pc2dle_isa20_2_data,
+                  mlw_pc2dle_isa_3_data,
+                ]}
+              />
               <CanvasPc2Dle
                 data={[mtow_pc2dle_isa20_1_data, mtow_pc2dle_isa20_2_data]}
               />

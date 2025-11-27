@@ -11,7 +11,6 @@ export const drawPerformances = (
   toCanvasY
 ) => {
   if (!performancesData) return
-
   switch (name) {
     case "d1":
       drawD1(ctx, performancesData, toCanvasX, toCanvasY)
@@ -150,6 +149,24 @@ export const drawPerformances = (
         ctx,
         weatherData,
         flightData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
+    case "mlw_pc2dle_isa+20_2":
+      drawLandingTtet_Pc2Dle_ISA(
+        ctx,
+        flightData,
+        performancesData,
+        toCanvasX,
+        toCanvasY
+      )
+      break
+          case "mlw_pc2dle_isa+20_3":
+      drawLandingVlss_Pc2Dle_ISA(
+        ctx,
+        weatherData,
         performancesData,
         toCanvasX,
         toCanvasY
@@ -499,6 +516,7 @@ const drawTakeOffTtet_Pc2Dle_ISA = (
 const drawMlw_Pc2Dle_ISA = (
   ctx,
   weatherData,
+  flightData,
   performancesData,
   toCanvasX,
   toCanvasY
@@ -526,6 +544,7 @@ const drawLandingTtet_Pc2Dle_ISA = (
   const ttet = performancesData.pc2dle.landing.ttet
   const ttetCorrected = performancesData.pc2dle.landing.ttet_corrected
   const weight = performancesData.pc2dle.landing.mlw
+  console.log('ttet,ttetcorrected,weight :>> ', ttet,ttetCorrected,weight);
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(3000)
   const x = toCanvasX(ttet)

@@ -419,7 +419,7 @@ export const mlw_elevated_heliport_predictWeight = (temperature, zp) => {
   const { lowValue: tempLow, highValue: tempHigh } = getLowHighValues(
     temperature,
     10,
-    50
+    40
   )
 
   // Check flight enveloppe with Zp
