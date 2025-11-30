@@ -39,6 +39,7 @@ const Platform = () => {
       ),
     },
   ]
+
   // PC2DLE items declaration
   const takeOffDeltaTtet =
     performancesData.pc2dle.takeoff.ttetCorrected -
@@ -50,11 +51,11 @@ const Platform = () => {
 
   const itemsPC2DLE_takeOff = [
     {
-      name: "MTOW PC2DLE",
+      name: "MTOW",
       calculation: formatPerfo(performancesData.pc2dle.takeoff.mtow),
     },
     {
-      name: "TAKE-OFF TTET at MTOW",
+      name: "TTET at MTOW",
       calculation: formatPerfo(
         performancesData.pc2dle.takeoff.ttetCorrected,
         1
@@ -66,52 +67,60 @@ const Platform = () => {
   ]
 
   const itemsPC2DLE_landing = [
-    {
-      name: "MLW",
-      calculation: formatPerfo(performancesData.pc2dle.landing.mlw),
-    },
-    {
-      name: "LANDING TTET at MLW",
-      calculation: formatPerfo(
-        performancesData.pc2dle.landing.ttetCorrected,
-        1
-      ),
-      info: `Corrections for factored wind, Zp and ISA are applied (${
-        landingDeltaTtet > 0 ? "+" : ""
-      }${formatPerfo(landingDeltaTtet, 1)} s)`,
-    },
-    {
-      name: "LANDING VLSS at MLW",
-      calculation: formatPerfo(performancesData.pc2dle.landing.vlss),
-    },
-    {
-      name: "MLW TTET=" + flightData.platformMaxTtet + " s",
-      calculation: formatPerfo(performancesData.pc2dle.landing.mlw_givenTtet),
-      info: `Corrections for factored wind, Zp and ISA are applied (${
-        landingDeltaTtet > 0 ? "+" : ""
-      }${formatPerfo(landingDeltaTtet, 1)} s)`,
-    },
-    {
-      name: "VLSS TTET=" + flightData.platformMaxTtet + " s",
-      calculation: formatPerfo(performancesData.pc2dle.landing.vlss_givenTtet),
-    },
-    {
-      name:
-        "LANDING TTET at WEIGHT=" + flightData.platformLandingWeight + " kg",
-      calculation: formatPerfo(
-        performancesData.pc2dle.landing.ttet_givenWeightCorrected,
-        1
-      ),
-      info: `Corrections for factored wind, Zp and ISA are applied (${
-        landingDeltaTtet > 0 ? "+" : ""
-      }${formatPerfo(landingDeltaTtet, 1)} s)`,
-    },
-    {
-      name: "VLSS WEIGHT=" + flightData.platformLandingWeight + " kg",
-      calculation: formatPerfo(
-        performancesData.pc2dle.landing.vlss_givenWeight
-      ),
-    },
+    [
+      {
+        name: "MLW",
+        calculation: formatPerfo(performancesData.pc2dle.landing.mlw),
+      },
+      {
+        name: "TTET at MLW",
+        calculation: formatPerfo(
+          performancesData.pc2dle.landing.ttetCorrected,
+          1
+        ),
+        info: `Corrections for factored wind, Zp and ISA are applied (${
+          landingDeltaTtet > 0 ? "+" : ""
+        }${formatPerfo(landingDeltaTtet, 1)} s)`,
+      },
+      {
+        name: "VLSS at MLW",
+        calculation: formatPerfo(performancesData.pc2dle.landing.vlss),
+      },
+    ],
+    [
+      {
+        name: "MLW TTET=" + flightData.platformMaxTtet + " s",
+        calculation: formatPerfo(performancesData.pc2dle.landing.mlw_givenTtet),
+        info: `Corrections for factored wind, Zp and ISA are applied (${
+          landingDeltaTtet > 0 ? "+" : ""
+        }${formatPerfo(landingDeltaTtet, 1)} s)`,
+      },
+      {
+        name: "VLSS TTET=" + flightData.platformMaxTtet + " s",
+        calculation: formatPerfo(
+          performancesData.pc2dle.landing.vlss_givenTtet
+        ),
+      },
+    ],
+    [
+      {
+        name:
+          "TTET at WEIGHT=" + flightData.platformLandingWeight + " kg",
+        calculation: formatPerfo(
+          performancesData.pc2dle.landing.ttet_givenWeightCorrected,
+          1
+        ),
+        info: `Corrections for factored wind, Zp and ISA are applied (${
+          landingDeltaTtet > 0 ? "+" : ""
+        }${formatPerfo(landingDeltaTtet, 1)} s)`,
+      },
+      {
+        name: "VLSS WEIGHT=" + flightData.platformLandingWeight + " kg",
+        calculation: formatPerfo(
+          performancesData.pc2dle.landing.vlss_givenWeight
+        ),
+      },
+    ],
   ]
 
   return (
@@ -251,24 +260,41 @@ const Platform = () => {
               <div className="allItems-phase__icon">
                 <LandingIcon className="icon_takeoff_landing" />
               </div>
-              <div className="allItems-phase__performances">
-                {itemsPC2DLE_landing.map((item) => (
-                  <div key={item.name} className="container-tab__body-item">
-                    <div className="performanceCell_header">
-                      {item.name}
-                      {item.info && item.calculation !== "N/A" && (
-                        <PerformanceToolTip text={item.info} />
-                      )}
-                    </div>
-                    <div
-                      className={`performanceCell_value ${
-                        item.calculation === "N/A" ? "nonApplicable" : ""
-                      }`}
-                    >
-                      {item.calculation}
-                    </div>
+              <div  className="allItems-phase__performances">
+                {itemsPC2DLE_landing.map((itemGroup, groupIndex) => (
+                  <div
+                    className="allItems-phase__performances"
+                    key={groupIndex}
+                  >
+                    {/* Display a separator except before the first group */}
+                    {groupIndex > 0 && (
+                      <div className="container-tab__body-separator" />
+                    )}
+
+                    {/* Display the items of the group */}
+                    {itemGroup.map((item) => (
+                      <div
+                        key={`${groupIndex}-${item.name}`}
+                        className="container-tab__body-item"
+                      >
+                        <div className="performanceCell_header">
+                          {item.name}
+                          {item.info && item.calculation !== "N/A" && (
+                            <PerformanceToolTip text={item.info} />
+                          )}
+                        </div>
+
+                        <div
+                          className={`performanceCell_value ${
+                            item.calculation === "N/A" ? "nonApplicable" : ""
+                          }`}
+                        >
+                          {item.calculation}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}{" "}
+                ))}
               </div>
             </div>
           </div>

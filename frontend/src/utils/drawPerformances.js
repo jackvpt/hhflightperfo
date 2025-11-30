@@ -121,6 +121,7 @@ export const drawPerformances = (
       drawMlw_Pc2Dle_ISA(
         ctx,
         weatherData,
+        flightData,
         performancesData,
         toCanvasX,
         toCanvasY
@@ -498,7 +499,7 @@ const drawTakeOffTtet_Pc2Dle_ISA = (
   toCanvasY
 ) => {
   const ttet = performancesData.pc2dle.takeoff.ttet
-  const ttetCorrected = performancesData.pc2dle.takeoff.ttet_corrected
+  const ttetCorrected = performancesData.pc2dle.takeoff.ttetCorrected
   const weight = performancesData.pc2dle.takeoff.mtow
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(3000)
@@ -544,7 +545,6 @@ const drawLandingTtet_Pc2Dle_ISA = (
   const ttet = performancesData.pc2dle.landing.ttet
   const ttetCorrected = performancesData.pc2dle.landing.ttet_corrected
   const weight = performancesData.pc2dle.landing.mlw
-  console.log('ttet,ttetcorrected,weight :>> ', ttet,ttetCorrected,weight);
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(3000)
   const x = toCanvasX(ttet)

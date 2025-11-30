@@ -18,12 +18,17 @@ import {
   computeMtow_elevated_heliport_2_3,
   computeMtow_helipad,
   computeMtow_pc2dle,
+  computeMtow_pc2dle_weight,
   computeTakeOffTtet_pc2dle,
   computeTakeOffTtet_pc2dle_corrected,
   computeVlss_pc2dle,
-  landingTTetCorection,
+  landingTtetCorection,
+  takeoffTetCorection,
 } from "../utils/performancesCalculations.js"
-import { computeFactoredHeadWind, computeHeadWind } from "../utils/calculations.js"
+import {
+  computeFactoredHeadWind,
+  computeHeadWind,
+} from "../utils/calculations.js"
 
 // Centralized action to update any field in the Redux store
 export const updateAnyField = (name, rawValue) => (dispatch) => {
@@ -81,7 +86,6 @@ export const calculatePerformances = () => (dispatch, getState) => {
     platformTakeoffWeight,
   } = state.flightData
 
-  
   // Takeoff Headwind & Factored headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
   dispatch(
@@ -90,7 +94,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
       value: headWind,
     })
   )
-  
+
   const factoredHeadWind = computeFactoredHeadWind(headWind)
   dispatch(
     updatePerformanceField({
@@ -98,7 +102,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
       value: factoredHeadWind,
     })
   )
-  
+
   // D1 calculation
   const d1 = computeD1(factoredHeadWind)
   dispatch(
@@ -250,7 +254,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  // TAKEOFF TTET PC2DLE
+  // TAKEOFF TTET PC2DLE AT MTOW
   const takeoff_ttet_pc2dle = computeTakeOffTtet_pc2dle(
     platformISA,
     platformDropDown,
@@ -266,17 +270,57 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  // CORRECTED TAKEOFF TTET PC2DLE
-  const takeoff_ttet_pc2dle_corrected = computeTakeOffTtet_pc2dle_corrected(
-    takeoff_ttet_pc2dle,
+  // CORRECTED TAKEOFF TTET PC2DLE AT MTOW
+  const takeoffTtetCorection = takeoffTetCorection(
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
+  let takeoff_ttet_pc2dle_corrected = "N/A"
+  if (takeoff_ttet_pc2dle !== "N/A")
+    takeoff_ttet_pc2dle_corrected = takeoff_ttet_pc2dle + takeoffTtetCorection
+
+  dispatch(
+    updatePerformanceField({
+      path: "pc2dle.takeoff.ttetCorrected",
+      value: takeoff_ttet_pc2dle_corrected,
+    })
+  )
+
+  // MTOW PC2DLE ACCORDING TO GIVEN TTET
+  let takeoff_ttet_pc2dle_beforeCorrection =
+    platformMaxTtet - takeoffTtetCorection
+
+  if (takeoff_ttet_pc2dle_beforeCorrection < 0) {
+    dispatch(
+      updateFlightField({
+        field: "platformMaxTtet",
+        value: takeoffTtetCorection,
+      })
+    )
+    platformMaxTtet = takeoffTtetCorection
+    takeoff_ttet_pc2dle_beforeCorrection = 0
+  }
+
+  dispatch(
+    updatePerformanceField({
+      path: "pc2dle.takeoff.givenTtetBeforeCorrection",
+      value: takeoff_ttet_pc2dle_beforeCorrection,
+    })
+  )
+
+  // MTOW PC2DLE GIVEN TTET CORRECTED
+  const mtow_pc2dle_givenTtet_weight = computeMtow_pc2dle_weight(
+    platformDropDown,
+    takeoff_ttet_pc2dle_beforeCorrection,
     platformFactoredHeadwind,
     platformZp,
     platformISA
   )
   dispatch(
     updatePerformanceField({
-      path: "pc2dle.takeoff.ttetCorrected",
-      value: takeoff_ttet_pc2dle_corrected,
+      path: "pc2dle.takeoff.mtow_givenTtet",
+      value: mtow_pc2dle_givenTtet_weight,
     })
   )
 
@@ -306,12 +350,16 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // CORRECTED LANDING TTET PC2DLE AT MLW
+  const landingTtetCorrection = landingTtetCorection(
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
+
   let landing_ttet_pc2dle_corrected = "N/A"
 
   if (landing_ttet_pc2dle !== "N/A")
-    landing_ttet_pc2dle_corrected =
-      landing_ttet_pc2dle +
-      landingTTetCorection(platformFactoredHeadwind, platformZp, platformISA)
+    landing_ttet_pc2dle_corrected = landing_ttet_pc2dle + landingTtetCorrection
 
   dispatch(
     updatePerformanceField({
@@ -331,11 +379,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // MLW PC2DLE ACCORDING TO GIVEN TTET
-  const landingTtetCorrection = landingTTetCorection(
-    platformFactoredHeadwind,
-    platformZp,
-    platformISA
-  )
+
   let landing_ttet_pc2dle_beforeCorrection =
     platformMaxTtet - landingTtetCorrection
 
@@ -357,7 +401,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  // MLW PC2DLE GIVEN TTET CORRECTED
+  // MLW PC2DLE ACCORDING TO GIVEN CORRECTED TTET 
   const mlw_pc2dle_givenTtet_weight = computeMlw_pc2dle_weight(
     platformDropDown,
     landing_ttet_pc2dle_beforeCorrection,

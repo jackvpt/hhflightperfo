@@ -3,7 +3,10 @@ import { mlw_ca_predictWeight } from "../curves/mlw_ca"
 import { mlw_elevated_heliport_predictWeight } from "../curves/mlw_elevated_heliport"
 import { mlw_helipad_predictWeight } from "../curves/mlw_helipad"
 import { mlw_pc2dle_isa20_1_predictWeight } from "../curves/mlw_pc2dle_isa+20_1"
-import { mlw_pc2dle_isa20_2_predictTtet } from "../curves/mlw_pc2dle_isa+20_2"
+import {
+  mlw_pc2dle_isa20_2_predictTtet,
+  mlw_pc2dle_isa20_2_predictWeight,
+} from "../curves/mlw_pc2dle_isa+20_2"
 import { mlw_pc2dle_isa_1_predictWeight } from "../curves/mlw_pc2dle_isa_1"
 import {
   mlw_pc2dle_isa_2_predictTtet,
@@ -21,7 +24,10 @@ import { mtow_helipad_predictWeight } from "../curves/mtow_helipad"
 import { mtow_pc2dle_isa20_1_predictWeight } from "../curves/mtow_pc2dle_isa+20_1"
 import { mtow_pc2dle_isa20_2_predictTtet } from "../curves/mtow_pc2dle_isa+20_2"
 import { mtow_pc2dle_isa_1_predictWeight } from "../curves/mtow_pc2dle_isa_1"
-import { mtow_pc2dle_isa_2_predictTtet } from "../curves/mtow_pc2dle_isa_2"
+import {
+  mtow_pc2dle_isa_2_predictTtet,
+  mtow_pc2dle_isa_2_predictWeight,
+} from "../curves/mtow_pc2dle_isa_2"
 
 export const computeD1 = (headWind) => {
   let d1Details = []
@@ -171,6 +177,16 @@ export const computeMtow_pc2dle = (platformISA, zp) => {
   return value
 }
 
+export const computeMtow_pc2dle_weight = (dropDown, ttet) => {
+  const { value, error, text } = mtow_pc2dle_isa_2_predictWeight(dropDown, ttet)
+
+  if (error) {
+    console.warn(error)
+    return text
+  }
+  return value
+}
+
 export const computeTakeOffTtet_pc2dle = (platformISA, dropDown, weight) => {
   let value
   let error
@@ -189,6 +205,30 @@ export const computeTakeOffTtet_pc2dle = (platformISA, dropDown, weight) => {
     return text
   }
   return value
+}
+
+export const takeoffTetCorection = (
+  platformFactoredWind,
+  platformZp,
+  platformISA
+) => {
+  let zpCorrection, isaCorrection
+  // Factored wind correction
+  const windCorrection = -platformFactoredWind * 0.15
+
+  if (platformISA >= 10) {
+    // Zp correction
+    zpCorrection = platformZp > 0 ? (platformZp * 1) / 1000 : 0
+    // ISA correction
+    isaCorrection = platformISA > 20 ? platformISA * 0.15 : -platformISA * 0.05
+  } else {
+    // Zp correction
+    zpCorrection = platformZp > 0 ? (platformZp * 0.5) / 1000 : 0
+    // ISA correction
+    isaCorrection = platformISA > 0 ? platformISA * 0.1 : 0
+  }
+
+  return windCorrection + zpCorrection + isaCorrection
 }
 
 export const computeTakeOffTtet_pc2dle_corrected = (
@@ -259,7 +299,7 @@ export const computeLandingTtet_pc2dle = (platformISA, dropDown, weight) => {
   return value
 }
 
-export const landingTTetCorection = (
+export const landingTtetCorection = (
   platformFactoredWind,
   platformZp,
   platformISA
@@ -280,7 +320,6 @@ export const landingTTetCorection = (
     // ISA correction
     isaCorrection = platformISA > 0 ? platformISA * 0.15 : 0
   }
-
   return windCorrection + zpCorrection + isaCorrection
 }
 
@@ -294,8 +333,15 @@ export const computeVlss_pc2dle = (ttet) => {
   return value
 }
 
-export const computeMlw_pc2dle_weight = (dropDown, ttet) => {
-  const { value, error, text } = mlw_pc2dle_isa_2_predictWeight(dropDown, ttet)
+export const computeMlw_pc2dle_weight = (dropDown, ttet, platformISA) => {
+  let value
+  let error
+  let text
+
+  if (platformISA >= 10) {
+    ;({ value, error, text } = mlw_pc2dle_isa20_2_predictWeight(dropDown, ttet))
+  } else
+    ({ value, error, text } = mlw_pc2dle_isa_2_predictWeight(dropDown, ttet))
 
   if (error) {
     console.warn(error)
