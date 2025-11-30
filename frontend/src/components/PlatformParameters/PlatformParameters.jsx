@@ -18,7 +18,7 @@ const PlatformParameters = () => {
   }
 
   const handleBlur = () => {
-    return dispatch(calculatePerformances())
+    dispatch(calculatePerformances())
   }
 
   return (

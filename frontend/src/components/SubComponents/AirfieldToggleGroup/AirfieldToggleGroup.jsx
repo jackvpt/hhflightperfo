@@ -2,6 +2,7 @@ import { ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { updateField as updateFlightField } from "../../../features/flightDataSlice"
+import { airports } from "../../../data/airports"
 
 const AirfieldToggleGroup = () => {
   // Store REDUX
@@ -31,7 +32,7 @@ const AirfieldToggleGroup = () => {
         gap: 1,
       }}
     >
-      {[{ code: "EPGD" }, { code: "EHKD" }, { code: "EHAM" }].map(
+      {airports.map(
         ({ code }) => (
           <ToggleButton
             key={code}

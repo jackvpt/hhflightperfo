@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { calculatePerformances, updateAnyField } from "../../store/action"
 import AirfieldToggleGroup from "../SubComponents/AirfieldToggleGroup/AirfieldToggleGroup"
 import MetarDisplay from "../SubComponents/MetarDisplay/MetarDisplay"
+import { getBestRunwayHeading } from "../../utils/calculations"
+import { useEffect } from "react"
 
 const TakeoffParameters = () => {
   // REDUX store
@@ -17,11 +19,28 @@ const TakeoffParameters = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target
     dispatch(updateAnyField(name, value))
+
+    if (name === "runwayHeading") {
+      dispatch(updateAnyField("bestRunway", {}))
+    }
   }
 
   const handleBlur = () => {
     return dispatch(calculatePerformances())
   }
+
+  useEffect(() => {
+    const bestRunway = getBestRunwayHeading(
+      flightData.takeoffAirfield,
+      weatherData.windDirection
+    )
+
+    if (bestRunway) {
+      dispatch(updateAnyField("bestRunway", bestRunway))
+      dispatch(updateAnyField("runwayHeading", bestRunway.heading))
+      dispatch(calculatePerformances())
+    }
+  }, [weatherData.windDirection, flightData.takeoffAirfield])
 
   return (
     <section className="container-tab takeoffParameters">
@@ -36,6 +55,7 @@ const TakeoffParameters = () => {
           <div className="bodyTakeoffParameters">
             <MetarDisplay />
             <div className="bodyTakeoffParameters-inputBoxes">
+              {/* Wind Direction */}
               <InputNumber
                 name="windDirection"
                 label="Wind Direction"
@@ -64,6 +84,11 @@ const TakeoffParameters = () => {
                 format="heading"
                 onChange={handleInputChange}
                 onBlur={handleBlur}
+                badge={
+                  flightData.bestRunway?.QFU && (
+                    <div className="QFUBadge">{flightData.bestRunway.QFU}</div>
+                  )
+                }
               />
 
               {/* Head wind */}

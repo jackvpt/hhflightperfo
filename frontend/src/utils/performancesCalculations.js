@@ -22,18 +22,6 @@ import { mtow_pc2dle_isa20_1_predictWeight } from "../curves/mtow_pc2dle_isa+20_
 import { mtow_pc2dle_isa20_2_predictTtet } from "../curves/mtow_pc2dle_isa+20_2"
 import { mtow_pc2dle_isa_1_predictWeight } from "../curves/mtow_pc2dle_isa_1"
 import { mtow_pc2dle_isa_2_predictTtet } from "../curves/mtow_pc2dle_isa_2"
-import { degToRad } from "./calculations"
-
-export const computeHeadWind = (windDirection, windSpeed, runwayHeading) => {
-  const windAngle = Number(windDirection) - Number(runwayHeading)
-  const headWind = Number(windSpeed) * Math.cos(degToRad(windAngle))
-  return Math.round(headWind)
-}
-
-export const computeFactoredHeadWind = (headWind) => {
-  if (headWind <= 0) return Math.round(headWind * 1.5)
-  return Math.round(headWind * 0.5)
-}
 
 export const computeD1 = (headWind) => {
   let d1Details = []

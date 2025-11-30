@@ -3,8 +3,6 @@ import { updateField as updateFlightField } from "../features/flightDataSlice.js
 import { updatePerformanceField } from "../features/performancesSlice.js"
 import {
   computeD1,
-  computeFactoredHeadWind,
-  computeHeadWind,
   computeLandingTtet_pc2dle,
   computeMlw_ca,
   computeMlw_elevated_heliport,
@@ -25,6 +23,7 @@ import {
   computeVlss_pc2dle,
   landingTTetCorection,
 } from "../utils/performancesCalculations.js"
+import { computeFactoredHeadWind, computeHeadWind } from "../utils/calculations.js"
 
 // Centralized action to update any field in the Redux store
 export const updateAnyField = (name, rawValue) => (dispatch) => {
@@ -45,6 +44,7 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
   ])
   const flightFields = new Set([
     "runwayHeading",
+    "bestRunway",
     "platformDropDown",
     "platformMaxTtet",
     "platformLandingWeight",
@@ -72,6 +72,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     platformZp,
     platformISA,
   } = state.weatherData
+
   let {
     runwayHeading,
     platformDropDown,
@@ -79,6 +80,8 @@ export const calculatePerformances = () => (dispatch, getState) => {
     platformLandingWeight,
     platformTakeoffWeight,
   } = state.flightData
+
+  
   // Takeoff Headwind & Factored headwind calculation
   const headWind = computeHeadWind(windDirection, windSpeed, runwayHeading)
   dispatch(
@@ -87,6 +90,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
       value: headWind,
     })
   )
+  
   const factoredHeadWind = computeFactoredHeadWind(headWind)
   dispatch(
     updatePerformanceField({
@@ -94,7 +98,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
       value: factoredHeadWind,
     })
   )
-
+  
   // D1 calculation
   const d1 = computeD1(factoredHeadWind)
   dispatch(

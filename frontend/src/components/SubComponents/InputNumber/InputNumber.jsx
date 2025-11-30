@@ -12,6 +12,7 @@ const InputNumber = ({
   onBlur,
   format,
   range = [-Infinity, Infinity],
+  badge
 }) => {
   // REDUX store
   const flightData = useSelector((state) => state.flightData)
@@ -142,6 +143,7 @@ const InputNumber = ({
           },
         }}
       />
+      {badge}
     </div>
   )
 }

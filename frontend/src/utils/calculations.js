@@ -1,4 +1,5 @@
 import { PolynomialRegression } from "ml-regression-polynomial"
+import { airports } from "../data/airports"
 
 // Utility function for linear extrapolation
 export const extrapolation = (
@@ -109,7 +110,7 @@ export const checkValueInSubrange = (data, value) => {
  * @returns {Boolean}
  */
 export const checkValueInLimits = (data, low, high, value, axis) => {
-  if (value === "N/A") return {inLimits:false, reason:"value is N/A"}
+  if (value === "N/A") return { inLimits: false, reason: "value is N/A" }
 
   // Determine which properties to use based on the axis
   const minKey = axis === "yAxis" ? "absoluteMinY" : "absoluteMinX"
@@ -122,9 +123,17 @@ export const checkValueInLimits = (data, low, high, value, axis) => {
   // Check if the value is within limits
   const reasonText = "for subrange between " + low + " and " + high
   let reason = ""
-  if (value < min) reason = {code:"belowLimits",text:`${reasonText} | value ${value} is below minimum ${min}`}
-  if (value > max) reason = {code:"aboveLimits",text:`${reasonText} | value ${value} is above maximum ${max}`}
-  return {inLimits: value >= min && value <= max, reason}
+  if (value < min)
+    reason = {
+      code: "belowLimits",
+      text: `${reasonText} | value ${value} is below minimum ${min}`,
+    }
+  if (value > max)
+    reason = {
+      code: "aboveLimits",
+      text: `${reasonText} | value ${value} is above maximum ${max}`,
+    }
+  return { inLimits: value >= min && value <= max, reason }
 }
 
 /**
@@ -187,4 +196,46 @@ export const degToRad = (deg) => (deg * Math.PI) / 180
 export const getISA = (altitude, temperature) => {
   const isaTemperature = 15 - (2 / 1000) * altitude
   return Math.round(temperature - isaTemperature)
+}
+
+// Function to compute headwind component
+export const computeHeadWind = (windDirection, windSpeed, runwayHeading) => {
+  const windAngle = Number(windDirection) - Number(runwayHeading)
+  const headWind = Number(windSpeed) * Math.cos(degToRad(windAngle))
+  return Math.round(headWind)
+}
+
+// Function to compute factored headwind
+export const computeFactoredHeadWind = (headWind) => {
+  if (headWind <= 0) return Math.round(headWind * 1.5)
+  return Math.round(headWind * 0.5)
+}
+
+// Function to get the best runway heading based on wind direction
+export const getBestRunwayHeading = (takeoffAirfield, windDirection) => {
+  // Find airport by code
+  const airport = airports.find((a) => a.code === takeoffAirfield)
+  if (!airport) return null
+
+  // Function to calculate the relative angle between wind and runway axis
+  const angleDiff = (a, b) => {
+    const diff = Math.abs(a - b)
+    return diff > 180 ? 360 - diff : diff
+  }
+
+  // Calculate the angular difference between wind and each runway
+  let bestRunway = null
+  let smallestDiff = 999
+
+  airport.runways.forEach((runway) => {
+    const heading = Number(runway.heading) // runway heading
+    const diff = angleDiff(heading, windDirection)
+
+    if (diff < smallestDiff) {
+      smallestDiff = diff
+      bestRunway = runway
+    }
+  })
+
+  return bestRunway || null
 }
