@@ -558,6 +558,65 @@ const data = {
 
 /**
  *
+ * @param {Number} dropDown
+ * @param {Number} ttet
+ * @returns {Number} predicted weight
+ * @description Predict weight given dropdown and ttet using the polynomial regressions.
+ */
+export const mtow_pc2dle_isa20_2_predictWeight = (dropDown, ttet) => {
+  // Check flight enveloppe with dropdown
+  if (!checkValueInSubrange(data, dropDown)) {
+    return {
+      value: null,
+      error: "Outside defined dropdown range",
+      text: "N/A",
+    }
+  }
+
+  // Get low and high dropdown surrounding values
+  const { lowValue: dropDownLow, highValue: dropDownHigh } = getLowHighValues(
+    dropDown,
+    10,
+    150
+  )
+
+  // Check flight enveloppe with TTET
+  const valueInLimits = checkValueInLimits(
+    data,
+    dropDownLow,
+    dropDownHigh,
+    ttet,
+    "xAxis"
+  )
+  if (!valueInLimits.inLimits) return limitErrorObject(valueInLimits, "TTET")
+
+  // Get  regressions for low and high dropdowns
+  const regressions = getRegressions(data, ttet, 4)
+  const weightLow = regressions[dropDownLow].predict(ttet)
+  const weightHigh = regressions[dropDownHigh].predict(ttet)
+
+  // Extrapolate weight for given dropdown
+  const weight = extrapolation(
+    dropDown,
+    dropDownLow,
+    weightLow,
+    dropDownHigh,
+    weightHigh
+  )
+
+  // Check flight enveloppe with weight
+  const weightInLimits = setValueInsideLimits(
+    data,
+    dropDownLow,
+    dropDownHigh,
+    weight,
+    "yAxis"
+  )
+  return { value: Math.round(weightInLimits), error: null, text: null }
+}
+
+/**
+ *
  * @param {Number} temperature
  * @param {Number} zp
  * @returns {Number} predicted weight

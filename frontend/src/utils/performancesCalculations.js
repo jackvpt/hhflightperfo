@@ -22,12 +22,16 @@ import { mtow_elevated_heliport_2_2_predictWeight } from "../curves/mtow_elevate
 import { mtow_elevated_heliport_2_3_predictWeight } from "../curves/mtow_elevated_heliport_2_3"
 import { mtow_helipad_predictWeight } from "../curves/mtow_helipad"
 import { mtow_pc2dle_isa20_1_predictWeight } from "../curves/mtow_pc2dle_isa+20_1"
-import { mtow_pc2dle_isa20_2_predictTtet } from "../curves/mtow_pc2dle_isa+20_2"
+import {
+  mtow_pc2dle_isa20_2_predictTtet,
+  mtow_pc2dle_isa20_2_predictWeight,
+} from "../curves/mtow_pc2dle_isa+20_2"
 import { mtow_pc2dle_isa_1_predictWeight } from "../curves/mtow_pc2dle_isa_1"
 import {
   mtow_pc2dle_isa_2_predictTtet,
   mtow_pc2dle_isa_2_predictWeight,
 } from "../curves/mtow_pc2dle_isa_2"
+import { formatPerfo } from "./string"
 
 export const computeD1 = (headWind) => {
   let d1Details = []
@@ -162,7 +166,6 @@ export const computeMtow_pc2dle = (platformISA, zp) => {
   let error
   let text
 
-
   if (platformISA >= 10) {
     ;({ value, error, text } = mtow_pc2dle_isa20_1_predictWeight(
       platformISA,
@@ -178,8 +181,18 @@ export const computeMtow_pc2dle = (platformISA, zp) => {
   return value
 }
 
-export const computeMtow_pc2dle_weight = (dropDown, ttet) => {
-  const { value, error, text } = mtow_pc2dle_isa_2_predictWeight(dropDown, ttet)
+export const computeMtow_pc2dle_weight = (dropDown, ttet, platformISA) => {
+  let value
+  let error
+  let text
+
+  if (platformISA >= 10) {
+    ;({ value, error, text } = mtow_pc2dle_isa20_2_predictWeight(
+      dropDown,
+      ttet
+    ))
+  } else
+    ({ value, error, text } = mtow_pc2dle_isa_2_predictWeight(dropDown, ttet))
 
   if (error) {
     console.warn(error)

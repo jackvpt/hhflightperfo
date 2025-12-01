@@ -459,6 +459,24 @@ const data = {
       },
     ],
   },
+  150: {
+    absoluteMinX: 0.5,
+    absoluteMaxX: 0.5,
+    absoluteMinY: 4920,
+    absoluteMaxY: 4920,
+    ranges: [
+      {
+        rangeX: [0, 9],
+        rangeY: [3000, 5000],
+        values: [
+          { x: 0.3, y: 4918 },
+          { x: 0.4, y: 4919 },
+          { x: 0.5, y: 4920 },
+          { x: 0.6, y: 4921 },
+        ],
+      },
+    ],
+  },
 }
 
 /**
@@ -519,7 +537,6 @@ export const mtow_pc2dle_isa_2_predictWeight = (dropDown, ttet) => {
   )
   return { value: Math.round(weightInLimits), error: null, text: null }
 }
-
 
 /**
  *

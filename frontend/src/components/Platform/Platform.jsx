@@ -56,23 +56,41 @@ const Platform = () => {
     performancesData.pc2dle.landing.ttet
 
   const itemsPC2DLE_takeOff = [
-    {
-      name: "MTOW",
-      calculations: [
-        { value: formatPerfo(performancesData.pc2dle.takeoff.mtow) },
-      ],
-    },
-    {
-      name: "TTET at MTOW",
-      calculations: [
-        {
-          value: formatPerfo(performancesData.pc2dle.takeoff.ttetCorrected, 1),
-        },
-      ],
-      info: `Corrections for factored wind, Zp and ISA are applied (${
-        takeOffDeltaTtet > 0 ? "+" : ""
-      }${formatPerfo(takeOffDeltaTtet, 1)} s)`,
-    },
+    [
+      {
+        name: "MTOW",
+        calculations: [
+          { value: formatPerfo(performancesData.pc2dle.takeoff.mtow) },
+        ],
+      },
+      {
+        name: "TTET at MTOW",
+        calculations: [
+          {
+            value: formatPerfo(
+              performancesData.pc2dle.takeoff.ttetCorrected,
+              1
+            ),
+          },
+        ],
+        info: `Corrections for factored wind, Zp and ISA are applied (${
+          takeOffDeltaTtet > 0 ? "+" : ""
+        }${formatPerfo(takeOffDeltaTtet, 1)} s)`,
+      },
+    ],
+    [
+      {
+        name: "MTOW at TTET=" + flightData.platformMaxTtet + " s",
+        calculations: [
+          {
+            value: formatPerfo(performancesData.pc2dle.takeoff.mtow_givenTtet),
+          },
+        ],
+        info: `Corrections for factored wind, Zp and ISA are applied (${
+          landingDeltaTtet > 0 ? "+" : ""
+        }${formatPerfo(landingDeltaTtet, 1)} s)`,
+      },
+    ],
   ]
 
   const itemsPC2DLE_landing = [
@@ -225,9 +243,22 @@ const Platform = () => {
                 <TakeOffIcon className="icon_takeoff_landing" />
               </div>
               <div className="allItems-phase__performances">
-                {itemsPC2DLE_takeOff.map((item) => (
-                  <DisplayPerfo key={item.name} {...item} />
-                ))}{" "}
+                {itemsPC2DLE_takeOff.map((itemGroup, groupIndex) => (
+                  <div
+                    className="allItems-phase__performances"
+                    key={groupIndex}
+                  >
+                    {/* Display a separator except before the first group */}
+                    {groupIndex > 0 && (
+                      <div className="container-tab__body-separator" />
+                    )}
+
+                    {/* Display the items of the group */}
+                    {itemGroup.map((item) => (
+                      <DisplayPerfo key={item.name} {...item} />
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
 
