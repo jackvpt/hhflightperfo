@@ -132,7 +132,7 @@ export const mtow_pc2dle_isa20_1_predictWeight = (platformISA, zp) => {
   let { lowValue: isaLow, highValue: isaHigh } = getLowHighValues(
     platformISA,
     10,
-    10
+    30
   )
 
   // Check flight enveloppe with Zp

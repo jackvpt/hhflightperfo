@@ -13,8 +13,8 @@ import LandingIcon from "../../assets/images/landing.svg?react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCloudSunRain } from "@fortawesome/free-solid-svg-icons"
 
-import PerformanceToolTip from "../SubComponents/PerformanceToolTip/PerformanceToolTip"
 import { formatPerfo } from "../../utils/string"
+import DisplayPerfo from "../SubComponents/DisplayPerfo/DisplayPerfo"
 
 const Platform = () => {
   // REDUX store
@@ -26,17 +26,23 @@ const Platform = () => {
   const itemsPC1_takeOff = [
     {
       name: "MTOW Elevated Heliport",
-      calculation: formatPerfo(
-        performancesData.pc1.elevatedHeliport.takeoff.mtow
-      ),
+      calculations: [
+        {
+          value: formatPerfo(
+            performancesData.pc1.elevatedHeliport.takeoff.mtow
+          ),
+        },
+      ],
     },
   ]
   const itemsPC1_landing = [
     {
       name: "MLW Elevated Heliport",
-      calculation: formatPerfo(
-        performancesData.pc1.elevatedHeliport.landing.mlw
-      ),
+      calculations: [
+        {
+          value: formatPerfo(performancesData.pc1.elevatedHeliport.landing.mlw),
+        },
+      ],
     },
   ]
 
@@ -52,14 +58,17 @@ const Platform = () => {
   const itemsPC2DLE_takeOff = [
     {
       name: "MTOW",
-      calculation: formatPerfo(performancesData.pc2dle.takeoff.mtow),
+      calculations: [
+        { value: formatPerfo(performancesData.pc2dle.takeoff.mtow) },
+      ],
     },
     {
       name: "TTET at MTOW",
-      calculation: formatPerfo(
-        performancesData.pc2dle.takeoff.ttetCorrected,
-        1
-      ),
+      calculations: [
+        {
+          value: formatPerfo(performancesData.pc2dle.takeoff.ttetCorrected, 1),
+        },
+      ],
       info: `Corrections for factored wind, Zp and ISA are applied (${
         takeOffDeltaTtet > 0 ? "+" : ""
       }${formatPerfo(takeOffDeltaTtet, 1)} s)`,
@@ -70,55 +79,67 @@ const Platform = () => {
     [
       {
         name: "MLW",
-        calculation: formatPerfo(performancesData.pc2dle.landing.mlw),
+        calculations: [
+          { value: formatPerfo(performancesData.pc2dle.landing.mlw) },
+        ],
       },
       {
-        name: "TTET at MLW",
-        calculation: formatPerfo(
-          performancesData.pc2dle.landing.ttetCorrected,
-          1
-        ),
+        name: "TTET & VLSS at MLW",
+        calculations: [
+          {
+            value: formatPerfo(
+              performancesData.pc2dle.landing.ttetCorrected,
+              1
+            ),
+            type: "ttet",
+          },
+          {
+            value: formatPerfo(performancesData.pc2dle.landing.vlss),
+            type: "vlss",
+          },
+        ],
         info: `Corrections for factored wind, Zp and ISA are applied (${
           landingDeltaTtet > 0 ? "+" : ""
         }${formatPerfo(landingDeltaTtet, 1)} s)`,
-      },
-      {
-        name: "VLSS at MLW",
-        calculation: formatPerfo(performancesData.pc2dle.landing.vlss),
       },
     ],
     [
       {
-        name: "MLW TTET=" + flightData.platformMaxTtet + " s",
-        calculation: formatPerfo(performancesData.pc2dle.landing.mlw_givenTtet),
+        name: "MLW & VLSS at TTET=" + flightData.platformMaxTtet + " s",
+        calculations: [
+          { value: formatPerfo(performancesData.pc2dle.landing.mlw_givenTtet) },
+          {
+            value: formatPerfo(performancesData.pc2dle.landing.vlss_givenTtet),
+            type: "vlss",
+          },
+        ],
         info: `Corrections for factored wind, Zp and ISA are applied (${
           landingDeltaTtet > 0 ? "+" : ""
         }${formatPerfo(landingDeltaTtet, 1)} s)`,
-      },
-      {
-        name: "VLSS TTET=" + flightData.platformMaxTtet + " s",
-        calculation: formatPerfo(
-          performancesData.pc2dle.landing.vlss_givenTtet
-        ),
       },
     ],
     [
       {
         name:
-          "TTET at WEIGHT=" + flightData.platformLandingWeight + " kg",
-        calculation: formatPerfo(
-          performancesData.pc2dle.landing.ttet_givenWeightCorrected,
-          1
-        ),
+          "TTET & VLSS at WEIGHT=" + flightData.platformLandingWeight + " kg",
+        calculations: [
+          {
+            value: formatPerfo(
+              performancesData.pc2dle.landing.ttet_givenWeightCorrected,
+              1
+            ),
+            type: "ttet",
+          },
+          {
+            value: formatPerfo(
+              performancesData.pc2dle.landing.vlss_givenWeight
+            ),
+            type: "vlss",
+          },
+        ],
         info: `Corrections for factored wind, Zp and ISA are applied (${
           landingDeltaTtet > 0 ? "+" : ""
         }${formatPerfo(landingDeltaTtet, 1)} s)`,
-      },
-      {
-        name: "VLSS WEIGHT=" + flightData.platformLandingWeight + " kg",
-        calculation: formatPerfo(
-          performancesData.pc2dle.landing.vlss_givenWeight
-        ),
       },
     ],
   ]
@@ -169,22 +190,8 @@ const Platform = () => {
               </div>
               <div className="allItems-phase__performances">
                 {itemsPC1_takeOff.map((item) => (
-                  <div key={item.name} className="container-tab__body-item">
-                    <div className="performanceCell_header">
-                      {item.name}
-                      {item.info && item.calculation !== "N/A" && (
-                        <PerformanceToolTip text={item.info} />
-                      )}
-                    </div>
-                    <div
-                      className={`performanceCell_value ${
-                        item.calculation === "N/A" ? "nonApplicable" : ""
-                      }`}
-                    >
-                      {item.calculation}
-                    </div>
-                  </div>
-                ))}{" "}
+                  <DisplayPerfo key={item.name} {...item} />
+                ))}
               </div>
             </div>
 
@@ -198,21 +205,7 @@ const Platform = () => {
               </div>
               <div className="allItems-phase__performances">
                 {itemsPC1_landing.map((item) => (
-                  <div key={item.name} className="container-tab__body-item">
-                    <div className="performanceCell_header">
-                      {item.name}
-                      {item.info && item.calculation !== "N/A" && (
-                        <PerformanceToolTip text={item.info} />
-                      )}
-                    </div>
-                    <div
-                      className={`performanceCell_value ${
-                        item.calculation === "N/A" ? "nonApplicable" : ""
-                      }`}
-                    >
-                      {item.calculation}
-                    </div>
-                  </div>
+                  <DisplayPerfo key={item.name} {...item} />
                 ))}{" "}
               </div>
             </div>
@@ -233,21 +226,7 @@ const Platform = () => {
               </div>
               <div className="allItems-phase__performances">
                 {itemsPC2DLE_takeOff.map((item) => (
-                  <div key={item.name} className="container-tab__body-item">
-                    <div className="performanceCell_header">
-                      {item.name}
-                      {item.info && item.calculation !== "N/A" && (
-                        <PerformanceToolTip text={item.info} />
-                      )}
-                    </div>
-                    <div
-                      className={`performanceCell_value ${
-                        item.calculation === "N/A" ? "nonApplicable" : ""
-                      }`}
-                    >
-                      {item.calculation}
-                    </div>
-                  </div>
+                  <DisplayPerfo key={item.name} {...item} />
                 ))}{" "}
               </div>
             </div>
@@ -260,7 +239,7 @@ const Platform = () => {
               <div className="allItems-phase__icon">
                 <LandingIcon className="icon_takeoff_landing" />
               </div>
-              <div  className="allItems-phase__performances">
+              <div className="allItems-phase__performances">
                 {itemsPC2DLE_landing.map((itemGroup, groupIndex) => (
                   <div
                     className="allItems-phase__performances"
@@ -273,25 +252,7 @@ const Platform = () => {
 
                     {/* Display the items of the group */}
                     {itemGroup.map((item) => (
-                      <div
-                        key={`${groupIndex}-${item.name}`}
-                        className="container-tab__body-item"
-                      >
-                        <div className="performanceCell_header">
-                          {item.name}
-                          {item.info && item.calculation !== "N/A" && (
-                            <PerformanceToolTip text={item.info} />
-                          )}
-                        </div>
-
-                        <div
-                          className={`performanceCell_value ${
-                            item.calculation === "N/A" ? "nonApplicable" : ""
-                          }`}
-                        >
-                          {item.calculation}
-                        </div>
-                      </div>
+                      <DisplayPerfo key={item.name} {...item} />
                     ))}
                   </div>
                 ))}

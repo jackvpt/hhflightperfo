@@ -443,7 +443,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
   )
 
   // Check if given weight > weight at TTET=0
-  let landing_ttet_pc2dle_givenWeight_corrected,
+  let landing_ttet_pc2dle_givenWeight_corrected=0,
     landing_ttet_pc2dle_givenWeight = 0
   if (platformLandingWeight > mlw_pc2dle_ttet0 || mlw_pc2dle_ttet0 === "N/A") {
     landing_ttet_pc2dle_givenWeight = computeLandingTtet_pc2dle(

@@ -164,7 +164,7 @@ export const drawPerformances = (
         toCanvasY
       )
       break
-          case "mlw_pc2dle_isa+20_3":
+    case "mlw_pc2dle_isa+20_3":
       drawLandingVlss_Pc2Dle_ISA(
         ctx,
         weatherData,
@@ -523,13 +523,16 @@ const drawMlw_Pc2Dle_ISA = (
   toCanvasY
 ) => {
   const weight = performancesData.pc2dle.landing.mlw
+  const ttetCorrected = performancesData.pc2dle.landing.ttetCorrected
   const zp = weatherData.platformZp
   const x0 = toCanvasX(-1000)
   const y0 = toCanvasY(3000)
   const x = toCanvasX(zp)
+  const xCorrected = toCanvasX(ttetCorrected)
   const y = toCanvasY(weight)
 
   drawLines(ctx, x0, x, y0, y)
+  drawLines_corrected(ctx, x, xCorrected, y0)
   drawPoint(ctx, x, y)
 }
 
@@ -543,7 +546,7 @@ const drawLandingTtet_Pc2Dle_ISA = (
 ) => {
   // TTET BASED ON MLW
   const ttet = performancesData.pc2dle.landing.ttet
-  const ttetCorrected = performancesData.pc2dle.landing.ttet_corrected
+  const ttetCorrected = performancesData.pc2dle.landing.ttetCorrected
   const weight = performancesData.pc2dle.landing.mlw
   const x0 = toCanvasX(0)
   const y0 = toCanvasY(3000)
