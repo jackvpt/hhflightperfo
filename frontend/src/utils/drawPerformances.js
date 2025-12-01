@@ -494,6 +494,7 @@ const drawMtow_Pc2Dle_ISA = (
 const drawTakeOffTtet_Pc2Dle_ISA = (
   ctx,
   weatherData,
+  flightData,
   performancesData,
   toCanvasX,
   toCanvasY
@@ -511,6 +512,33 @@ const drawTakeOffTtet_Pc2Dle_ISA = (
   drawLines_corrected(ctx, x, xCorrected, y0)
 
   drawPoint(ctx, x, y)
+  
+  // MTOW BASED ON GIVEN TTET
+  const givenTtet = flightData.platformMaxTtet
+  const givenTtet_corrected =
+    performancesData.pc2dle.takeoff.givenTtetBeforeCorrection
+  const mtow_givenTtet_weight = performancesData.pc2dle.takeoff.mtow_givenTtet
+  const x_givenTtet = toCanvasX(givenTtet)
+  const x_givenTtet_corrected = toCanvasX(givenTtet_corrected)
+  const y_givenTtet = toCanvasY(mtow_givenTtet_weight)
+
+  drawLines(ctx, x0, x_givenTtet_corrected, y0, y_givenTtet)
+  drawLines_corrected(ctx, x_givenTtet_corrected, x_givenTtet, y0)
+  drawPoint(ctx, x_givenTtet_corrected, y_givenTtet)
+
+    // TTET BASED ON GIVEN WEIGHT
+  const ttet_givenWeight = performancesData.pc2dle.takeoff.ttet_givenWeight
+  const ttet_givenWeight_corrected =
+    performancesData.pc2dle.takeoff.ttet_givenWeightCorrected
+  const givenWeight = flightData.platformTakeoffWeight
+
+  const x_givenWeight = toCanvasX(ttet_givenWeight)
+  const x_givenWeightCorrected = toCanvasX(ttet_givenWeight_corrected)
+  const y_givenWeight = toCanvasY(givenWeight)
+
+  drawLines(ctx, x0, x_givenWeight, y0, y_givenWeight)
+  drawLines_corrected(ctx, x_givenWeight, x_givenWeightCorrected, y0)
+  drawPoint(ctx, x_givenWeight, y_givenWeight)
 }
 
 // Draw MLW PC2DLE performance points and lines

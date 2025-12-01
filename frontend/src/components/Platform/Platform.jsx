@@ -91,6 +91,25 @@ const Platform = () => {
         }${formatPerfo(landingDeltaTtet, 1)} s)`,
       },
     ],
+     [
+      {
+        name:
+          "TTET at WEIGHT=" + flightData.platformTakeoffWeight + " kg",
+        calculations: [
+          {
+            value: formatPerfo(
+              performancesData.pc2dle.takeoff.ttet_givenWeightCorrected,
+              1
+            ),
+            type: "ttet",
+          },
+         
+        ],
+        info: `Corrections for factored wind, Zp and ISA are applied (${
+          takeOffDeltaTtet > 0 ? "+" : ""
+        }${formatPerfo(takeOffDeltaTtet, 1)} s)`,
+      },
+    ],
   ]
 
   const itemsPC2DLE_landing = [

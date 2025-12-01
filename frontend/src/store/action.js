@@ -327,6 +327,57 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
+    // TAKEOFF TTET PC2DLE AT GIVEN WEIGHT
+  // Get MTOW for TTET=0
+  const takeoffTtet0Corrected = Math.max(0, -takeoffTtetCorection)
+  const mtow_pc2dle_ttet0 = computeMtow_pc2dle_weight(
+    platformDropDown,
+    takeoffTtet0Corrected,
+    platformFactoredHeadwind,
+    platformZp,
+    platformISA
+  )
+  dispatch(
+    updatePerformanceField({
+      path: "pc2dle.takeoff.mtow_ttet0",
+      value: mtow_pc2dle_ttet0,
+    })
+  )
+
+  // Check if given weight > weight at TTET=0
+  let takeoff_ttet_pc2dle_givenWeight_corrected = 0,
+    takeoff_ttet_pc2dle_givenWeight = 0
+  if (platformTakeoffWeight > mtow_pc2dle_ttet0 || mtow_pc2dle_ttet0 === "N/A") {
+    takeoff_ttet_pc2dle_givenWeight_corrected = computeTakeOffTtet_pc2dle(
+      platformISA,
+      platformDropDown,
+      platformTakeoffWeight,
+      platformFactoredHeadwind,
+      platformZp,
+      platformISA
+    )
+
+    // CORRECTED TAKEOFF TTET PC2DLE AT GIVEN WEIGHT
+    if (takeoff_ttet_pc2dle_givenWeight !== "N/A")
+      takeoff_ttet_pc2dle_givenWeight_corrected =
+        takeoff_ttet_pc2dle_givenWeight + takeoffTtetCorection
+    else takeoff_ttet_pc2dle_givenWeight_corrected = "N/A"
+  }
+
+  dispatch(
+    updatePerformanceField({
+      path: "pc2dle.takeoff.ttet_givenWeight",
+      value: takeoff_ttet_pc2dle_givenWeight,
+    })
+  )
+
+  dispatch(
+    updatePerformanceField({
+      path: "pc2dle.takeoff.ttet_givenWeightCorrected",
+      value: takeoff_ttet_pc2dle_givenWeight_corrected,
+    })
+  )
+
   // MLW PC2DLE
   const mlw_pc2dle = computeMlw_pc2dle(platformISA, platformZp)
   dispatch(

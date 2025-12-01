@@ -31,7 +31,6 @@ import {
   mtow_pc2dle_isa_2_predictTtet,
   mtow_pc2dle_isa_2_predictWeight,
 } from "../curves/mtow_pc2dle_isa_2"
-import { formatPerfo } from "./string"
 
 export const computeD1 = (headWind) => {
   let d1Details = []
