@@ -94,6 +94,7 @@ export const drawPerformances = (
       drawTakeOffTtet_Pc2Dle_ISA(
         ctx,
         weatherData,
+        flightData,
         performancesData,
         toCanvasX,
         toCanvasY
@@ -112,6 +113,7 @@ export const drawPerformances = (
       drawTakeOffTtet_Pc2Dle_ISA(
         ctx,
         weatherData,
+        flightData,
         performancesData,
         toCanvasX,
         toCanvasY

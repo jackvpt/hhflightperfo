@@ -333,8 +333,6 @@ export const calculatePerformances = () => (dispatch, getState) => {
   const mtow_pc2dle_ttet0 = computeMtow_pc2dle_weight(
     platformDropDown,
     takeoffTtet0Corrected,
-    platformFactoredHeadwind,
-    platformZp,
     platformISA
   )
   dispatch(
@@ -370,6 +368,8 @@ export const calculatePerformances = () => (dispatch, getState) => {
       value: takeoff_ttet_pc2dle_givenWeight,
     })
   )
+
+  takeoff_ttet_pc2dle_givenWeight_corrected = Math.max(takeoff_ttet_pc2dle_givenWeight_corrected, 0.5)
 
   dispatch(
     updatePerformanceField({
@@ -522,6 +522,9 @@ export const calculatePerformances = () => (dispatch, getState) => {
       value: landing_ttet_pc2dle_givenWeight,
     })
   )
+
+    landing_ttet_pc2dle_givenWeight_corrected = Math.max(landing_ttet_pc2dle_givenWeight_corrected, 0.5)
+
 
   dispatch(
     updatePerformanceField({
