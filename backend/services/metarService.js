@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const fetchMetar = async (ids, hours = 1.5) => {
-  const url = `https://aviationweather.gov/cgi-bin/data/metar.php?ids=${ids}&format=json&taf=false&hours=${hours}`
+  const url = `https://aviationweather.gov/api/data/metar?ids=${ids}&format=json&taf=false&hours=${hours}`
 
   try {
     const response = await axios.get(url, {
