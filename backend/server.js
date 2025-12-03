@@ -11,7 +11,7 @@ app.use(express.json())
 app.use("/api/metar", metarRoutes)
 
 // Port backend
-const PORT = 4000
+const PORT = 4100
 app.listen(PORT, () => {
   console.log(`METAR backend running on port ${PORT}`)
 })
