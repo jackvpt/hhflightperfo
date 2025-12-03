@@ -8,7 +8,7 @@ app.use(cors())
 app.use(express.json())
 
 // API routes
-app.use("/api/metar", metarRoutes)
+app.use("/metar", metarRoutes)
 
 // Port backend
 const PORT = 4100
