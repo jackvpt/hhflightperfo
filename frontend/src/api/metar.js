@@ -13,7 +13,7 @@ import axios from "axios"
 export const fetchMetarData = async (icaoCode = "EHKD", hours = 1.5) => {
   try {
     // Build the URL relative to your Vite proxy
-    const url = `/api/metar?ids=${icaoCode}&format=json&taf=false&hours=${hours}`
+    const url = `https://api.hhflightperfo.pegasoft.fr/metar?ids=${icaoCode}&format=json&taf=false&hours=${hours}`
 
     // Perform the GET request (Vite forwards it to AviationWeather)
     const response = await axios.get(url, {
