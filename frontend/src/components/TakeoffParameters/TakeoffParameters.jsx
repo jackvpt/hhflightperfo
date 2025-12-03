@@ -84,11 +84,11 @@ const TakeoffParameters = () => {
                 format="heading"
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                badge={
-                  flightData.bestRunway?.QFU && (
-                    <div className="QFUBadge">{flightData.bestRunway.QFU}</div>
-                  )
-                }
+                // badge={
+                //   flightData.bestRunway?.QFU && (
+                //     <div className="QFUBadge">{flightData.bestRunway.QFU}</div>
+                //   )
+                // }
               />
 
               {/* Head wind */}

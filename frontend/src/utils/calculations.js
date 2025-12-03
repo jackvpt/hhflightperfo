@@ -227,7 +227,7 @@ export const getBestRunwayHeading = (takeoffAirfield, windDirection) => {
   let bestRunway = null
   let smallestDiff = 999
 
-  airport.runways.forEach((runway) => {
+  airport.runways?.forEach((runway) => {
     const heading = Number(runway.heading) // runway heading
     const diff = angleDiff(heading, windDirection)
 

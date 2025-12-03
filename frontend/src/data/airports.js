@@ -20,4 +20,13 @@ export const airports = [
       { QFU: "29", heading: "288" },
     ],
   },
+  {
+    code: "EKRK",
+    runways: [
+      { QFU: "03", heading: "027" },
+      { QFU: "21", heading: "207" },
+      { QFU: "11", heading: "112" },
+      { QFU: "29", heading: "292" },
+    ],
+  },
 ]
