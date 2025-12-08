@@ -20,7 +20,6 @@ import {
   computeMtow_pc2dle,
   computeMtow_pc2dle_weight,
   computeTakeOffTtet_pc2dle,
-  computeTakeOffTtet_pc2dle_corrected,
   computeVlss_pc2dle,
   landingTtetCorection,
   takeoffTetCorection,
@@ -29,6 +28,7 @@ import {
   computeFactoredHeadWind,
   computeHeadWind,
 } from "../utils/calculations.js"
+import { platforms } from "../data/platforms.js"
 
 // Centralized action to update any field in the Redux store
 export const updateAnyField = (name, rawValue) => (dispatch) => {
@@ -54,12 +54,36 @@ export const updateAnyField = (name, rawValue) => (dispatch) => {
     "platformMaxTtet",
     "platformLandingWeight",
     "platformTakeoffWeight",
+    "platformName",
   ])
 
   if (weatherFields.has(name)) {
     dispatch(updateWeatherField({ field: name, value }))
   } else if (flightFields.has(name)) {
     dispatch(updateFlightField({ field: name, value }))
+    if (name === "platformName") {
+      const platformWeatherStation =
+        platforms.find((platform) => platform.name === value)?.weatherStation ||
+        ""
+      dispatch(
+        updateFlightField({
+          field: "platformWeatherStation",
+          value: platformWeatherStation,
+        })
+      )
+
+      const dropDown =
+        platforms.find((platform) => platform.name === value)?.deckHeight -
+          35 || null
+      if (dropDown) {
+        dispatch(
+          updateFlightField({
+            field: "platformDropDown",
+            value: dropDown,
+          })
+        )
+      }
+    }
   } else {
     console.warn(`Field ${name} unknown in updateAnyField action`)
   }
@@ -327,7 +351,7 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-    // TAKEOFF TTET PC2DLE AT GIVEN WEIGHT
+  // TAKEOFF TTET PC2DLE AT GIVEN WEIGHT
   // Get MTOW for TTET=0
   const takeoffTtet0Corrected = Math.max(0, -takeoffTtetCorection)
   const mtow_pc2dle_ttet0 = computeMtow_pc2dle_weight(
@@ -345,7 +369,10 @@ export const calculatePerformances = () => (dispatch, getState) => {
   // Check if given weight > weight at TTET=0
   let takeoff_ttet_pc2dle_givenWeight_corrected = 0,
     takeoff_ttet_pc2dle_givenWeight = 0
-  if (platformTakeoffWeight > mtow_pc2dle_ttet0 || mtow_pc2dle_ttet0 === "N/A") {
+  if (
+    platformTakeoffWeight > mtow_pc2dle_ttet0 ||
+    mtow_pc2dle_ttet0 === "N/A"
+  ) {
     takeoff_ttet_pc2dle_givenWeight_corrected = computeTakeOffTtet_pc2dle(
       platformISA,
       platformDropDown,
@@ -369,7 +396,10 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-  takeoff_ttet_pc2dle_givenWeight_corrected = Math.max(takeoff_ttet_pc2dle_givenWeight_corrected, 0.5)
+  takeoff_ttet_pc2dle_givenWeight_corrected = Math.max(
+    takeoff_ttet_pc2dle_givenWeight_corrected,
+    0.5
+  )
 
   dispatch(
     updatePerformanceField({
@@ -523,8 +553,10 @@ export const calculatePerformances = () => (dispatch, getState) => {
     })
   )
 
-    landing_ttet_pc2dle_givenWeight_corrected = Math.max(landing_ttet_pc2dle_givenWeight_corrected, 0.5)
-
+  landing_ttet_pc2dle_givenWeight_corrected = Math.max(
+    landing_ttet_pc2dle_givenWeight_corrected,
+    0.5
+  )
 
   dispatch(
     updatePerformanceField({

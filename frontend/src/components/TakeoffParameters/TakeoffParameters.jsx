@@ -7,6 +7,7 @@ import AirfieldToggleGroup from "../SubComponents/AirfieldToggleGroup/AirfieldTo
 import MetarDisplay from "../SubComponents/MetarDisplay/MetarDisplay"
 import { getBestRunwayHeading } from "../../utils/calculations"
 import { useEffect } from "react"
+import { useFetchMetar } from "../../hooks/useFetchMetar"
 
 const TakeoffParameters = () => {
   // REDUX store
@@ -14,6 +15,9 @@ const TakeoffParameters = () => {
   const weatherData = useSelector((state) => state.weatherData)
   const flightData = useSelector((state) => state.flightData)
   const performancesData = useSelector((state) => state.performancesData)
+
+  // API
+  const metar = useFetchMetar(flightData.takeoffAirfield,"airbase")
 
   // Handle form input changes
   const handleInputChange = (event) => {
@@ -53,7 +57,7 @@ const TakeoffParameters = () => {
             <AirfieldToggleGroup />
           </aside>
           <div className="bodyTakeoffParameters">
-            <MetarDisplay />
+            <MetarDisplay {...metar} />
             <div className="bodyTakeoffParameters-inputBoxes">
               {/* Wind Direction */}
               <InputNumber

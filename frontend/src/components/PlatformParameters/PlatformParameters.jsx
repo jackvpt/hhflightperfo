@@ -3,6 +3,10 @@ import InputNumber from "../SubComponents/InputNumber/InputNumber"
 import { useDispatch, useSelector } from "react-redux"
 import { calculatePerformances, updateAnyField } from "../../store/action"
 import DisplayValue from "../SubComponents/DisplayValue/DisplayValue"
+import PlatformSelect from "../SubComponents/PlatformSelect/PlatformSelect"
+import { useFetchMetar } from "../../hooks/useFetchMetar"
+import { Meta } from "react-router-dom"
+import MetarDisplay from "../SubComponents/MetarDisplay/MetarDisplay"
 
 const PlatformParameters = () => {
   // REDUX store
@@ -10,6 +14,9 @@ const PlatformParameters = () => {
   const weatherData = useSelector((state) => state.weatherData)
   const flightData = useSelector((state) => state.flightData)
   const performancesData = useSelector((state) => state.performancesData)
+
+  // API
+  const metar = useFetchMetar(flightData.platformWeatherStation, "platform")
 
   // Handle form input changes
   const handleInputChange = (event) => {
@@ -29,6 +36,16 @@ const PlatformParameters = () => {
       <div className="container-tab__body">
         <div className="tabBodyWithShortCuts">
           <div className="bodyTakeoffParameters">
+            <div className="bodyTakeoffParameters-platformDetails">
+              {/* Platform selection */}
+              <PlatformSelect />
+              {flightData.platformWeatherStation && (
+                <div className="weatherStation">
+                  {flightData.platformWeatherStation}
+                </div>
+              )}
+              <MetarDisplay {...metar} />
+            </div>
             <div className="bodyTakeoffParameters-inputBoxes">
               {/* Wind Speed */}
               <InputNumber

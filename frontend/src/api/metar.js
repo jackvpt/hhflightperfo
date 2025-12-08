@@ -1,4 +1,8 @@
 import axios from "axios"
+import { API_URL } from "./apiURL"
+
+// Base URL for authentication-related endpoints
+const BASE_URL = `${API_URL}`
 
 /**
  * Fetch METAR data for one or more airports.
@@ -12,9 +16,9 @@ import axios from "axios"
  */
 export const fetchMetarData = async (icaoCode = "EHKD", hours = 1.5) => {
   try {
-    // Build the URL relative to your Vite proxy
-    const url = `https://api.hhflightperfo.pegasoft.fr/metar?ids=${icaoCode}&format=json&taf=false&hours=${hours}`
-
+    // Construct the request URL
+    const url = `${BASE_URL}/metar?ids=${icaoCode}&format=json&taf=false&hours=${hours}`
+    
     // Perform the GET request (Vite forwards it to AviationWeather)
     const response = await axios.get(url, {
       headers: { Accept: "application/json" },

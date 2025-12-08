@@ -1,17 +1,11 @@
 import "./MetarDisplay.scss"
-import { useSelector } from "react-redux"
-import { useFetchMetar } from "../../../hooks/useFetchMetar"
 
-const MetarDisplay = () => {
-  const takeoffAirfield = useSelector(
-    (state) => state.flightData.takeoffAirfield
-  )
-
+const MetarDisplay = (metar) => {
   const {
     data: metarData,
     isLoading: isLoadingMetar,
     error: errorMetar,
-  } = useFetchMetar(takeoffAirfield)
+  } = metar
 
   // API async status handling
   if (errorMetar)

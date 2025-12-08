@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query"
 import { fetchMetarData } from "../api/metar"
 import MetarModel from "../models/MetarModel"
 import { useDispatch } from "react-redux"
-import { updateFromMetar } from "../features/weatherDataSlice"
 import { calculatePerformances } from "../store/action"
+import { updateAirbaseFromMetar, updatePlatformFromMetar } from "../features/weatherDataSlice"
 
 /**
  * Custom React hook to fetch METAR data for a specific ICAO airport.
@@ -14,7 +14,7 @@ import { calculatePerformances } from "../store/action"
  * @param {string} icaoCode - The ICAO airport code (e.g., "EHKD").
  * @returns {object} React Query object containing data, status, and methods
  */
-export const useFetchMetar = (icaoCode) => {
+export const useFetchMetar = (icaoCode, type) => {
   // Store REDUX
   const dispatch = useDispatch()
 
@@ -29,15 +29,27 @@ export const useFetchMetar = (icaoCode) => {
       const metarData = new MetarModel(rawData[0])
 
       // Update REDUX store with new METAR data
-      dispatch(
-        updateFromMetar({
-          windDirection: metarData.windDirection,
-          windSpeed: metarData.windSpeed,
-          qnh: metarData.qnh,
-          temperature: metarData.temperature,
-          altitude: metarData.altitude,
-        })
-      )
+      if (type === "airbase") {
+        dispatch(
+          updateAirbaseFromMetar({
+            windDirection: metarData.windDirection,
+            windSpeed: metarData.windSpeed,
+            qnh: metarData.qnh,
+            temperature: metarData.temperature,
+            altitude: metarData.altitude,
+          })
+        )
+      }
+      if (type === "platform") {
+        dispatch(
+          updatePlatformFromMetar({
+            platformWindSpeed: metarData.windSpeed,
+            platformQnh: metarData.qnh,
+            platformTemperature: metarData.temperature,
+            platformAltitude: metarData.altitude,
+          })
+        )
+      }
 
       dispatch(calculatePerformances())
       return metarData
