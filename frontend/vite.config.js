@@ -21,7 +21,7 @@ export default defineConfig({
         /** Useful for code splitting and avoiding big bundle size alerts */
         manualChunks: {
           react: ["react", "react-dom"],
-          mui: ["@mui/material", "@mui/icons-material", "@mui/x-data-grid"],
+          mui: ["@mui/material", "@mui/icons-material"],
           query: ["@tanstack/react-query"],
           axios: ["axios"],
         },
