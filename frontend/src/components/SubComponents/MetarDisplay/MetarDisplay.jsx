@@ -11,7 +11,7 @@ const MetarDisplay = (metar) => {
   if (errorMetar)
     return (
       <div className="metar-header">
-        Error loading METAR data: {errorMetar.message}
+        Error loading METAR data
       </div>
     )
 
@@ -23,7 +23,8 @@ const MetarDisplay = (metar) => {
             {metarData?.icaoId} {metarData?.time}
           </>
         ) : isLoadingMetar ? (
-          "Loading METAR..."
+          <div className="metar-header slide-loader">Loading METAR...</div>
+         
         ) : (
           "NO METAR DATA"
         )}

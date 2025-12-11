@@ -8,13 +8,6 @@
     align-items: baseline;
     gap: 1rem;
 
-    .metar-header {
-      font-family: $font_computer;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #00b894;
-    }
-
     .metar-weatherCategory {
       font-size: 0.65rem;
       font-weight: 400;
@@ -22,16 +15,16 @@
       text-transform: uppercase;
       padding: 4px 6px;
       border-radius: 0.3rem;
-      width:2.5rem;
+      width: 2.5rem;
 
       &.VFR {
         background-color: #00b894;
       }
       &.MVFR {
-        background-color: #0984e3; 
+        background-color: #0984e3;
       }
       &.IFR {
-        background-color: #d63031; 
+        background-color: #d63031;
       }
       &.LIFR {
         background-color: #6c5ce7;
@@ -42,5 +35,40 @@
       font-family: $font-computer;
       font-size: 0.8rem;
     }
+  }
+}
+
+.metar-header {
+  font-family: $font_computer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #00b894;
+}
+
+.slide-loader {
+  position: relative;
+  display: inline-block;
+}
+
+.slide-loader::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 45%;
+  height: 2px;
+  background: currentColor;
+  animation: slide 1s ease-in-out infinite;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(120%);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
