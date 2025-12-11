@@ -133,7 +133,10 @@
 }
 
 .performances {
-  width: 50%
+  width:100%;
+  @include responsive-desktop {
+    width: 50%;
+  }
 }
 
 .tabBodyWithShortCuts {
@@ -175,7 +178,8 @@
   border: 1px solid var(--mui-palette-primary-main);
 }
 
-.cell_vlss, .cell_ttet {
+.cell_vlss,
+.cell_ttet {
   width: 30px;
 }
 
