@@ -1,4 +1,5 @@
 import { PolynomialRegression } from "ml-regression-polynomial"
+import { airports } from "../data/airports"
 
 // Utility function for linear extrapolation
 export const extrapolation = (
@@ -109,7 +110,7 @@ export const checkValueInSubrange = (data, value) => {
  * @returns {Boolean}
  */
 export const checkValueInLimits = (data, low, high, value, axis) => {
-  if (value === "N/A") return {inLimits:false, reason:"value is N/A"}
+  if (value === "N/A") return { inLimits: false, reason: "value is N/A" }
 
   // Determine which properties to use based on the axis
   const minKey = axis === "yAxis" ? "absoluteMinY" : "absoluteMinX"
@@ -122,9 +123,17 @@ export const checkValueInLimits = (data, low, high, value, axis) => {
   // Check if the value is within limits
   const reasonText = "for subrange between " + low + " and " + high
   let reason = ""
-  if (value < min) reason = {code:"belowLimits",text:`${reasonText} | value ${value} is below minimum ${min}`}
-  if (value > max) reason = {code:"aboveLimits",text:`${reasonText} | value ${value} is above maximum ${max}`}
-  return {inLimits: value >= min && value <= max, reason}
+  if (value < min)
+    reason = {
+      code: "belowLimits",
+      text: `${reasonText} | value ${value} is below minimum ${min}`,
+    }
+  if (value > max)
+    reason = {
+      code: "aboveLimits",
+      text: `${reasonText} | value ${value} is above maximum ${max}`,
+    }
+  return { inLimits: value >= min && value <= max, reason }
 }
 
 /**
@@ -187,4 +196,29 @@ export const degToRad = (deg) => (deg * Math.PI) / 180
 export const getISA = (altitude, temperature) => {
   const isaTemperature = 15 - (2 / 1000) * altitude
   return Math.round(temperature - isaTemperature)
+}
+
+// Utility function to calculate angular difference between two headings
+const angularDifference = (a, b) => {
+  return Math.min(Math.abs(a - b), 360 - Math.abs(a - b))
+}
+
+// Calculate runway heading based on airfield code
+export const getQFUForWind = (airportCode, windDirection) => {
+  const airport = airports.find((a) => a.code === airportCode)
+  if (!airport) return null
+
+  let best = null
+  let minDiff = Infinity
+
+  airport.QFU.forEach((qfu) => {
+    const diff = angularDifference(windDirection, qfu.heading)
+
+    if (diff < minDiff) {
+      minDiff = diff
+      best = qfu
+    }
+  })
+
+  return best // { name: "03", heading: 34 }
 }

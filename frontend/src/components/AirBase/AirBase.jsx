@@ -12,8 +12,6 @@ import LandingIcon from "../../assets/images/landing.svg?react"
 // FONTAWESOME
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCloudSunRain } from "@fortawesome/free-solid-svg-icons"
-import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons"
-import { faPlaneArrival } from "@fortawesome/free-solid-svg-icons"
 
 import { formatPerfo } from "../../utils/string"
 

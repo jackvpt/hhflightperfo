@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { getQFUForWind } from "../utils/calculations"
 
 export const initialState = {
   takeoffAirfield: null,
@@ -6,8 +7,8 @@ export const initialState = {
   takeOffWeight: 4800,
   platformDropDown: 60,
   platformMaxTtet: 3,
-  platformLandingWeight:4800,
-  platformTakeoffWeight:4800,
+  platformLandingWeight: 4800,
+  platformTakeoffWeight: 4800,
 }
 
 const flightDataSlice = createSlice({
